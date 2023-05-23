@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Castoro+Titling&display=swap');
+html,
+body,
+#root {
+    height: 100%;
+    width: 100%;
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+}
+
+.heading-custom{
+    font-family: 'Castoro Titling', cursive !important;
+}

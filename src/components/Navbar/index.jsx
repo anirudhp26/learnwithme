@@ -7,17 +7,14 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { Divider, Link } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setLogout } from '../../redux';
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard'];
+const pages = ['Explore', 'Pricing', 'Blog', 'Profile'];
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -47,16 +44,14 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  console.log(user);
   return (
-    <AppBar position="static" color='transparent' sx={{ boxShadow: 'none' }}>
+    <AppBar position="static" color='transparent' sx={{ boxShadow: 'none', width: '90%', margin: 'auto' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-around', height: '15vh', alignItems: 'center' }}>
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="/"
             sx={{
               mr: 2,
               pl: 3,
@@ -66,7 +61,9 @@ function Navbar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              cursor: 'pointer'
             }}
+            onClick={() => {navigate(`/`)}}
           >
             LOGO
           </Typography>
@@ -102,7 +99,7 @@ function Navbar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><Link underline='none' href='/'>{page}</Link></Typography>
+                  <Typography textAlign="center"><Link underline='none' onClick={() => {navigate(`/${page.toLowerCase()}`)}}>{page}</Link></Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -133,7 +130,7 @@ function Navbar() {
                 sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}
               >
                 <Typography fontSize={'17px'} fontWeight={'500'} p={'0 2rem'}>
-                  <Link href='/' underline='none' color='black'>
+                  <Link underline='none' color='black' onClick={() => {navigate(`/${page.toLowerCase()}`)}}>
                     {page}
                   </Link>
                 </Typography>
@@ -141,10 +138,10 @@ function Navbar() {
             ))}
           </Box>
 
-          <Box sx={{ display: 'flex', flexGrow: 0, padding: '0 3rem 0 0', flexDirection: 'row' }}>
-            <Typography p='1rem'>{user}</Typography>
+          <Box sx={{ display: 'flex', flexGrow: 0, flexDirection: 'row' }}>
+            <Typography p='1rem' sx={{cursor: 'pointer'}} margin='auto' onClick={() => {navigate(`/${user}`)}}>{user}</Typography>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 3 }}>
                 <i className="fa-solid fa-user"></i>
               </IconButton>
             </Tooltip>
@@ -164,14 +161,9 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-              <Button variant='danger' onClick={() => {
+              <Button fullWidth variant='danger' onClick={() => {
                 dispatch(setLogout());
-              }}>Logout</Button>
+              }}><Typography textTransform='none' color='red'>Logout</Typography></Button>
             </Menu>
           </Box>
         </Toolbar>

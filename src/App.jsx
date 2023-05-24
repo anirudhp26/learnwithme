@@ -2,7 +2,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Login from './views/login';
 import Home from './views/home';
 import Profile from './views/profile';
+import Explore from './views/explore/Explore';
 import authReducer from './redux';
+import Layout from './views/Layout';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import {
@@ -36,9 +38,12 @@ function App() {
       <PersistGate loading={null} persistor={persistStore(store)}>
         <BrowserRouter>
           <Routes>
+            <Route element={<Layout />}>
+              <Route element={<Home />} path='/home'></Route>
+              <Route element={<Explore />} path='/explore'></Route>
+              <Route element={<Profile />} path='/:user'></Route>
+            </Route>
             <Route element={<Login />} path='/'></Route>
-            <Route element={<Home />} path='/home'></Route>
-            <Route element={<Profile />} path='/:user'></Route>
           </Routes>
         </BrowserRouter>
       </PersistGate>

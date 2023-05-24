@@ -33,9 +33,11 @@ export default function Login() {
             token: responce.data.token,
           })
         )
+        document.getElementById('login-loading').classList.toggle('disable');
         navigate('/home');
       } else{
         console.log(responce);
+        document.getElementById('login-loading').classList.toggle('disable');
       }
   })
   }
@@ -84,24 +86,29 @@ export default function Login() {
               <TextField id="standard-basic" label="username" variant="standard" onChange={(e) => { setUsername(e.target.value) }} />
               <TextField id="standard-basic" type='password' label="password" variant="standard" onChange={(e) => { setPassword(e.target.value) }} />
             </Box>
-            <Button variant="outlined"
+            <Button
+              variant="outlined"
               sx={{
-                textTransform: 'none',
-                margin: '1rem 0 2rem 0',
+                width: '50%',
                 backgroundColor: 'white',
-                boxShadow: 'none',
+                margin: '2rem auto',
                 color: 'black',
                 '&:hover': {
                   backgroundColor: 'black',
-                  color: 'white',
-                }
+                  color: 'white'
+                },
+                border: '1px solid grey'
               }}
+              id='follow-btn'
               onClick={() => {
-                setLoading(!loading)
                 handleSubmit();
+                document.getElementById('login-loading').classList.toggle('disable');
               }}
             >
-              Login
+              <i style={{ margin: '0 10px' }} id='login-loading' className="fa-solid fa-spinner fa-spin disable"></i>
+              <span>
+                Login
+              </span>
             </Button>
             <Button variant='primary'
               sx={{

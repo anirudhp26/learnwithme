@@ -12,3 +12,7 @@ body,
 .heading-custom{
     font-family: 'Castoro Titling', cursive !important;
 }
+
+.disable{
+    display: none !important;
+}

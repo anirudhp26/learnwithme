@@ -3,7 +3,6 @@ import { Alert, Box, Button, Snackbar, TextField, Typography } from '@mui/materi
 import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLogin } from '../../redux';
-import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const [isLogin, setisLogin] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -16,14 +15,7 @@ export default function Login() {
   const handleClose = () => {
     setOpen(false);
   };
-  const token = useSelector((state) => state.token);
-  useEffect(() => { 
-    if (token != null) {
-      navigate('/home');
-    }
-  })
   const dispatch = useDispatch();
-  const navigate  = useNavigate();
   const handleSubmit = () => {
     Axios.post("https://backend-sm.vercel.app/auth/login", {username: username, password: password}).then(async (responce) => {
       if (responce.data) {
@@ -34,7 +26,6 @@ export default function Login() {
           })
         )
         document.getElementById('login-loading').classList.toggle('disable');
-        navigate('/home');
       } else{
         console.log(responce);
         document.getElementById('login-loading').classList.toggle('disable');

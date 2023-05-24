@@ -14,7 +14,7 @@ import { Divider, Link } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setLogout } from '../../redux';
-const pages = ['Explore', 'Pricing', 'Blog', 'Profile'];
+const pages = ['Home', 'Explore', 'Pricing', 'Blog'];
 
 function Navbar() {
   const dispatch = useDispatch();

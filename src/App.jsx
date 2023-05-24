@@ -38,12 +38,11 @@ function App() {
       <PersistGate loading={null} persistor={persistStore(store)}>
         <BrowserRouter>
           <Routes>
+            <Route element={<Home />} path='/' index></Route>
             <Route element={<Layout />}>
-              <Route element={<Home />} path='/home'></Route>
               <Route element={<Explore />} path='/explore'></Route>
               <Route element={<Profile />} path='/:user'></Route>
             </Route>
-            <Route element={<Login />} path='/'></Route>
           </Routes>
         </BrowserRouter>
       </PersistGate>

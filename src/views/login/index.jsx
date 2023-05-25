@@ -10,11 +10,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { BorderColor } from '@mui/icons-material';
 
 export default function Login() {
   const [isLogin, setisLogin] = useState(true);
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState('');
   const [password, setPassword] = useState("");

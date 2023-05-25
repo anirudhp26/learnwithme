@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Alert, Box, Button, Snackbar, TextField, Typography } from '@mui/material'
 import Axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setLogin } from '../../redux';
 export default function Login() {
   const [isLogin, setisLogin] = useState(true);
@@ -15,6 +15,7 @@ export default function Login() {
   const handleClose = () => {
     setOpen(false);
   };
+  console.log(name);
   const dispatch = useDispatch();
   const handleSubmit = () => {
     Axios.post("https://backend-sm.vercel.app/auth/login", {username: username, password: password}).then(async (responce) => {

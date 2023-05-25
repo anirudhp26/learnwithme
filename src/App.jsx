@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Login from './views/login';
 import Home from './views/home';
 import Profile from './views/profile';
 import Explore from './views/explore/Explore';

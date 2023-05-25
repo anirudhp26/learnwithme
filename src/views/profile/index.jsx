@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux';
 export default function Profile() {
   const { user } = useParams();
 
-  const logged_user = useSelector((state) => state.user);
+  const logged_user = useSelector((state) => state.user[0]);
 
   const follow_edit_btn = () => {
-    if (user === logged_user) {
+    if (user === logged_user.username) {
       return(
         <Button
               variant="outlined"
@@ -71,7 +71,7 @@ export default function Profile() {
               width: '90%'
           }
         }}>
-          <Box display='flex' flexDirection='row' alignItems='center' sx={{
+          <Box display='flex' flexDirection='row' alignItems='center' margin='1rem auto' sx={{
             '@media only screen and (max-width: 530px)': {
               flexDirection: 'column',
               justifyContent: 'center',
@@ -85,8 +85,8 @@ export default function Profile() {
               }
             }}>
               <Typography sx={{ fontSize: '35px' }}>{user}</Typography>
-              <Typography sx={{ fontSize: '20px' }} color='#757575'>Anirudh Patel</Typography>
-              <Typography sx={{ fontSize: '15px' }} color='#757575'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magni ex reprehenderit cupiditate odio nulla quo assumenda voluptatibus eius temporibus cum tempore, modi repellendus voluptate!</Typography>
+              <Typography sx={{ fontSize: '20px', marginTop: '1rem' }} color='#757575'>{logged_user.name}</Typography>
+              <Typography sx={{ fontSize: '15px', marginTop: '1rem' }} color='#757575'>{logged_user.bio}</Typography>
             </Box>
           </Box>
           <Divider variant='middle' />
@@ -98,12 +98,7 @@ export default function Profile() {
             }}
           >
             <Box>
-              <Typography>100</Typography>
-              <Typography color='#757575'>Followers</Typography>
-            </Box>
-            <Box>
-              <Typography>100</Typography>
-              <Typography color='#757575'>Following</Typography>
+              <Typography color='GrayText' fontSize='25px'>impressed <span style={{ color: 'black', fontWeight: '700' }}>{logged_user.impressed.length}</span>  users</Typography>
             </Box>
           </Box>
           <Box width='100%' justifyContent='center' display='flex'>

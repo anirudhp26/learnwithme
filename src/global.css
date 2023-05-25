@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Castoro+Titling&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap');
+
 html,
 body,
 #root {
@@ -10,7 +12,8 @@ body,
 }
 
 .heading-custom{
-    font-family: 'Castoro Titling', cursive !important;
+    font-size: 2.5rem !important;
+    font-family: 'PT Serif', serif !important;
 }
 
 .disable{

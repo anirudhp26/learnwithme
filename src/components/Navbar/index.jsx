@@ -47,7 +47,7 @@ function Navbar() {
   return (
     <AppBar position="static" color='transparent' sx={{ boxShadow: 'none', width: '90%', margin: 'auto' }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-around', height: '15vh', alignItems: 'center' }}>
+        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-around', height: { xs: '9vh', md: '12vh'}, alignItems: 'center' }}>
           <Typography
             variant="h6"
             noWrap
@@ -119,6 +119,7 @@ function Navbar() {
               color: 'inherit',
               textDecoration: 'none',
             }}
+            onClick={() => {navigate(`/`)}}
           >
             LOGO
           </Typography>

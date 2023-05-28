@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 export default function Profile() {
   const { user } = useParams();
 
-  const logged_user = useSelector((state) => state.user[0]);
+  const logged_user = useSelector((state) => state.user);
 
   const follow_edit_btn = () => {
     if (user === logged_user.username) {

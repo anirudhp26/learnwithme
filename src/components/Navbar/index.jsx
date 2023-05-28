@@ -25,7 +25,7 @@ function Navbar() {
       navigate('/');
     }
   })
-  const user = useSelector((state) => state.user[0].username);
+  const user = useSelector((state) => state.user.username);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 

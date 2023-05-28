@@ -33,6 +33,29 @@ export default function Login() {
   };
   const handleloginSubmit = () => {
     Axios.post("http://localhost:3001/auth/login", { username: username, password: password }).then(async (responce) => {
+      document.getElementById('login-loading').classList.toggle('disable');
+      if (responce.data.loginStatus) {
+        console.log(responce.data);
+        dispatch(
+          setLogin({
+            user: responce.data.user,
+            token: responce.data.token,
+          })
+        )
+      } else {
+        setError(responce.data.message);
+        setOpen(!open)
+      }
+    }).catch((error) => {
+      setError(error.message);
+      setOpen(!open)
+      document.getElementById('signup-loading').classList.toggle('disable');
+    })
+  }
+
+  const handlesignupSubmit= () => {
+    Axios.post("http://localhost:3001/auth/signup", { username: username, password: password, name: name, bio: bio}).then(async (responce) => {
+      document.getElementById('signup-loading').classList.toggle('disable');
       console.log(responce.data);
       if (responce.data.loginStatus) {
         dispatch(
@@ -41,28 +64,14 @@ export default function Login() {
             token: responce.data.token,
           })
         )
-        document.getElementById('login-loading').classList.toggle('disable');
       } else {
-        console.log(responce);
-        document.getElementById('login-loading').classList.toggle('disable');
+        setError(responce.data.message);
+        setOpen(!open)
       }
-    })
-  }
-
-  const handlesignupSubmit= () => {
-    Axios.post("http://localhost:3001/auth/signup", { username: username, password: password, name: name, bio: bio}).then(async (responce) => {
-      if (responce.data.loginStatus) {
-        dispatch(
-          setLogin({
-            user: responce.data.user,
-            token: responce.data.token,
-          })
-        )
-        document.getElementById('signup-loading').classList.toggle('disable');
-      } else {
-        console.log(responce);
-        document.getElementById('signup-loading').classList.toggle('disable');
-      }
+    }).catch((error) => {
+      setError(error.message);
+      setOpen(!open)
+      document.getElementById('signup-loading').classList.toggle('disable');
     })
   }
 

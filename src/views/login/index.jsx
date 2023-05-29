@@ -47,9 +47,9 @@ export default function Login() {
         setOpen(!open)
       }
     }).catch((error) => {
+      document.getElementById('signup-loading').classList.toggle('disable');
       setError(error.message);
       setOpen(!open)
-      document.getElementById('signup-loading').classList.toggle('disable');
     })
   }
 

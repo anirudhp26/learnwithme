@@ -1,23 +1,63 @@
-import { AccountCircle } from '@mui/icons-material'
-import { Box, InputAdornment, TextField } from '@mui/material'
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import { Box, InputAdornment, TextField, Typography } from '@mui/material'
+import Axios from 'axios';
 import React from 'react'
 
 export default function Explore() {
+    const [users, setUsers] = React.useState([]);
+    const userSearch = (value) => {
+        Axios.post("http://localhost:3001/auth/getUsers", {
+            keyword: value,
+        })
+            .then((responce) => {
+                console.log(responce.data);
+                setUsers(responce.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const handleSearch = (value) => {
+        userSearch(value);
+    };
     return (
         <>
             <Box width='90%' margin='2rem auto'>
                 <TextField
+                    fullWidth
                     id="input-with-icon-textfield"
-                    label="TextField"
+                    label="Search for Users"
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
-                                <AccountCircle />
+                                <SentimentVerySatisfiedIcon />
                             </InputAdornment>
                         ),
                     }}
-                    variant="standard"
+                    variant="outlined"
+                    onChange={(e) => {
+                        setTimeout(() => {
+                            handleSearch(e.target.value);
+                        }, 1000);
+                    }}
                 />
+
+                <Box width={'100%'} display='flex' flexWrap='wrap'>
+                    {users.map((user) => {
+                        return(
+                            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} minWidth={'200px'} width={'27%'} bgcolor={'black'} margin={'2rem auto'} borderRadius={'30px'} sx={{
+                                transition: 'all 0.5s',
+                                '&:hover': {
+                                    padding: '1rem'
+                                }
+                            }}>
+                                <img src='/img/user-default-logo.png' style={{ margin: '2rem 0 1rem 0'}} alt='' width='40%'></img>
+                                <Typography color={'white'} fontSize={'35px'} marginBottom={'1rem'}>{user.username}</Typography>
+                                <Typography color={'grey'} fontSize={'20px'} marginBottom={'1rem'}>{user.name}</Typography>
+                            </Box>
+                        )
+                    })}
+                </Box>
             </Box>
         </>
     )

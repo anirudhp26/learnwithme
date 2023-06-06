@@ -32,7 +32,7 @@ export default function Login() {
     event.preventDefault();
   };
   const handleloginSubmit = () => {
-    Axios.post("http://localhost:3001/auth/login", { username: username, password: password }).then(async (responce) => {
+    Axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, { username: username, password: password }).then(async (responce) => {
       document.getElementById('login-loading').classList.toggle('disable');
       if (responce.data.loginStatus) {
         console.log(responce.data);
@@ -54,7 +54,7 @@ export default function Login() {
   }
 
   const handlesignupSubmit= () => {
-    Axios.post("http://localhost:3001/auth/signup", { username: username, password: password, name: name, bio: bio}).then(async (responce) => {
+    Axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, { username: username, password: password, name: name, bio: bio}).then(async (responce) => {
       document.getElementById('signup-loading').classList.toggle('disable');
       console.log(responce.data);
       if (responce.data.loginStatus) {

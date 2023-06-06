@@ -3,10 +3,11 @@ import { Box, InputAdornment, TextField, Typography } from '@mui/material'
 import Axios from 'axios';
 import React from 'react'
 
+
 export default function Explore() {
     const [users, setUsers] = React.useState([]);
     const userSearch = (value) => {
-        Axios.post("http://localhost:3001/auth/getUsers", {
+        Axios.post(`${process.env.REACT_APP_API_URL}/auth/getUsers`, {
             keyword: value,
         })
             .then((responce) => {
@@ -50,7 +51,7 @@ export default function Explore() {
                                 '&:hover': {
                                     padding: '1rem'
                                 }
-                            }}>
+                            }} key={user._id}>
                                 <img src='/img/user-default-logo.png' style={{ margin: '2rem 0 1rem 0'}} alt='' width='40%'></img>
                                 <Typography color={'white'} fontSize={'35px'} marginBottom={'1rem'}>{user.username}</Typography>
                                 <Typography color={'grey'} fontSize={'20px'} marginBottom={'1rem'}>{user.name}</Typography>

@@ -53,8 +53,8 @@ export default function Login() {
     })
   }
 
-  const handlesignupSubmit= () => {
-    Axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, { username: username, password: password, name: name, bio: bio}).then(async (responce) => {
+  const handlesignupSubmit = () => {
+    Axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, { username: username, password: password, name: name, bio: bio }).then(async (responce) => {
       document.getElementById('signup-loading').classList.toggle('disable');
       console.log(responce.data);
       if (responce.data.loginStatus) {
@@ -76,7 +76,7 @@ export default function Login() {
   }
 
   return (
-    <div style={{ display: 'flex', backgroundColor: '#436efa', width: '100%', height: '100%', margin: 0 }}>
+    <div style={{ display: 'flex', backgroundColor: '#436efa', width: '100%', height: '100%', margin: 0, justifyContent: 'center', alignItems: 'center' }}>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
           {error}
@@ -89,9 +89,8 @@ export default function Login() {
             display='flex'
             flexDirection='column'
             alignItems='center'
-            height='65vh'
+            height='60vh'
             minWidth='320px'
-            margin='6vh auto 0 auto'
             bgcolor='white'
           >
             <Typography
@@ -180,7 +179,6 @@ export default function Login() {
             height='90vh'
             bgcolor='white'
             minWidth='320px'
-            margin='6vh auto 0 auto'
           >
             <Typography
               letterSpacing='2px'
@@ -255,7 +253,7 @@ export default function Login() {
                   color: 'white',
                 },
                 borderColor: 'black',
-                
+
               }}
               onClick={() => {
                 if (password !== cpassword) {
@@ -268,7 +266,7 @@ export default function Login() {
 
               }}
             >
-              <i style={{ margin: '0 10px' }}  id='signup-loading' className="fa-solid fa-spinner fa-spin disable"></i>
+              <i style={{ margin: '0 10px' }} id='signup-loading' className="fa-solid fa-spinner fa-spin disable"></i>
               <span>
                 Sign Up
               </span>

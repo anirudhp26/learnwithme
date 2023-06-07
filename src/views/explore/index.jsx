@@ -2,10 +2,12 @@ import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfi
 import { Box, InputAdornment, TextField, Typography } from '@mui/material'
 import Axios from 'axios';
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Explore() {
     const [users, setUsers] = React.useState([]);
+    const navigate = useNavigate();
     const userSearch = (value) => {
         Axios.post(`${process.env.REACT_APP_API_URL}/auth/getUsers`, {
             keyword: value,
@@ -53,7 +55,7 @@ export default function Explore() {
                                 }
                             }} key={user._id}>
                                 <img src='/img/user-default-logo.png' style={{ margin: '2rem 0 1rem 0'}} alt='' width='40%'></img>
-                                <Typography color={'white'} fontSize={'35px'} marginBottom={'1rem'}>{user.username}</Typography>
+                                <Typography color={'white'} fontSize={'35px'} marginBottom={'1rem'} onClick={() => {navigate(`/profile/${user.username}`)}}>{user.username}</Typography>
                                 <Typography color={'grey'} fontSize={'20px'} marginBottom={'1rem'}>{user.name}</Typography>
                             </Box>
                         )

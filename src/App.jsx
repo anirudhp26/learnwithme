@@ -45,7 +45,7 @@ function App() {
               <Route element={<Explore />} path='/explore'></Route>
               <Route element={<Pricing />} path='/pricing'></Route>
               <Route element={<Blog />} path='/blog'></Route>
-              <Route element={<Profile />} path='/:user'></Route>
+              <Route element={<Profile />} path='/profile/:user'></Route>
             </Route>
           </Routes>
         </BrowserRouter>

@@ -21,16 +21,16 @@ function Navbar() {
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
   React.useEffect(() => {
-    if(token === null){
+    if (token === null) {
       navigate('/');
     }
   })
-  const user = useSelector((state) => state.user.username);
+  const user = useSelector((state) => state.user);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => { 
-     
+  const handleOpenNavMenu = (event) => {
+
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
@@ -47,7 +47,7 @@ function Navbar() {
   return (
     <AppBar position="static" color='transparent' sx={{ boxShadow: 'none', width: '90%', margin: 'auto' }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-around', height: { xs: '9vh', md: '12vh'}, alignItems: 'center' }}>
+        <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-around', height: { xs: '9vh', md: '12vh' }, alignItems: 'center' }}>
           <Typography
             variant="h6"
             noWrap
@@ -63,12 +63,12 @@ function Navbar() {
               textDecoration: 'none',
               cursor: 'pointer'
             }}
-            onClick={() => {navigate(`/`)}}
+            onClick={() => { navigate(`/`) }}
           >
             LOGO
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }}}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -99,7 +99,7 @@ function Navbar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><Link underline='none' onClick={() => {navigate(`/${page.toLowerCase()}`)}}>{page}</Link></Typography>
+                  <Typography textAlign="center"><Link underline='none' onClick={() => { navigate(`/${page.toLowerCase()}`) }}>{page}</Link></Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -119,7 +119,7 @@ function Navbar() {
               color: 'inherit',
               textDecoration: 'none',
             }}
-            onClick={() => {navigate(`/`)}}
+            onClick={() => { navigate(`/`) }}
           >
             LOGO
           </Typography>
@@ -131,42 +131,47 @@ function Navbar() {
                 sx={{ my: 2, color: 'white', display: 'block', textTransform: 'none' }}
               >
                 <Typography fontSize={'17px'} fontWeight={'500'} p={'0 2rem'}>
-                  <Link underline='none' color='black' onClick={() => {navigate(`/${page.toLowerCase()}`)}}>
+                  <Link underline='none' color='black' onClick={() => { navigate(`/${page.toLowerCase()}`) }}>
                     {page}
                   </Link>
                 </Typography>
               </Button>
             ))}
           </Box>
-
-          <Box sx={{ display: 'flex', flexGrow: 0, flexDirection: 'row' }}>
-            <Typography p='1rem' sx={{cursor: 'pointer'}} margin='auto' onClick={() => {navigate(`/${user}`)}}>{user}</Typography>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 3 }}>
-                <i className="fa-solid fa-user"></i>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <Button fullWidth variant='danger' onClick={() => {
-                dispatch(setLogout());
-              }}><Typography textTransform='none' color='red'>Logout</Typography></Button>
-            </Menu>
-          </Box>
+          {user === null 
+           ?
+            <></>
+           : 
+            <Box sx={{ display: 'flex', flexGrow: 0, flexDirection: 'row' }}>
+              <Typography p='1rem' sx={{ cursor: 'pointer' }} margin='auto' onClick={() => { navigate(`/profile/${user.username}`) }}>{user.username}</Typography>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 3 }}>
+                  <i className="fa-solid fa-user"></i>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <Button fullWidth variant='danger' onClick={() => {
+                  dispatch(setLogout());
+                  navigate('/');
+                }}><Typography textTransform='none' color='red'>Logout</Typography></Button>
+              </Menu>
+            </Box>
+          }
         </Toolbar>
       </Container>
       <Divider variant='middle' />

@@ -2,10 +2,12 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import Login from '../login';
 import Navbar from '../../components/Navbar';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Button } from '@mui/material';
 import Blog from '../blog';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+    const navigate = useNavigate();
     const isLoggedin = useSelector((state) => state.token);
     const blogs = [
         {
@@ -56,6 +58,7 @@ const Home = () => {
                     <Navbar/>
                     <Box width={'90%'} margin={'1rem auto'}>
                         <Typography>Home page</Typography>
+                        <Button type='primary' onClick={() => {navigate('/blogcreator')}}>Create Blogs</Button>
                         {blogs.map((blog) => {
                             return(
                                 <Blog title={blog.title} user={blog.user} key={blog.id} id={blog.id} />

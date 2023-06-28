@@ -20,6 +20,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 import { PersistGate } from 'redux-persist/integration/react';
 import Blog from './views/blog';
+import BlogCreator from './views/blogCreator';
 
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, authReducer);
@@ -46,6 +47,7 @@ function App() {
               <Route element={<Pricing />} path='/pricing'></Route>
               <Route element={<Blog />} path='/blog'></Route>
               <Route element={<Profile />} path='/profile/:user'></Route>
+              <Route element={<BlogCreator />} path='/blogcreator'></Route>
             </Route>
           </Routes>
         </BrowserRouter>

@@ -221,6 +221,9 @@ function Navbar() {
                 <Typography p='1rem' sx={{ cursor: 'pointer' }} margin='auto' onClick={() => { navigate(`/profile/${user.username}`) }}>{user.username}</Typography>
                 <Button fullWidth variant='danger' onClick={() => {
                   dispatch(setLogout());
+                  if (mode === 'light') {
+                    dispatch(setMode());
+                  }
                   navigate('/');
                 }}><Typography textTransform='none' color='red'>Logout</Typography></Button>
               </Menu>

@@ -9,6 +9,7 @@ body,
     width: 100%;
     font-family: 'Rubik', sans-serif;
     margin: 0;
+    background-color: inherit;
 }
 
 .heading-custom{

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Button, Grid } from '@mui/material';
+import './BlogCreator.css'; // Import your CSS file
 
 const BlogCreator = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState(null);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -14,61 +13,44 @@ const BlogCreator = () => {
     setContent(e.target.value);
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    console.log(image);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you can perform the necessary actions to submit the blog post
-    // For example, you can make an API request to save the blog post
-    // and handle image uploads using a file storage service
+    console.log(`Title: ${title}`);
+    console.log(`Content: ${content}`);
 
-    // Reset form fields after submission
+    // Clear the form fields
     setTitle('');
     setContent('');
-    setImage(null);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <TextField
-            label="Title"
-            variant="outlined"
-            fullWidth
+    <div className="blog-creator">
+      <h2>Create a New Blog Post</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            id="title"
             value={title}
             onChange={handleTitleChange}
+            placeholder="Enter the blog title"
+            required
           />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="Content"
-            variant="outlined"
-            multiline
-            rows={4}
-            fullWidth
+        </div>
+        <div className="form-group">
+          <label htmlFor="content">Content</label>
+          <textarea
+            id="content"
             value={content}
             onChange={handleContentChange}
+            placeholder="Enter the blog content"
+            required
           />
-        </Grid>
-        <Grid item xs={12}>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button type="submit" variant="contained" color="primary">
-            Submit
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+        </div>
+        <button type="submit">Publish</button>
+      </form>
+    </div>
   );
 };
 

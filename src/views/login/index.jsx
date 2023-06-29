@@ -91,7 +91,7 @@ export default function Login() {
             alignItems='center'
             height='60vh'
             minWidth='320px'
-            bgcolor='white'
+            bgcolor='black'
           >
             <Typography
               letterSpacing='2px'
@@ -177,7 +177,7 @@ export default function Login() {
             flexDirection='column'
             alignItems='center'
             height='90vh'
-            bgcolor='white'
+            bgcolor='black'
             minWidth='320px'
           >
             <Typography

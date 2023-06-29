@@ -58,7 +58,7 @@ const Home = () => {
                     <Navbar/>
                     <Box width={'90%'} margin={'1rem auto'}>
                         <Typography>Home page</Typography>
-                        <Button type='primary' onClick={() => {navigate('/blogcreator')}}>Create Blogs</Button>
+                        <Button color='primary' onClick={() => {navigate('/blogcreator')}}>Create Blogs</Button>
                         {blogs.map((blog) => {
                             return(
                                 <Blog title={blog.title} user={blog.user} key={blog.id} id={blog.id} />

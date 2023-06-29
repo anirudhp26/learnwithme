@@ -149,6 +149,7 @@ function Navbar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
+              
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center"><Link underline='none' onClick={() => { navigate(`/${page.toLowerCase()}`) }}>{page}</Link></Typography>

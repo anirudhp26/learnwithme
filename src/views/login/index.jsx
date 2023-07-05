@@ -91,7 +91,7 @@ export default function Login() {
             alignItems='center'
             height='60vh'
             minWidth='320px'
-            bgcolor='black'
+            bgcolor='white'
           >
             <Typography
               letterSpacing='2px'
@@ -111,9 +111,9 @@ export default function Login() {
               height='30%'
               width='80%'
             >
-              <TextField id="standard-basic" label="username" variant="standard" onChange={(e) => { setUsername(e.target.value) }} />
+              <TextField id="standard-basic" label="username" color='secondary' variant="standard" onChange={(e) => { setUsername(e.target.value) }} />
               <FormControl variant="standard">
-                <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                <InputLabel color='secondary' htmlFor="standard-adornment-password">Password</InputLabel>
                 <Input
                   id="standard-adornment-password"
                   type={showPassword ? 'text' : 'password'}
@@ -129,6 +129,7 @@ export default function Login() {
                     </InputAdornment>
                   }
                   onChange={(e) => { setPassword(e.target.value) }}
+                  color='secondary'
                 />
               </FormControl>
             </Box>
@@ -177,7 +178,7 @@ export default function Login() {
             flexDirection='column'
             alignItems='center'
             height='90vh'
-            bgcolor='black'
+            bgcolor='white'
             minWidth='320px'
           >
             <Typography
@@ -198,11 +199,11 @@ export default function Login() {
               height='55%'
               width='80%'
             >
-              <TextField id="standard-basic" label="username" variant="standard" onChange={(e) => { setUsername(e.target.value) }} />
-              <TextField id="outlined-basic" label="describe yourself.." variant="outlined" onChange={(e) => { setBio(e.target.value) }} multiline rows='3' />
-              <TextField id="standard-basic" label="full Name" variant="standard" onChange={(e) => { setName(e.target.value) }} />
+              <TextField id="standard-basic" label="username" color='secondary' variant="standard" onChange={(e) => { setUsername(e.target.value) }} />
+              <TextField id="outlined-basic" label="describe yourself.." color='secondary' variant="outlined" onChange={(e) => { setBio(e.target.value) }} multiline rows='3' />
+              <TextField id="standard-basic" label="full Name" color='secondary' variant="standard" onChange={(e) => { setName(e.target.value) }} />
               <FormControl variant="standard">
-                <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                <InputLabel color='secondary' htmlFor="standard-adornment-password">Password</InputLabel>
                 <Input
                   id="standard-adornment-password"
                   type={showPassword ? 'text' : 'password'}
@@ -218,6 +219,7 @@ export default function Login() {
                     </InputAdornment>
                   }
                   onChange={(e) => { setPassword(e.target.value) }}
+                  color='secondary'
                 />
               </FormControl>
               <FormControl variant="standard">
@@ -237,6 +239,7 @@ export default function Login() {
                     </InputAdornment>
                   }
                   onChange={(e) => { setcPassword(e.target.value) }}
+                  color='secondary'
                 />
               </FormControl>
             </Box>

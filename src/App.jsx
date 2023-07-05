@@ -22,12 +22,16 @@ function App() {
       secondary: {
         main: '#000000', // Secondary color for light mode
       },
-
+      neutral: {
+        main: '#64748B',
+        contrastText: '#fff',
+      },
       // Dark mode colors
       dark: {
         primary: '#000000', // Primary color for dark mode
         secondary: '#FFFFFF', // Secondary color for dark mode
       },
+
     },
   });
   return (

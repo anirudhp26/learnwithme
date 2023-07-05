@@ -112,7 +112,6 @@ function Navbar() {
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'primary',
               textDecoration: 'none',
               cursor: 'pointer'
             }}
@@ -169,7 +168,6 @@ function Navbar() {
               fontFamily: 'monospace',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'primary',
               textDecoration: 'none',
             }}
             onClick={() => { navigate(`/`) }}
@@ -180,8 +178,6 @@ function Navbar() {
             {pages.map((page) => (
                 <Typography onClick={() => { navigate(`/${page.toLowerCase()}`) }} key={page} fontSize={'17px'} fontWeight={'500'} p={'0 2rem'} sx={{ color: `${mode === "light" ? "secondary" : "primary"}` }}>
                     {page}
-                  {/* <Link underline='none' onClick={}>
-                  </Link> */}
                 </Typography>
             ))}
           </Box>
@@ -192,9 +188,9 @@ function Navbar() {
             <Box sx={{ display: 'flex', flexGrow: 0, flexDirection: 'row', alignItems: 'center' }}>
               <FormGroup>
                 <FormControlLabel
-                  control={<MaterialUISwitch defaultChecked />}
+                  control={<MaterialUISwitch defaultChecked={mode === 'light' ? false : true} />}
                   label=""
-                  onClick={() => {dispatch(setMode())}}
+                  onClick={async () => {dispatch(setMode())}}
                 />
               </FormGroup>
               
@@ -220,8 +216,8 @@ function Navbar() {
                 onClose={handleCloseUserMenu}
               >
                 <Typography p='1rem' sx={{ cursor: 'pointer' }} margin='auto' onClick={() => { navigate(`/profile/${user.username}`) }}>{user.username}</Typography>
-                <Button fullWidth variant='danger' onClick={() => {
-                  dispatch(setLogout());
+                <Button fullWidth variant='danger' onClick={async () => {
+                  await dispatch(setLogout());
                   navigate('/');
                 }}><Typography textTransform='none' color='red'>Logout</Typography></Button>
               </Menu>

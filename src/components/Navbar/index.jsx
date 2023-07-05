@@ -216,8 +216,8 @@ function Navbar() {
                 onClose={handleCloseUserMenu}
               >
                 <Typography p='1rem' sx={{ cursor: 'pointer' }} margin='auto' onClick={() => { navigate(`/profile/${user.username}`) }}>{user.username}</Typography>
-                <Button fullWidth variant='danger' onClick={async () => {
-                  await dispatch(setLogout());
+                <Button fullWidth variant='danger' onClick={() => {
+                  dispatch(setLogout());
                   navigate('/');
                 }}><Typography textTransform='none' color='red'>Logout</Typography></Button>
               </Menu>

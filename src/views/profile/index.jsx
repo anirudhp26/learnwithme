@@ -117,7 +117,7 @@ export default function Profile() {
             }}
           >
             <Box>
-              <Typography color={mode==='light' ? 'black' : 'white'} fontSize='25px'>impressed <span style={{ fontWeight: '700' }}>{logged_user.impressed.length}</span>  users</Typography>
+              <Typography color={mode === 'light' ? 'black' : 'white'} fontSize='25px'>impressed <span style={{ fontWeight: '700' }}>{logged_user.impressed.length}</span>  users</Typography>
             </Box>
           </Box>
           <Box width='100%' justifyContent='center' display='flex'>
@@ -128,13 +128,13 @@ export default function Profile() {
       <Divider variant='middle' />
       <Box width={'90%'} height={'50vh'} margin={'2rem auto'}>
         <Typography margin={'2rem 0'} sx={{ fontSize: '2rem' }}>YOUR BLOGS</Typography>
-        {blogs.length === 0 
-          ? 
-          <Typography>{errMessage}</Typography> 
-          : 
+        {blogs.length === 0
+          ?
+          <Typography>{errMessage}</Typography>
+          :
           <>
             {blogs.map((blog) => {
-              return(
+              return (
                 <Blog title={blog.title} content={blog.content} user={logged_user} key={blog._id} id={blog._id} />
               )
             })}

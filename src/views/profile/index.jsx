@@ -128,7 +128,7 @@ export default function Profile() {
       <Divider variant='middle' />
       <Box width={'90%'} height={'50vh'} margin={'2rem auto'}>
         <Typography margin={'2rem 0'} sx={{ fontSize: '2rem' }}>YOUR BLOGS</Typography>
-        {blogs.length === 0
+        {blogs === undefined
           ?
           <Typography>{errMessage}</Typography>
           :

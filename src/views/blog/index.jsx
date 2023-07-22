@@ -4,10 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Blog(props) {
   const navigate = useNavigate();
-  const user = {
-    name: 'Anirudh Patel',
-    username: 'anirudhp26'
-  };
+  const user = props.user;
   return (
     <Box width={'100%'} display={'flex'} flexDirection={'row'} justifyContent={'space-around'} margin={'1rem auto'} sx={{
       transition: 'all 0.5s',

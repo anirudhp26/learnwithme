@@ -51,7 +51,7 @@ export default function Explore() {
                 <Box width={'100%'} margin={'2rem 0'} display='flex' flexDirection='column'>
                     {users.map((user) => {
                         return (
-                            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-around'} alignItems={'center'} width={'70%'} bgcolor={mode === 'light' ? 'white' : 'black'} border={mode === 'light' ? '1px solid black' : 'none'} padding={'1rem'} margin={'2rem auto'} sx={{
+                            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-around'} alignItems={'center'} width={'70%'} bgcolor={mode === 'light' ? 'white' : 'black'} border={mode === 'light' ? '1px solid black' : '1px solid white'} padding={'1rem'} margin={'2rem auto'} sx={{
                                 transition: 'all 0.5s',
                                 '&:hover': {
                                     padding: '1.5rem'

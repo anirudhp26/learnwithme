@@ -9,22 +9,22 @@ export default function Profile() {
   const { user } = useParams();
   const dispatch = useDispatch();
   const logged_user = useSelector((state) => state.user);
+  const [suser, setSuser] = useState(logged_user);
   const mode = useSelector((state) => state.mode);
   const blogs = useSelector((state) => state.blogs);
-  const [errMessage, seterrMessage] = useState("Couldn't find any Blogs");
+  // const [errMessage, seterrMessage] = useState("Couldn't find any Blogs");
   useEffect(() => {
-    Axios.post('https://lvm-backend.vercel.app/blog/getBlogbyUser', { user: logged_user._id }).then((responce) => {
+    Axios.post('https://lvm-backend.vercel.app/blog/getBlogbyUser', { user: user }).then((responce) => {
       if (responce) {
+        setSuser(responce.data.user[0])
         dispatch(
           setBlogs({
             blogs: responce.data.blogs
           })
         )
-      } else {
-        seterrMessage("Couldn't load the blogs right now, please check after some time...")
       }
     })
-  }, [logged_user, dispatch])
+  }, [user, dispatch])
   const follow_edit_btn = () => {
     if (user === logged_user.username) {
       return (
@@ -104,8 +104,8 @@ export default function Profile() {
               }
             }}>
               <Typography sx={{ fontSize: '35px' }}>{user}</Typography>
-              <Typography sx={{ fontSize: '20px', marginTop: '1rem' }} color='#757575'>{logged_user.name}</Typography>
-              <Typography sx={{ fontSize: '15px', marginTop: '1rem' }} color='#757575'>{logged_user.bio}</Typography>
+              <Typography sx={{ fontSize: '20px', marginTop: '1rem' }} color='#757575'>{logged_user === user ? `${logged_user.username}` : `${suser.username}`}</Typography>
+              <Typography sx={{ fontSize: '15px', marginTop: '1rem' }} color='#757575'>{logged_user === user ? `${logged_user.bio}` : `${suser.bio}`}</Typography>
             </Box>
           </Box>
           <Divider variant='middle' />
@@ -117,7 +117,7 @@ export default function Profile() {
             }}
           >
             <Box>
-              <Typography color={mode === 'light' ? 'black' : 'white'} fontSize='25px'>impressed <span style={{ fontWeight: '700' }}>{logged_user.impressed.length}</span>  users</Typography>
+              <Typography color={mode === 'light' ? 'black' : 'white'} fontSize='25px'>impressed <span style={{ fontWeight: '700' }}>{logged_user === user ? `${logged_user.impressed.length}` : `${suser.impressed.length}`}</span>  users</Typography>
             </Box>
           </Box>
           <Box width='100%' justifyContent='center' display='flex'>
@@ -127,10 +127,10 @@ export default function Profile() {
       </Box>
       <Divider variant='middle' />
       <Box width={'90%'} height={'50vh'} margin={'2rem auto'}>
-        <Typography margin={'2rem 0'} sx={{ fontSize: '2rem' }}>YOUR BLOGS</Typography>
-        {blogs === undefined
+        <Typography margin={'2rem 0'} sx={{ fontSize: '2rem' }}>{logged_user === user ? "YOUR BLOGS" : `${user}'s BLOGS`}</Typography>
+        {blogs === undefined || blogs.length === 0
           ?
-          <Typography>{errMessage}</Typography>
+          <Typography margin={'7rem 0'} textAlign={'center'}>Couldn't Find any Blogs on this user's account</Typography>
           :
           <>
             {blogs.map((blog) => {

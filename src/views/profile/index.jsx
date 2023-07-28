@@ -10,6 +10,7 @@ export default function Profile() {
   const dispatch = useDispatch();
   const logged_user = useSelector((state) => state.user);
   const [suser, setSuser] = useState(logged_user);
+  const [isImpressed, setImpressed] = useState(false);
   const mode = useSelector((state) => state.mode);
   const blogs = useSelector((state) => state.blogs);
   // const [errMessage, seterrMessage] = useState("Couldn't find any Blogs");
@@ -25,6 +26,34 @@ export default function Profile() {
       }
     })
   }, [user, dispatch])
+
+  const followAction = async () => {
+    setImpressed(true);
+    suser.impressed.push(logged_user._id);
+    console.log(suser.impressed);
+    setSuser(suser);
+    const followReq = await Axios.post('https://lvm-backend.vercel.app/auth/updateUser', { user: suser });
+    if (followReq) {
+      console.log(followReq);
+      document.getElementById('follow-loading').classList.toggle('disable');
+    }
+  }
+  
+  const unfollowAction = async () => {
+    setImpressed(false);
+    const newImpressedArray = await suser.impressed.filter(function (user) {
+      return user !== logged_user._id;
+    })
+    suser.impressed = newImpressedArray;
+    console.log(suser.impressed);
+    setSuser(suser);
+    const followReq = await Axios.post('https://lvm-backend.vercel.app/auth/updateUser', { user: suser });
+    if (followReq) {
+      console.log(followReq);
+      document.getElementById('follow-loading').classList.toggle('disable');
+    }
+    document.getElementById('follow-loading').classList.toggle('disable');
+  }
   const follow_edit_btn = () => {
     if (user === logged_user.username) {
       return (
@@ -69,12 +98,17 @@ export default function Profile() {
           }}
           id='follow-btn'
           onClick={() => {
+            if (isImpressed) {
+              unfollowAction();
+            } else {
+              followAction();
+            }
             document.getElementById('follow-loading').classList.toggle('disable');
           }}
         >
           <i style={{ margin: '0 10px' }} id='follow-loading' className="fa-solid fa-spinner fa-spin disable"></i>
           <span>
-            Follow
+            {isImpressed ? "Unfollow" : "Follow"}
           </span>
         </Button>
       )

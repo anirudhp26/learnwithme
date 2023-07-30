@@ -15,7 +15,7 @@ export default function Profile() {
   const blogs = useSelector((state) => state.blogs);
   // const [errMessage, seterrMessage] = useState("Couldn't find any Blogs");
   useEffect(() => {
-    Axios.post('https://lvm-backend.vercel.app/blog/getBlogbyUser', { user: user }).then((responce) => {
+    Axios.post(`${process.env.REACT_APP_API_URL}/blog/getBlogbyUser`, { user: user }).then((responce) => {
       if (responce) {
         setSuser(responce.data.user[0])
         dispatch(
@@ -28,29 +28,28 @@ export default function Profile() {
   }, [user, dispatch])
 
   const followAction = async () => {
-    setImpressed(true);
     suser.impressed.push(logged_user._id);
     console.log(suser.impressed);
     setSuser(suser);
-    const followReq = await Axios.post('https://lvm-backend.vercel.app/auth/updateUser', { user: suser });
+    const followReq = await Axios.post(`${process.env.REACT_APP_API_URL}/auth/updateUser`, { user: suser });
     if (followReq) {
       console.log(followReq);
+      setImpressed(true);
       document.getElementById('follow-loading').classList.toggle('disable');
     }
   }
-  
+
   const unfollowAction = async () => {
-    setImpressed(false);
     const newImpressedArray = await suser.impressed.filter(function (user) {
       return user !== logged_user._id;
     })
     suser.impressed = newImpressedArray;
     console.log(suser.impressed);
     setSuser(suser);
-    const followReq = await Axios.post('https://lvm-backend.vercel.app/auth/updateUser', { user: suser });
+    const followReq = await Axios.post(`${process.env.REACT_APP_API_URL}/auth/updateUser`, { user: suser });
     if (followReq) {
+      setImpressed(false);
       console.log(followReq);
-      document.getElementById('follow-loading').classList.toggle('disable');
     }
     document.getElementById('follow-loading').classList.toggle('disable');
   }
@@ -99,11 +98,12 @@ export default function Profile() {
           id='follow-btn'
           onClick={() => {
             if (isImpressed) {
+              document.getElementById('follow-loading').classList.toggle('disable');
               unfollowAction();
             } else {
+              document.getElementById('follow-loading').classList.toggle('disable');
               followAction();
             }
-            document.getElementById('follow-loading').classList.toggle('disable');
           }}
         >
           <i style={{ margin: '0 10px' }} id='follow-loading' className="fa-solid fa-spinner fa-spin disable"></i>

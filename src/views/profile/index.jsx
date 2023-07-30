@@ -10,7 +10,6 @@ export default function Profile() {
   const dispatch = useDispatch();
   const logged_user = useSelector((state) => state.user);
   const [suser, setSuser] = useState(logged_user);
-  const [isImpressed, setImpressed] = useState(false);
   const mode = useSelector((state) => state.mode);
   const blogs = useSelector((state) => state.blogs);
   // const [errMessage, seterrMessage] = useState("Couldn't find any Blogs");
@@ -29,12 +28,10 @@ export default function Profile() {
 
   const followAction = async () => {
     suser.impressed.push(logged_user._id);
-    console.log(suser.impressed);
     setSuser(suser);
     const followReq = await Axios.post(`${process.env.REACT_APP_API_URL}/auth/updateUser`, { user: suser });
     if (followReq) {
-      console.log(followReq);
-      setImpressed(true);
+      setSuser(followReq.data.updatedUser);
       document.getElementById('follow-loading').classList.toggle('disable');
     }
   }
@@ -44,14 +41,12 @@ export default function Profile() {
       return user !== logged_user._id;
     })
     suser.impressed = newImpressedArray;
-    console.log(suser.impressed);
     setSuser(suser);
     const followReq = await Axios.post(`${process.env.REACT_APP_API_URL}/auth/updateUser`, { user: suser });
     if (followReq) {
-      setImpressed(false);
-      console.log(followReq);
+      setSuser(followReq.data.updatedUser);
+      document.getElementById('follow-loading').classList.toggle('disable');
     }
-    document.getElementById('follow-loading').classList.toggle('disable');
   }
   const follow_edit_btn = () => {
     if (user === logged_user.username) {
@@ -97,7 +92,7 @@ export default function Profile() {
           }}
           id='follow-btn'
           onClick={() => {
-            if (isImpressed) {
+            if (suser.impressed.includes(logged_user._id)) {
               document.getElementById('follow-loading').classList.toggle('disable');
               unfollowAction();
             } else {
@@ -108,7 +103,7 @@ export default function Profile() {
         >
           <i style={{ margin: '0 10px' }} id='follow-loading' className="fa-solid fa-spinner fa-spin disable"></i>
           <span>
-            {isImpressed ? "Unfollow" : "Follow"}
+            {suser.impressed.includes(logged_user._id) ? "Unfollow" : "Follow"}
           </span>
         </Button>
       )

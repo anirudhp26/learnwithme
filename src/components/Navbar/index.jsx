@@ -101,32 +101,17 @@ function Navbar() {
     <AppBar position="static" color='primary' sx={{ boxShadow: 'none', margin: 'auto' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-around', height: { xs: '9vh', md: '12vh' }, alignItems: 'center', width: { xs: '100%', md: '90%' }, margin: 'auto' }}>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            sx={{
-              mr: 2,
-              pl: 3,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              textDecoration: 'none',
-              cursor: 'pointer'
-            }}
-            onClick={() => { navigate(`/`) }}
-          >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center', width: '10%' }}>
+            <img src='./img/logo_transparent.png' alt='LOGO' width={'80px'}></img>
+          </Box>
+          <Box sx={{ display: { xs: 'flex', md: 'none' }, width: '20%' }}>
             <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="primary"
+              color={mode === "light" ? "black" : "white"}
             >
               <MenuIcon />
             </IconButton>
@@ -148,54 +133,31 @@ function Navbar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              
+
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><Link underline='none' onClick={() => { navigate(`/${page.toLowerCase()}`) }}>{page}</Link></Typography>
+                  <Typography textAlign="center"><Link underline='none' sx={{ cursor: 'pointer' }} onClick={() => { navigate(`/${page.toLowerCase()}`) }}>{page}</Link></Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              textDecoration: 'none',
-            }}
-            onClick={() => { navigate(`/`) }}
-          >
-            LOGO
-          </Typography>
+          <Box display={{ xs: 'flex', md: 'none' }} justifyContent={'center'} width={'60%'} margin={'auto'}>
+            <img src='./img/logo_transparent.png' alt='LOGO' width={'50px '}></img>
+          </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
             {pages.map((page) => (
-                <Typography onClick={() => { navigate(`/${page.toLowerCase()}`) }} key={page} fontSize={'17px'} fontWeight={'500'} p={'0 2rem'} sx={{ color: `${mode === "light" ? "secondary" : "primary"}` }}>
-                    {page}
-                </Typography>
+              <Typography onClick={() => { navigate(`/${page.toLowerCase()}`) }} key={page} fontSize={'17px'} fontWeight={'500'} p={'0 2rem'} sx={{ color: `${mode === "light" ? "secondary" : "primary"}`, cursor: 'pointer' }}>
+                {page}
+              </Typography>
             ))}
           </Box>
           {user === null
             ?
             <></>
             :
-            <Box sx={{ display: 'flex', flexGrow: 0, flexDirection: 'row', alignItems: 'center' }}>
-              <FormGroup>
-                <FormControlLabel
-                  control={<MaterialUISwitch defaultChecked={mode === 'light' ? false : true} />}
-                  label=""
-                  onClick={async () => {dispatch(setMode())}}
-                />
-              </FormGroup>
-              
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
               <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 3 }}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
                   <i className="fa-solid fa-user"></i>
                 </IconButton>
               </Tooltip>
@@ -215,7 +177,18 @@ function Navbar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <Typography p='1rem' sx={{ cursor: 'pointer' }} margin='auto' onClick={() => { navigate(`/profile/${user.username}`) }}>{user.username}</Typography>
+                <Typography width={'90%'} margin={'auto'} p='1rem' sx={{ cursor: 'pointer', '&:hover': { backgroundColor: 'black', color: 'white' }, transition: 'all .5s' }} textAlign={'center'} onClick={() => { navigate(`/profile/${user.username}`) }}>{user.username}</Typography>
+                <Divider variant='middle' sx={{ display: mode === "light" ? "block" : "none" }}></Divider>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '10px 0 10px 25px' }}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<MaterialUISwitch sx={{ width: '60px' }} defaultChecked={mode === 'light' ? false : true} />}
+                      label=""
+                      onClick={async () => { dispatch(setMode()) }}
+                    />
+                  </FormGroup>
+                </Box>
+                <Divider variant='middle' sx={{ display: mode === "light" ? "block" : "none" }}></Divider>
                 <Button fullWidth variant='danger' onClick={() => {
                   dispatch(setLogout());
                   navigate('/');
@@ -225,7 +198,7 @@ function Navbar() {
           }
         </Toolbar>
       </Container>
-      <Divider variant='middle' />
+      <Divider variant='middle' sx={{ display: mode === "light" ? "block" : "none" }}></Divider>
     </AppBar>
   );
 }

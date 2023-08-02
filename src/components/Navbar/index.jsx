@@ -158,7 +158,9 @@ function Navbar() {
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
-                  <i className="fa-solid fa-user"></i>
+                  {
+                  user.picture !== undefined ? <img style={{ borderRadius: '50%', width: '50%' }} src={user.picture} alt='USER_IMG'></img> : <i className="fa-solid fa-user"></i>
+                  }
                 </IconButton>
               </Tooltip>
               <Menu

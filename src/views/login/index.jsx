@@ -10,7 +10,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
+import { useGoogleLogin } from '@react-oauth/google';
 export default function Login() {
   const [isLogin, setisLogin] = useState(true);
   const [open, setOpen] = useState(false);
@@ -25,12 +25,30 @@ export default function Login() {
   };
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = React.useState(false);
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      console.log(tokenResponse);
+      const userInfo = await Axios.get(
+        'https://www.googleapis.com/oauth2/v3/userinfo',
+        { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } },
+      );
+      dispatch(
+        setLogin({
+          user: userInfo.data,
+          token: userInfo.data.sub,
+        })
+      )
+      console.log(userInfo);
+    },
+    onError: errorResponse => console.log(errorResponse),
+  });
+  
   const handleloginSubmit = () => {
     Axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, { username: username, password: password }).then(async (responce) => {
       document.getElementById('login-loading').classList.toggle('disable');
@@ -89,7 +107,7 @@ export default function Login() {
             display='flex'
             flexDirection='column'
             alignItems='center'
-            height='60vh'
+            height='65vh'
             minWidth='320px'
             bgcolor='white'
           >
@@ -168,6 +186,18 @@ export default function Login() {
             >
               Don't have an Account ?
             </Button>
+            <Button variant='primary'
+              sx={{
+                textTransform: 'none',
+                color: 'grey'
+              }}
+              onClick={() => {
+                googleLogin();
+              }}
+            >
+              Login with Google
+            </Button>
+            
           </Box>
         </>
         :

@@ -102,7 +102,7 @@ function Navbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-around', height: { xs: '9vh', md: '12vh' }, alignItems: 'center', width: { xs: '100%', md: '90%' }, margin: 'auto' }}>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center', width: '10%' }}>
-            <img src='./img/logo_transparent.png' alt='LOGO' width={'80px'}></img>
+            <img src='../img/logo_transparent.png' alt='LOGO' width={'80px'}></img>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, width: '20%' }}>
             <IconButton
@@ -142,7 +142,7 @@ function Navbar() {
             </Menu>
           </Box>
           <Box display={{ xs: 'flex', md: 'none' }} justifyContent={'center'} width={'60%'} margin={'auto'}>
-            <img src='./img/logo_transparent.png' alt='LOGO' width={'50px '}></img>
+            <img src='../img/logo_transparent.png' alt='LOGO' width={'50px '}></img>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
             {pages.map((page) => (

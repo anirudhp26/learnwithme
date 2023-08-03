@@ -6,6 +6,7 @@ import Pricing from './views/pricing';
 import Layout from './views/Layout';
 import Blog from './views/blog';
 import BlogCreator from './views/blogCreator';
+import EditProfile from './views/editProfile';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { createTheme } from "@mui/material";
 import { useSelector } from 'react-redux';
@@ -46,6 +47,7 @@ function App() {
             <Route element={<Pricing />} path='/pricing'></Route>
             <Route element={<Blog />} path='/blog'></Route>
             <Route element={<Profile />} path='/profile/:user'></Route>
+            <Route element={<EditProfile />} path='/editprofile'></Route>
             <Route element={<BlogCreator />} path='/blogcreator'></Route>
           </Route>
         </Routes>

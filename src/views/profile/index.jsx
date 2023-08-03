@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
@@ -12,7 +12,7 @@ export default function Profile() {
   const [suser, setSuser] = useState(logged_user);
   const mode = useSelector((state) => state.mode);
   const blogs = useSelector((state) => state.blogs);
-  // const [errMessage, seterrMessage] = useState("Couldn't find any Blogs");
+  const navigate = useNavigate();
   useEffect(() => {
     Axios.post(`${process.env.REACT_APP_API_URL}/blog/getBlogbyUser`, { user: user }).then((responce) => {
       if (responce) {
@@ -67,6 +67,7 @@ export default function Profile() {
           id='follow-btn'
           onClick={() => {
             document.getElementById('follow-loading').classList.toggle('disable');
+            navigate('/editprofile');
           }}
         >
           <i style={{ margin: '0 10px' }} id='follow-loading' className="fa-solid fa-spinner fa-spin disable"></i>

@@ -14,7 +14,7 @@ body,
 
 .heading-custom{
     font-size: 2.5rem !important;
-    font-family: 'PT Serif', serif !important;
+    font-family: 'JetBrains Mono', monospace !important;
 }
 
 .disable{

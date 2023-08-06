@@ -53,7 +53,6 @@ export default function Login() {
       dispatch(
         setLogin({
           user: userInfo.data,
-          token: userInfo.data.sub,
         })
       );
       const isGoogleUserRegistered = await Axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {

@@ -56,7 +56,20 @@ export default function Login() {
           token: userInfo.data.sub,
         })
       );
-      navigate('/editprofile')
+      const isGoogleUserRegistered = await Axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
+        googleId: userInfo.data.sub,
+        googlelogin: true,
+      })
+      if (isGoogleUserRegistered.status === 200) {
+        dispatch(
+          setLogin({
+            user: isGoogleUserRegistered.data.user,
+            token: isGoogleUserRegistered.data.token,
+          })
+        );
+      } else {
+        navigate('/editprofile')
+      }
       console.log(userInfo);
     },
     onError: (errorResponse) => console.log(errorResponse),
@@ -67,6 +80,7 @@ export default function Login() {
     Axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
       username: username,
       password: password,
+      googlelogin: false,
     })
       .then(async (responce) => {
         document

@@ -15,6 +15,7 @@ export default function Profile() {
   const navigate = useNavigate();
   useEffect(() => {
     Axios.post(`${process.env.REACT_APP_API_URL}/blog/getBlogbyUser`, { user: user }).then((responce) => {
+      console.log(responce.data);
       if (responce) {
         setSuser(responce.data.user[0])
         dispatch(

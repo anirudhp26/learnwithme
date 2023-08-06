@@ -170,7 +170,7 @@ function Navbar() {
 									<Typography textAlign="center">
 										<Link
 											underline="none"
-											sx={{ cursor: "pointer" }}
+											sx={{ cursor: "pointer", color: mode === "light" ? "black" : "white" }}
 											onClick={() => {
 												navigate(
 													`/${page.toLowerCase()}`

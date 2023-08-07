@@ -5,6 +5,7 @@ import axios from 'axios';
 import { setLogin } from "../../redux";
 import { useNavigate } from "react-router-dom";
 export default function EditProfile() {
+  const [username, setUsername] = useState("");
   const user = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const mode = useSelector((state) => state.mode);
@@ -59,7 +60,10 @@ export default function EditProfile() {
           )}
         </Box>
         <Box width={{ xs: '90%', md: '50%' }} margin={'0 auto'}>
-          <TextField name="username" color={mode === "light" ? "secondary" : "primary"} sx={{ margin: '1rem auto' }} defaultValue={user.username === undefined ? "" : user.username} fullWidth label="username" id="fullWidth" onChange={handleInputChange} />
+          <TextField error={username.indexOf(" ") >= 0 ? true : false} name="username" color={mode === "light" ? "secondary" : "primary"} sx={{ margin: '1rem auto' }} defaultValue={user.username === undefined ? "" : user.username} fullWidth label="username" id="fullWidth" onChange={(e) => {
+            handleInputChange(e)
+            setUsername(e.target.value)
+          }} />
           <TextField name="name" color={mode === "light" ? "secondary" : "primary"} sx={{ margin: '1rem auto' }} fullWidth label="name" defaultValue={user.name} id="fullWidth" onChange={handleInputChange} />
           <TextField name="email" color={mode === "light" ? "secondary" : "primary"} sx={{ margin: '1rem auto' }} fullWidth label="email" defaultValue={user.email !== undefined ? user.email : ""} id="fullWidth" onChange={handleInputChange} />
           <TextField name="bio" color={mode === "light" ? "secondary" : "primary"} sx={{ margin: '1rem auto' }} fullWidth label="bio" id="fullWidth" multiline rows={'4'} defaultValue={user.bio === undefined ? "" : user.bio} onChange={handleInputChange} />

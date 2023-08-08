@@ -28,6 +28,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+  const [isClicked, setisClicked] = useState(false);
   const handleClose = () => {
     setOpen(false);
   };
@@ -75,7 +76,6 @@ export default function Login() {
   });
 
   const handleloginSubmit = () => {
-    document.getElementById('auth-btn-2').attributes.disabled = true;
     Axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
       username: username,
       password: password,
@@ -86,7 +86,7 @@ export default function Login() {
           .getElementById("login-loading")
           .classList.toggle("disable");
         if (responce.data.loginStatus) {
-          console.log(responce.data);
+          setisClicked(false);
           dispatch(
             setLogin({
               user: responce.data.user,
@@ -94,6 +94,7 @@ export default function Login() {
             })
           );
         } else {
+          setisClicked(false);
           setError(responce.data.message);
           setOpen(!open);
         }
@@ -104,6 +105,7 @@ export default function Login() {
           .classList.toggle("disable");
         setError(error.message);
         setOpen(!open);
+        setisClicked(false);
       });
   };
 
@@ -120,6 +122,7 @@ export default function Login() {
           .classList.toggle("disable");
         console.log(responce.data);
         if (responce.data.loginStatus) {
+          setisClicked(false);
           dispatch(
             setLogin({
               user: responce.data.user,
@@ -127,11 +130,13 @@ export default function Login() {
             })
           );
         } else {
+          setisClicked(false);
           setError(responce.data.message);
           setOpen(!open);
         }
       })
       .catch((error) => {
+        setisClicked(false);
         setError(error.message);
         setOpen(!open);
         document
@@ -270,11 +275,13 @@ export default function Login() {
                 }}
                 id="auth-btn-2"
                 onClick={() => {
+                  setisClicked((prev) => !prev);
                   handleloginSubmit();
                   document
                     .getElementById("login-loading")
                     .classList.toggle("disable");
                 }}
+                disabled={isClicked}
               >
                 <i
                   style={{ margin: "0 10px" }}
@@ -480,6 +487,7 @@ export default function Login() {
             </Box>
             <Button
               variant="outlined"
+              id="auth-btn-1"
               sx={{
                 textTransform: "none",
                 margin: "0 0 1rem 0",
@@ -498,12 +506,14 @@ export default function Login() {
                   setError("Passwords dosen't match");
                   setOpen(!open);
                 } else {
+                  setisClicked((prev) => !prev);
                   handlesignupSubmit();
                   document
                     .getElementById("signup-loading")
                     .classList.toggle("disable");
                 }
               }}
+              disabled={isClicked}
             >
               <i
                 style={{ margin: "0 10px" }}

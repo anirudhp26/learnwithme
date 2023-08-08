@@ -127,7 +127,21 @@ export default function Profile() {
               justifyContent: 'center',
             }
           }}>
-            <img src='/img/user-default-logo.png' alt='' width='150px'></img>
+            {user.picture !== undefined ? (
+										<img
+											style={{
+												borderRadius: "50%",
+												width: "150px",
+											}}
+											src={user.picture}
+											alt={
+												<i className="fa-solid fa-user"></i>
+											}
+										>
+										</img>
+									) : (
+                    <img src='/img/user-default-logo.png' alt='' width='150px'></img>
+									)}
             <Box margin='2rem 0 2rem 4rem' sx={{
               '@media only screen and (max-width: 530px)': {
                 width: '90%',

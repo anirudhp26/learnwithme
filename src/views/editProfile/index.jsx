@@ -10,6 +10,7 @@ export default function EditProfile() {
   const token = useSelector((state) => state.token);
   const mode = useSelector((state) => state.mode);
   const [editedUser, setEditeduser] = useState(user);
+  const [isClicked, setisClicked] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleEditProfileSubmit = async () => {
@@ -23,9 +24,11 @@ export default function EditProfile() {
             token: token,
           })
         )
+        setisClicked((prev) => !prev);
         document.getElementById("edit-loading").classList.toggle("disable");
         navigate(`/profile/${responce.data.updatedUser.username}`)
       } else {
+        setisClicked((prev) => !prev);
         console.log(responce);
       }
     })
@@ -70,6 +73,7 @@ export default function EditProfile() {
           <Divider variant="middle" />
           <Button
             variant="outlined"
+            disabled={isClicked}
             sx={{
               backgroundColor: "white",
               margin: "1rem auto",
@@ -84,6 +88,7 @@ export default function EditProfile() {
             }}
             id="auth-btn-2"
             onClick={() => {
+              setisClicked((prev) => !prev);
               handleEditProfileSubmit();
               document
                 .getElementById("edit-loading")

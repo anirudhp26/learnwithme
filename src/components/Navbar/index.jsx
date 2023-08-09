@@ -247,13 +247,11 @@ function Navbar() {
 												width: "50%",
 											}}
 											src={user.picture}
-											alt={
-												<i className="fa-solid fa-user"></i>
-											}
+											alt="USER"
 										>
 										</img>
 									) : (
-										<i className="fa-solid fa-user"></i>
+										<img src='/img/user-default-logo.png' alt='' width={'40px'}></img>
 									)}
 								</IconButton>
 							</Tooltip>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Box, Button, Divider, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Divider, Skeleton, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
 import { setBlogs } from '../../redux';
@@ -10,6 +10,7 @@ export default function Profile() {
   const dispatch = useDispatch();
   const logged_user = useSelector((state) => state.user);
   const [suser, setSuser] = useState(logged_user);
+  const [isLoading, setIsLoading] = useState(true);
   const mode = useSelector((state) => state.mode);
   const blogs = useSelector((state) => state.blogs);
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function Profile() {
             blogs: responce.data.blogs
           })
         )
+        setIsLoading(false);
       }
     })
   }, [user, dispatch])
@@ -114,78 +116,87 @@ export default function Profile() {
 
   return (
     <>
-      <Box sx={{ width: '90%', margin: 'auto' }}>
-        <Box sx={{
-          width: '50%', margin: '2rem auto',
-          '@media only screen and (max-width: 1100px)': {
-            width: '90%'
-          }
-        }}>
-          <Box display='flex' flexDirection='row' alignItems='center' margin='1rem auto' sx={{
-            '@media only screen and (max-width: 530px)': {
-              flexDirection: 'column',
-              justifyContent: 'center',
-            }
-          }}>
-            {user.picture !== undefined ? (
-										<img
-											style={{
-												borderRadius: "50%",
-												width: "150px",
-											}}
-											src={user.picture}
-											alt={
-												<i className="fa-solid fa-user"></i>
-											}
-										>
-										</img>
-									) : (
-                    <img src='/img/user-default-logo.png' alt='' width='150px'></img>
-									)}
-            <Box margin='2rem 0 2rem 4rem' sx={{
-              '@media only screen and (max-width: 530px)': {
-                width: '90%',
-                margin: 'auto'
-              }
-            }}>
-              <Typography sx={{ fontSize: '35px' }}>{user}</Typography>
-              <Typography sx={{ fontSize: '20px', marginTop: '1rem' }} color='#757575'>{logged_user === user ? `${logged_user.username}` : `${suser.username}`}</Typography>
-              <Typography sx={{ fontSize: '15px', marginTop: '1rem' }} color='#757575'>{logged_user === user ? `${logged_user.bio}` : `${suser.bio}`}</Typography>
-            </Box>
-          </Box>
-          <Divider variant='middle' />
-          <Box width='50%' p='2rem 0' margin='0 auto' display='flex' flexDirection='row' justifyContent='space-around' textAlign='center'
-            sx={{
-              '@media only screen and (max-width: 530px)': {
-                width: '90%'
-              }
-            }}
-          >
-            <Box>
-              <Typography color={mode === 'light' ? 'black' : 'white'} fontSize='25px'>impressed <span style={{ fontWeight: '700' }}>{logged_user === user ? `${logged_user.impressed.length}` : `${suser.impressed.length}`}</span>  users</Typography>
-            </Box>
-          </Box>
-          <Box width='100%' justifyContent='center' display='flex'>
-            {follow_edit_btn()}
-          </Box>
-        </Box>
-      </Box>
-      <Divider variant='middle' />
-      <Box width={'90%'} height={'50vh'} margin={'2rem auto'}>
-        <Typography margin={'2rem 0'} sx={{ fontSize: '2rem' }}>{logged_user === user ? "YOUR BLOGS" : `${user}'s BLOGS`}</Typography>
-        {blogs === undefined || blogs.length === 0
-          ?
-          <Typography margin={'7rem 0'} textAlign={'center'}>Couldn't Find any Blogs on this user's account</Typography>
+      {
+        isLoading ?
+          <>
+            <CircularProgress sx={{ margin: '20vh auto', display: 'flex'}} color={mode === "light" ? "secondary" : "primary"} />
+          </>
           :
           <>
-            {blogs.map((blog) => {
-              return (
-                <Blog title={blog.title} content={blog.content} user={logged_user} key={blog._id} id={blog._id} />
-              )
-            })}
+            <Box sx={{ width: '90%', margin: 'auto' }}>
+              <Box sx={{
+                width: '50%', margin: '2rem auto',
+                '@media only screen and (max-width: 1100px)': {
+                  width: '90%'
+                }
+              }}>
+                <Box display='flex' flexDirection='row' alignItems='center' margin='1rem auto' sx={{
+                  '@media only screen and (max-width: 530px)': {
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }
+                }}>
+                  {user.picture !== undefined ? (
+                    <img
+                      style={{
+                        borderRadius: "50%",
+                        width: "150px",
+                      }}
+                      src={user.picture}
+                      alt={
+                        <i className="fa-solid fa-user"></i>
+                      }
+                    >
+                    </img>
+                  ) : (
+                    <img src='/img/user-default-logo.png' alt='' width='150px'></img>
+                  )}
+                  <Box margin='2rem 0 2rem 4rem' sx={{
+                    '@media only screen and (max-width: 530px)': {
+                      width: '90%',
+                      margin: 'auto'
+                    }
+                  }}>
+                    <Typography sx={{ fontSize: '35px' }}>{user}</Typography>
+                    <Typography sx={{ fontSize: '20px', marginTop: '1rem' }} color='#757575'>{logged_user === user ? `${logged_user.username}` : `${suser.username}`}</Typography>
+                    <Typography sx={{ fontSize: '15px', marginTop: '1rem' }} color='#757575'>{logged_user === user ? `${logged_user.bio}` : `${suser.bio}`}</Typography>
+                  </Box>
+                </Box>
+                <Divider variant='middle' />
+                <Box width='50%' p='2rem 0' margin='0 auto' display='flex' flexDirection='row' justifyContent='space-around' textAlign='center'
+                  sx={{
+                    '@media only screen and (max-width: 530px)': {
+                      width: '90%'
+                    }
+                  }}
+                >
+                  <Box>
+                    <Typography color={mode === 'light' ? 'black' : 'white'} fontSize='25px'>impressed <span style={{ fontWeight: '700' }}>{logged_user === user ? `${logged_user.impressed.length}` : `${suser.impressed.length}`}</span>  users</Typography>
+                  </Box>
+                </Box>
+                <Box width='100%' justifyContent='center' display='flex'>
+                  {follow_edit_btn()}
+                </Box>
+              </Box>
+            </Box>
+            <Divider variant='middle' />
+            <Box width={'90%'} height={'50vh'} margin={'2rem auto'}>
+              <Typography margin={'2rem 0'} sx={{ fontSize: '2rem' }}>{logged_user === user ? "YOUR BLOGS" : `${user}'s BLOGS`}</Typography>
+              {blogs === undefined || blogs.length === 0
+                ?
+                <Typography margin={'7rem 0'} textAlign={'center'}>Couldn't Find any Blogs on this user's account</Typography>
+                :
+                <>
+                  {blogs.map((blog) => {
+                    return (
+                      <Blog title={blog.title} content={blog.content} user={logged_user} key={blog._id} id={blog._id} />
+                    )
+                  })}
+                </>
+              }
+            </Box>
           </>
-        }
-      </Box>
+      }
     </>
   )
 }

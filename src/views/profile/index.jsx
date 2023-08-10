@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Box, Button, CircularProgress, Divider, Skeleton, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Divider, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import Axios from 'axios';
 import { setBlogs } from '../../redux';

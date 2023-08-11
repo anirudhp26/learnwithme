@@ -15,7 +15,6 @@ const Home = () => {
                     <Navbar/>
                     <Box width={'90%'} margin={'1rem auto'}>
                         <Typography>Home page</Typography>
-                        <Button color='primary' onClick={() => {navigate('/blogcreator')}}>Create Blogs</Button>
                     </Box>
                 </>
             )

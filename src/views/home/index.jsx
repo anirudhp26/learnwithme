@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import Login from '../login';
 import Navbar from '../../components/Navbar';
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 
 const Home = () => {
     const isLoggedin = useSelector((state) => state.token);

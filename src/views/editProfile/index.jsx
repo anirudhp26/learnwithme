@@ -14,7 +14,6 @@ export default function EditProfile() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const handleEditProfileSubmit = async () => {
-		console.log(editedUser);
 		axios
 			.post(`${process.env.REACT_APP_API_URL}/auth/updateUser`, {
 				user: editedUser,
@@ -22,7 +21,6 @@ export default function EditProfile() {
 			})
 			.then((responce) => {
 				if (responce.status === 200) {
-					console.log(responce);
 					dispatch(
 						setLogin({
 							user: responce.data.updatedUser,
@@ -36,7 +34,6 @@ export default function EditProfile() {
 					navigate(`/profile/${responce.data.updatedUser.username}`);
 				} else {
 					setisClicked((prev) => !prev);
-					console.log(responce);
 				}
 			});
 	};
@@ -61,7 +58,7 @@ export default function EditProfile() {
 					display={"flex"}
 					justifyContent={"center"}
 				>
-					<img src={user.picture === undefined ? '/img/user-default-logo.png' : user.picture} alt='' width='50%' style={{ borderRadius: '50%' }}></img>
+					<img src={user.picture === undefined ? '/img/user-default-logo.png' : user.picture} alt='' width='100px' style={{ borderRadius: '50%' }}></img>
 				</Box>
 				<Box width={{ xs: "90%", md: "50%" }} margin={"0 auto"}>
 					<TextField

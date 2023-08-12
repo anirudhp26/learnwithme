@@ -15,7 +15,6 @@ export default function Explore() {
             keyword: value,
         })
             .then((responce) => {
-                console.log(responce.data);
                 setUsers(responce.data);
             })
             .catch((err) => {

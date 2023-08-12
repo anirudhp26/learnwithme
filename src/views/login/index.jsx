@@ -44,7 +44,6 @@ export default function Login() {
   const navigate = useNavigate();
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
       const userInfo = await Axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         {
@@ -63,6 +62,7 @@ export default function Login() {
         googlelogin: true,
       })
       if (isGoogleUserRegistered.status === 200) {
+        setisClicked(false);
         dispatch(
           setLogin({
             user: isGoogleUserRegistered.data.user,
@@ -72,7 +72,6 @@ export default function Login() {
       } else {
         navigate('/editprofile')
       }
-      console.log(userInfo);
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
@@ -122,7 +121,6 @@ export default function Login() {
         document
           .getElementById("signup-loading")
           .classList.toggle("disable");
-        console.log(responce.data);
         if (responce.data.loginStatus) {
           setisClicked(false);
           dispatch(
@@ -316,6 +314,7 @@ export default function Login() {
                   fontWeight: "600",
                 }}
                 onClick={() => {
+                  setisClicked((prev) => !prev);
                   document.getElementById('auth-btn-1').attributes.disabled = true;
                   googleLogin();
                 }}

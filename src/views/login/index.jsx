@@ -6,6 +6,7 @@ import {
   Snackbar,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import Axios from "axios";
 import { useDispatch } from "react-redux";
@@ -32,6 +33,7 @@ export default function Login() {
   const handleClose = () => {
     setOpen(false);
   };
+  const theme = useTheme();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -149,7 +151,7 @@ export default function Login() {
     <div
       style={{
         display: "flex",
-        backgroundColor: "#436efa",
+        backgroundColor: theme.palette.neutral.dark,
         width: "100%",
         height: "100%",
         margin: 0,
@@ -173,9 +175,8 @@ export default function Login() {
             display="flex"
             flexDirection="column"
             alignItems="center"
-            height="65vh"
             minWidth="320px"
-            bgcolor="white"
+            bgcolor={theme.palette.background.alt}
           >
             <Typography
               letterSpacing="2px"
@@ -183,7 +184,7 @@ export default function Login() {
                 margin: "2rem 0 0 0",
               }}
               paragraph
-              className="heading-custom"
+              fontSize={theme.typography.h1}
             >
               Login
             </Typography>
@@ -192,7 +193,6 @@ export default function Login() {
               flexDirection="column"
               margin="2rem 0"
               justifyContent="space-between"
-              height="27%"
               width="80%"
             >
               <TextField
@@ -200,11 +200,12 @@ export default function Login() {
                 label="username"
                 color="secondary"
                 variant="standard"
+                sx={{ margin: '1rem 0' }}
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
               />
-              <FormControl variant="standard">
+              <FormControl variant="standard" sx={{ margin: '1rem 0' }}>
                 <InputLabel
                   color="secondary"
                   htmlFor="standard-adornment-password"
@@ -245,7 +246,7 @@ export default function Login() {
               display={"flex"}
               justifyContent={"space-between"}
               sx={{
-                margin: "2rem auto",
+                margin: "1rem auto",
                 "@media only screen and (max-width: 1450px)": {
                   width: "70%",
                   margin: "0 auto",
@@ -345,6 +346,7 @@ export default function Login() {
               sx={{
                 textTransform: "none",
                 color: "grey",
+                margin: '1rem 0',
                 transition: "all 0.5s",
                 "&:hover": {
                   backgroundColor: "black",
@@ -366,26 +368,23 @@ export default function Login() {
             display="flex"
             flexDirection="column"
             alignItems="center"
-            height="90vh"
-            bgcolor="white"
+            bgcolor={theme.palette.background.alt}
             minWidth="320px"
           >
             <Typography
               letterSpacing="2px"
               sx={{
-                margin: "2rem 0 0 0",
+                margin: "1rem 0 1rem 0",
               }}
               paragraph
-              className="heading-custom"
+              fontSize={theme.typography.h1}
             >
               Sign Up
             </Typography>
             <Box
               display="flex"
               flexDirection="column"
-              margin="2rem 0"
               justifyContent="space-between"
-              height="55%"
               width="80%"
             >
               <TextField
@@ -393,6 +392,7 @@ export default function Login() {
                 label="username"
                 color="secondary"
                 variant="standard"
+                sx={{ margin: '1rem 0' }}
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
@@ -401,6 +401,7 @@ export default function Login() {
                 id="outlined-basic"
                 label="describe yourself.."
                 color="secondary"
+                sx={{ margin: '1rem 0' }}
                 variant="outlined"
                 onChange={(e) => {
                   setBio(e.target.value);
@@ -412,20 +413,21 @@ export default function Login() {
                 id="standard-basic"
                 label="full Name"
                 color="secondary"
+                sx={{ margin: '1rem 0' }}
                 variant="standard"
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
               />
-              <FormControl variant="standard">
+              <FormControl variant="standard" sx={{ margin: '1rem 0' }}>
                 <InputLabel
                   color="secondary"
-                  htmlFor="standard-adornment-password"
+                  htmlFor="standard-adornment-password-1"
                 >
                   Password
                 </InputLabel>
                 <Input
-                  id="standard-adornment-password"
+                  id="standard-adornment-password-1"
                   type={showPassword ? "text" : "password"}
                   endAdornment={
                     <InputAdornment position="end">
@@ -452,8 +454,8 @@ export default function Login() {
                   color="secondary"
                 />
               </FormControl>
-              <FormControl variant="standard">
-                <InputLabel htmlFor="standard-adornment-password">
+              <FormControl variant="standard" sx={{ margin: '1rem 0' }}>
+                <InputLabel color="secondary" htmlFor="standard-adornment-password">
                   Confirm Password
                 </InputLabel>
                 <Input
@@ -490,7 +492,7 @@ export default function Login() {
               id="auth-btn-1"
               sx={{
                 textTransform: "none",
-                margin: "0 0 1rem 0",
+                margin: "1rem 0",
                 backgroundColor: "white",
                 boxShadow: "none",
                 borderRadius: "0",
@@ -527,6 +529,7 @@ export default function Login() {
               sx={{
                 textTransform: "none",
                 color: "grey",
+                margin: '1rem 0',
                 "&:hover": {
                   backgroundColor: "black",
                   color: "white",

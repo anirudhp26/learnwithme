@@ -136,13 +136,13 @@ export default function Profile() {
                     justifyContent: 'center',
                   }
                 }}>
-                  {user.picture !== undefined ? (
+                  {logged_user.picture !== undefined ? (
                     <img
                       style={{
                         borderRadius: "50%",
                         width: "150px",
                       }}
-                      src={user.picture}
+                      src={logged_user.picture}
                       alt={
                         <i className="fa-solid fa-user"></i>
                       }

@@ -1,15 +1,15 @@
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
-import { Box, InputAdornment, TextField, Typography } from '@mui/material'
+import { Box, InputAdornment, TextField, Typography, useTheme } from '@mui/material'
 import Axios from 'axios';
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-
 export default function Explore() {
     const [users, setUsers] = React.useState([]);
     const navigate = useNavigate();
     const mode = useSelector((state) => state.mode);
+    const theme = useTheme();
     const userSearch = (value) => {
         Axios.post(`${process.env.REACT_APP_API_URL}/auth/getUsers`, {
             keyword: value,
@@ -27,7 +27,11 @@ export default function Explore() {
     };
     return (
         <>
-            <Box width='90%' margin='2rem auto'>
+            <Box width='40%' margin='2rem auto' sx={{ 
+                '@media only screen and (max-width: 1200px)': {
+                    width: '90%'
+                }
+            }}>
                 <TextField
                     fullWidth
                     id="input-with-icon-textfield"
@@ -39,7 +43,10 @@ export default function Explore() {
                             </InputAdornment>
                         ),
                     }}
-                    color={mode === 'light' ? 'secondary' : 'primary'}
+                    sx={{ ".Mui-focused": {
+                            color: theme.palette.neutral.dark,
+                        } 
+                    }}
                     variant="outlined"
                     onChange={(e) => {
                         setTimeout(() => {
@@ -48,17 +55,14 @@ export default function Explore() {
                     }}
                 />
 
-                <Box width={'100%'} margin={'2rem 0'} display='flex' flexDirection='column'>
+                <Box width={'100%'} margin={'1rem 0'} display='flex' flexDirection='column'>
                     {users.map((user) => {
                         return (
-                            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-around'} alignItems={'center'} width={'70%'} bgcolor={mode === 'light' ? 'white' : 'black'} border={mode === 'light' ? '1px solid black' : '1px solid white'} padding={'1rem'} margin={'2rem auto'} sx={{
+                            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-around'} alignItems={'center'} width={'70%'} bgcolor={theme.palette.background.default} border={mode === 'light' ? '1px solid black' : '1px solid white'} padding={'1rem'} margin={'1rem auto'} sx={{
                                 transition: 'all 0.5s',
-                                '&:hover': {
-                                    padding: '1.5rem'
-                                },
+                                cursor: 'pointer',
                                 '@media only screen and (max-width: 700px)': {
                                     width: '80%',
-                                    margin: '1rem auto'
                                 }
                             }} key={user._id} onClick={() => { navigate(`/profile/${user.username}`) }}>
                                 <Box width={'30%'} display={'flex'} justifyContent={'center'} sx={{
@@ -66,14 +70,14 @@ export default function Explore() {
                                             width: '50%'
                                         }
                                     }}>
-                                    <img src='/img/user-default-logo.png' alt='' width='30%'></img>
+                                    <img src={user.picture === undefined ? '/img/user-default-logo.png' : user.picture} alt='' width='30%' style={{ borderRadius: '50%' }}></img>
                                 </Box>
-                                <Typography color={mode === 'light' ? 'secondary' : 'primary'} width='35%' display='flex' justifyContent='center'>{user.username}</Typography>
+                                <Typography color={theme.palette.neutral.dark} width='35%' display='flex' justifyContent='center'>{user.username}</Typography>
                                 <Typography sx={{
                                     '@media only screen and (max-width: 700px)': {
                                         display: 'none'
                                     }
-                                }} color={'grey'} width='35%' display='flex' justifyContent='center'>{user.name}</Typography>
+                                }} color={theme.palette.neutral.mediumMain} width='35%' display='flex' justifyContent='center'>{user.name}</Typography>
                             </Box>
                         )
                     })}

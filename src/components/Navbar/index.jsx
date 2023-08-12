@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -70,6 +70,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 function Navbar() {
+	const theme = useTheme();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const token = useSelector((state) => state.token);
@@ -100,8 +101,7 @@ function Navbar() {
 	return (
 		<AppBar
 			position="static"
-			color="primary"
-			sx={{ boxShadow: "none", margin: "auto" }}
+			sx={{ boxShadow: "none", margin: "auto", backgroundColor: theme.palette.neutral.light }}
 		>
 			<Container maxWidth="xl">
 				<Toolbar
@@ -140,7 +140,7 @@ function Navbar() {
 							aria-controls="menu-appbar"
 							aria-haspopup="true"
 							onClick={handleOpenNavMenu}
-							color={mode === "light" ? "black" : "white"}
+							color={theme.palette.neutral.dark}
 						>
 							<MenuIcon />
 						</IconButton>
@@ -170,7 +170,7 @@ function Navbar() {
 									<Typography textAlign="center">
 										<Link
 											underline="none"
-											sx={{ cursor: "pointer", color: mode === "light" ? "black" : "white" }}
+											sx={{ cursor: "pointer", color: theme.palette.neutral.dark }}
 											onClick={() => {
 												navigate(
 													`/${page.toLowerCase()}`
@@ -213,10 +213,7 @@ function Navbar() {
 								fontWeight={"500"}
 								p={"0 2rem"}
 								sx={{
-									color: `${mode === "light"
-										? "secondary"
-										: "primary"
-										}`,
+									color: theme.palette.neutral.dark,
 									cursor: "pointer",
 								}}
 							>
@@ -275,13 +272,10 @@ function Navbar() {
 									width={"90%"}
 									margin={"auto"}
 									p="1rem"
+									fontSize={theme.typography.h5}
+									color={theme.palette.neutral.dark}
 									sx={{
 										cursor: "pointer",
-										"&:hover": {
-											backgroundColor: "black",
-											color: "white",
-										},
-										transition: "all .5s",
 									}}
 									textAlign={"center"}
 									onClick={() => {
@@ -292,10 +286,6 @@ function Navbar() {
 								</Typography>
 								<Divider
 									variant="middle"
-									sx={{
-										display:
-											mode === "light" ? "block" : "none",
-									}}
 								></Divider>
 								<Box
 									sx={{
@@ -318,7 +308,7 @@ function Navbar() {
 												/>
 											}
 											label=""
-											onClick={async () => {
+											onClick={() => {
 												dispatch(setMode());
 											}}
 										/>
@@ -326,10 +316,6 @@ function Navbar() {
 								</Box>
 								<Divider
 									variant="middle"
-									sx={{
-										display:
-											mode === "light" ? "block" : "none",
-									}}
 								></Divider>
 								<Button
 									fullWidth
@@ -340,8 +326,10 @@ function Navbar() {
 									}}
 								>
 									<Typography
+										padding={'0.5rem'}
 										textTransform="none"
 										color="red"
+										fontSize={theme.typography.h5}
 									>
 										Logout
 									</Typography>
@@ -353,7 +341,6 @@ function Navbar() {
 			</Container>
 			<Divider
 				variant="middle"
-				sx={{ display: mode === "light" ? "block" : "none" }}
 			></Divider>
 		</AppBar>
 	);

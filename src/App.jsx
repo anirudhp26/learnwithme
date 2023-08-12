@@ -8,33 +8,14 @@ import Blog from './views/blog';
 import BlogCreator from './views/blogCreator';
 import EditProfile from './views/editProfile';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { createTheme } from "@mui/material";
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { createTheme } from '@mui/material/styles';
+import { themeSettings } from './theme';
+
 function App() {
   const mode = useSelector((state) => state.mode);
-  const theme = createTheme({
-    palette: {
-      mode: mode, // Set the default mode to light
-
-      // Light mode colors
-      primary: {
-        main: '#FFFFFF', // Primary color for light mode
-      },
-      secondary: {
-        main: '#000000', // Secondary color for light mode
-      },
-      neutral: {
-        main: '#64748B',
-        contrastText: '#fff',
-      },
-      // Dark mode colors
-      dark: {
-        primary: '#000000', // Primary color for dark mode
-        secondary: '#FFFFFF', // Secondary color for dark mode
-      },
-
-    },
-  });
+  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>

@@ -61,21 +61,7 @@ export default function EditProfile() {
 					display={"flex"}
 					justifyContent={"center"}
 				>
-					{user.picture === undefined ? (
-						<i
-							style={{ fontSize: "100px" }}
-							className="fa-solid fa-user"
-						></i>
-					) : (
-						<img
-							style={{
-								borderRadius: "50%",
-								width: "50%",
-							}}
-							src={user.picture}
-							alt={<i className="fa-solid fa-user"></i>}
-						></img>
-					)}
+					<img src={user.picture === undefined ? '/img/user-default-logo.png' : user.picture} alt='' width='50%' style={{ borderRadius: '50%' }}></img>
 				</Box>
 				<Box width={{ xs: "90%", md: "50%" }} margin={"0 auto"}>
 					<TextField

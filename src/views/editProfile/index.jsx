@@ -204,13 +204,12 @@ export default function EditProfile() {
 						variant="outlined"
 						disabled={isClicked}
 						sx={{
-							backgroundColor: "white",
+							backgroundColor: theme.palette.background.alt,
 							margin: "1rem auto",
 							color: theme.palette.neutral.dark,
 							fontFamily: "JetBrains Mono",
 							"&:hover": {
-								backgroundColor: "black",
-								color: theme.palette.neutral.light,
+								backgroundColor: theme.palette.background.default,
 							},
 							border: "1px solid grey",
 							textTransform: "none",

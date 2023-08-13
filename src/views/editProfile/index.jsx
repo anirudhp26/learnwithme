@@ -58,7 +58,7 @@ export default function EditProfile() {
 		if (isvalid) {
 			axios
 				.post(
-					`${process.env.REACT_APP_API_URL}/auth/updateUser`,
+					`http://localhost:3001/auth/updateUser`,
 					{
 						user: editedUser,
 						googleUserUpdate:

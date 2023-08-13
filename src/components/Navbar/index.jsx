@@ -74,12 +74,15 @@ function Navbar() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const token = useSelector((state) => state.token);
+	const user = useSelector((state) => state.user);
 	React.useEffect(() => {
 		if (token === null) {
 			navigate("/");
 		}
+		if (user.username === undefined) {
+			navigate("/editprofile");
+		}
 	});
-	const user = useSelector((state) => state.user);
 	const mode = useSelector((state) => state.mode);
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);

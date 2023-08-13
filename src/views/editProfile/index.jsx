@@ -1,4 +1,14 @@
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import {
+	Alert,
+	Box,
+	Button,
+	Divider,
+	Snackbar,
+	TextField,
+	Typography,
+	useTheme,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -13,6 +23,33 @@ export default function EditProfile() {
 	const [isClicked, setisClicked] = useState(false);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const theme = useTheme();
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+	axios.defaults.withCredentials = true;
+
+	const checkUsernameAvailability = async (value) => {
+		if (user.username === undefined || user.username !== value) {
+			axios.post(
+				`${process.env.REACT_APP_API_URL}/auth/checkusernameavailable`,
+				{ username: value },
+				{ headers: { Authorization: `Bearer ${token}` } }
+			).then((responce) => {
+				if (responce.status === 201) {
+					setIsvalid(responce.data.username_available);
+					setError("username already used");
+					setOpen((prev) => !prev);
+					setisClicked(true);
+				} else {
+					setisClicked(false);
+					setIsvalid(responce.data.username_available);
+				}
+			})
+		}
+	};
+
 	const handleEditProfileSubmit = async () => {
 		axios
 			.post(`${process.env.REACT_APP_API_URL}/auth/updateUser`, {
@@ -46,9 +83,9 @@ export default function EditProfile() {
 			<Box
 				width={{ xs: "70%", md: "90%" }}
 				margin={"2rem auto"}
-				border={
-					mode === "light" ? "1px solid black" : "1px solid white"
-				}
+				// border={
+				// 	mode === "light" ? "1px solid black" : "1px solid white"
+				// }
 				borderRadius={"15px"}
 			>
 				<Box
@@ -73,6 +110,7 @@ export default function EditProfile() {
 						label="username"
 						id="fullWidth"
 						onChange={(e) => {
+							checkUsernameAvailability(e.target.value);
 							handleInputChange(e);
 							setUsername(e.target.value);
 						}}
@@ -118,11 +156,11 @@ export default function EditProfile() {
 						sx={{
 							backgroundColor: "white",
 							margin: "1rem auto",
-							color: "black",
+							color: theme.palette.neutral.dark,
 							fontFamily: "JetBrains Mono",
 							"&:hover": {
 								backgroundColor: "black",
-								color: "white",
+								color: theme.palette.neutral.light,
 							},
 							border: "1px solid grey",
 							textTransform: "none",

@@ -1,4 +1,12 @@
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import {
+	Alert,
+	Box,
+	Button,
+	Divider,
+	Snackbar,
+	TextField,
+	Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -11,38 +19,98 @@ export default function EditProfile() {
 	const mode = useSelector((state) => state.mode);
 	const [editedUser, setEditeduser] = useState(user);
 	const [isClicked, setisClicked] = useState(false);
+	const [isvalid, setIsvalid] = useState(true);
+	const [open, setOpen] = useState(false);
+	const [error, setError] = useState("");
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const handleEditProfileSubmit = async () => {
-		axios
-			.post(`${process.env.REACT_APP_API_URL}/auth/updateUser`, {
-				user: editedUser,
-				googleUserUpdate: user.username === undefined ? true : false,
-			})
-			.then((responce) => {
-				if (responce.status === 200) {
-					dispatch(
-						setLogin({
-							user: responce.data.updatedUser,
-							token: token,
-						})
-					);
-					setisClicked((prev) => !prev);
-					document
-						.getElementById("edit-loading")
-						.classList.toggle("disable");
-					navigate(`/profile/${responce.data.updatedUser.username}`);
-				} else {
-					setisClicked((prev) => !prev);
-				}
-			});
+
+	const handleClose = () => {
+		setOpen(false);
 	};
+	axios.defaults.withCredentials = true;
+
+	const checkUsernameAvailability = async (value) => {
+		if (user.username === undefined || user.username !== value) {
+			axios.post(
+				`${process.env.REACT_APP_API_URL}/auth/checkusernameavailable`,
+				{ username: value },
+				{ headers: { Authorization: `Bearer ${token}` } }
+			).then((responce) => {
+				if (responce.status === 201) {
+					setIsvalid(responce.data.username_available);
+					setError("username already used");
+					setOpen((prev) => !prev);
+				} else {
+					setIsvalid(responce.data.username_available);
+				}
+			})
+		}
+	};
+
+	const handleEditProfileSubmit = async () => {
+		if (isvalid) {
+			axios
+				.post(
+					`${process.env.REACT_APP_API_URL}/auth/updateUser`,
+					{
+						user: editedUser,
+						googleUserUpdate:
+							user.username === undefined ? true : false,
+					},
+					{ headers: { Authorization: `Bearer ${token}` } }
+				)
+				.then((responce) => {
+					if (responce.status === 200) {
+						dispatch(
+							setLogin({
+								user: responce.data.updatedUser,
+								token: token,
+							})
+						);
+						setisClicked((prev) => !prev);
+						document
+							.getElementById("edit-loading")
+							.classList.toggle("disable");
+						navigate(
+							`/profile/${responce.data.updatedUser.username}`
+						);
+					} else {
+						setError(responce.data.message);
+						setisClicked((prev) => !prev);
+						document
+							.getElementById("edit-loading")
+							.classList.toggle("disable");
+						setOpen((prev) => !prev);
+					}
+				});
+		} else {
+			setError("Invalid data fields");
+			setOpen((prev) => !prev);
+			setisClicked((prev) => !prev);
+			document
+				.getElementById("edit-loading")
+				.classList.toggle("disable");
+		}
+	};
+
 	const handleInputChange = (e) => {
+		setIsvalid(true);
 		const { name, value } = e.target;
 		setEditeduser((prevData) => ({ ...prevData, [name]: value }));
 	};
+
 	return (
 		<div>
+			<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+				<Alert
+					onClose={handleClose}
+					severity="error"
+					sx={{ width: "100%" }}
+				>
+					{error}
+				</Alert>
+			</Snackbar>
 			<Box
 				width={{ xs: "70%", md: "90%" }}
 				margin={"2rem auto"}
@@ -58,11 +126,20 @@ export default function EditProfile() {
 					display={"flex"}
 					justifyContent={"center"}
 				>
-					<img src={user.picture === undefined ? '/img/user-default-logo.png' : user.picture} alt='' width='100px' style={{ borderRadius: '50%' }}></img>
+					<img
+						src={
+							user.picture === undefined
+								? "/img/user-default-logo.png"
+								: user.picture
+						}
+						alt=""
+						width="100px"
+						style={{ borderRadius: "50%" }}
+					></img>
 				</Box>
 				<Box width={{ xs: "90%", md: "50%" }} margin={"0 auto"}>
 					<TextField
-						error={username.indexOf(" ") >= 0 ? true : false}
+						error={username.indexOf(" ") >= 0 || !isvalid ? true : false}
 						name="username"
 						color={mode === "light" ? "secondary" : "primary"}
 						sx={{ margin: "1rem auto" }}
@@ -71,8 +148,16 @@ export default function EditProfile() {
 						}
 						fullWidth
 						label="username"
+						helperText={
+							username.indexOf(" ") >= 0
+								? "no spaces allowed"
+								: ""
+						}
 						id="fullWidth"
 						onChange={(e) => {
+							setTimeout(() => {
+							}, 1000);
+							checkUsernameAvailability(e.target.value);
 							handleInputChange(e);
 							setUsername(e.target.value);
 						}}

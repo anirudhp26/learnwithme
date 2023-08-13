@@ -52,11 +52,7 @@ export default function Login() {
           },
         }
       );
-      dispatch(
-        setLogin({
-          user: userInfo.data,
-        })
-      );
+      
       const isGoogleUserRegistered = await Axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
         googleId: userInfo.data.sub,
         googlelogin: true,
@@ -70,6 +66,12 @@ export default function Login() {
           })
         );
       } else {
+        dispatch(
+          setLogin({
+            user: userInfo.data,
+            token: isGoogleUserRegistered.data.token,
+          })
+        );
         navigate('/editprofile')
       }
     },

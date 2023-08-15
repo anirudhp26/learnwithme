@@ -117,6 +117,7 @@ export default function Navbar () {
 	};
 	const handleOpenUserNotif = (event) => {
 		setAnchorElUserNotif(event.currentTarget);
+		setNotiSeen(true);
 	};
 
 	const handleCloseNavMenu = () => {
@@ -280,7 +281,6 @@ export default function Navbar () {
 										notiSeen ? 0 : notifications.length
 									}
 									max={999}
-									onClick={() => {setNotiSeen(true)}}
 								>
 									<NotificationAddRounded
 										sx={{

@@ -5,6 +5,7 @@ const defaultState = {
     token: null,
     user: null,
     blogs: [],
+    notifications: [],
 };
 
 export const authSlice = createSlice({
@@ -26,14 +27,19 @@ export const authSlice = createSlice({
             state.token = null;
             state.mode = "light";
             state.blogs = [];
+            state.notifications = [];
         },
 
         setBlogs: (state, action) => {
             state.blogs = action.payload.blogs;
         },
+
+        setNotifications: (state, action) => {
+            state.notifications = action.payload.notifications;
+        }
     }
 });
 
-export const { setMode, setLogin, setLogout, setBlogs } = authSlice.actions;
+export const { setMode, setLogin, setLogout, setBlogs, setNotifications } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -2,10 +2,10 @@ import { Outlet } from "react-router-dom";
 import React from "react";
 import Navbar from "../components/Navbar";
 
-export default function Layout() {
+export default function Layout({ socket }) {
     return (
         <>
-            <Navbar />
+            <Navbar socket={socket} />
             <Outlet />
         </>
     )

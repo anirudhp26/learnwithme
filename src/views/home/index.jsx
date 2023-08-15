@@ -10,7 +10,7 @@ const Home = () => {
         if (isLoggedin) {
             return(
                 <>
-                    <Navbar/>
+                    <Navbar />
                     <Box width={'90%'} margin={'1rem auto'}>
                         <Typography>Home page</Typography>
                     </Box>

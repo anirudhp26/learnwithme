@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
 	Box,
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import { setBlogs } from "../../redux";
 import Blog from "../blog";
+import { SocketContext } from "../../context/SocketContext";
 export default function Profile() {
 	const { user } = useParams();
 	const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export default function Profile() {
 	const mode = useSelector((state) => state.mode);
 	const blogs = useSelector((state) => state.blogs);
 	const navigate = useNavigate();
+	const socket = useContext(SocketContext);
 	useEffect(() => {
 		Axios.post(
 			`${process.env.REACT_APP_API_URL}/blog/getBlogbyUser`,
@@ -44,16 +46,18 @@ export default function Profile() {
 		setSuser(suser);
 		const followReq = await Axios.post(
 			`${process.env.REACT_APP_API_URL}/auth/updateUser`,
-			{ user: suser }
+			{ user: suser },
+			{ headers: { Authorization: `Bearer ${token}` } }
 		);
 		if (followReq) {
 			setSuser(followReq.data.updatedUser);
 			document
-				.getElementById("follow-loading")
-				.classList.toggle("disable");
+			.getElementById("follow-loading")
+			.classList.toggle("disable");
+			socket.emit("send_notification_follow", { to: suser.username, from: logged_user.username, sender_id: logged_user._id });
 		}
 	};
-
+  
 	const unfollowAction = async () => {
 		const newImpressedArray = await suser.impressed.filter(function (user) {
 			return user !== logged_user._id;
@@ -62,7 +66,8 @@ export default function Profile() {
 		setSuser(suser);
 		const followReq = await Axios.post(
 			`${process.env.REACT_APP_API_URL}/auth/updateUser`,
-			{ user: suser }
+			{ user: suser },
+			{ headers: { Authorization: `Bearer ${token}` } }
 		);
 		if (followReq) {
 			setSuser(followReq.data.updatedUser);
@@ -182,13 +187,13 @@ export default function Profile() {
 										},
 								}}
 							>
-								{logged_user.picture !== undefined ? (
+								{suser.picture !== undefined ? (
 									<img
 										style={{
 											borderRadius: "50%",
 											width: "150px",
 										}}
-										src={logged_user.picture}
+										src={suser.picture}
 										alt={
 											<i className="fa-solid fa-user"></i>
 										}

@@ -63,7 +63,7 @@ export default function Login() {
           setLogin({
             user: isGoogleUserRegistered.data.user,
             token: isGoogleUserRegistered.data.token,
-          })
+          }),
         );
       } else {
         dispatch(
@@ -94,7 +94,7 @@ export default function Login() {
             setLogin({
               user: responce.data.user,
               token: responce.data.token,
-            })
+            }),
           );
         } else {
           setisClicked(false);
@@ -129,7 +129,7 @@ export default function Login() {
             setLogin({
               user: responce.data.user,
               token: responce.data.token,
-            })
+            }),
           );
         } else {
           setisClicked(false);

@@ -12,26 +12,31 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { createTheme } from '@mui/material/styles';
 import { themeSettings } from './theme';
-
-function App() {
+import Inbox from './views/inbox';
+import { SocketContext } from './context/SocketContext';
+function App({ socket }) {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Routes>
-          <Route element={<Home />} path='/' index></Route>
-          <Route element={<Home />} path='/home' index></Route>
-          <Route element={<Layout />}>
-            <Route element={<Explore />} path='/explore'></Route>
-            <Route element={<Pricing />} path='/pricing'></Route>
-            <Route element={<Blog />} path='/blog'></Route>
-            <Route element={<Profile />} path='/profile/:user'></Route>
-            <Route element={<EditProfile />} path='/editprofile'></Route>
-            <Route element={<BlogCreator />} path='/blogcreator'></Route>
-          </Route>
-        </Routes>
+        <SocketContext.Provider value={socket}>
+          <Routes>
+            <Route element={<Home />} path='/' index></Route>
+            <Route element={<Home />} path='/home' index></Route>
+            <Route element={<Layout />}>
+              <Route element={<Explore />} path='/explore'></Route>
+              <Route element={<Pricing />} path='/pricing'></Route>
+              <Route element={<Blog />} path='/blog'></Route>
+              <Route element={<Profile />} path='/profile/:user'></Route>
+              <Route element={<EditProfile />} path='/editprofile'></Route>
+              <Route element={<Inbox />} path='/inbox'></Route>
+              <Route element={<BlogCreator />} path='/blogcreator'></Route>
+            </Route>
+          </Routes>
+        </SocketContext.Provider>
       </ThemeProvider>
     </BrowserRouter>
   )

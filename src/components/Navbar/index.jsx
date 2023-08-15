@@ -14,10 +14,12 @@ import { styled, useTheme } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { Divider, Link } from "@mui/material";
+import { Badge, Divider, Link } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLogout, setMode } from "../../redux";
+import { setLogout, setMode, setNotifications } from "../../redux";
+import { NotificationAddRounded } from "@mui/icons-material";
+import { SocketContext } from "../../context/SocketContext";
 
 const pages = ["Home", "Explore", "Pricing", "Blog"];
 
@@ -69,12 +71,30 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 	},
 }));
 
-function Navbar() {
+export default function Navbar () {
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const token = useSelector((state) => state.token);
 	const user = useSelector((state) => state.user);
+	const [notiSeen, setNotiSeen] = React.useState(false);
+	const notifications = useSelector((state) => state.notifications);
+	const socket = React.useContext(SocketContext);
+	React.useEffect(() => {
+		if (socket.connected) {
+			socket.emit("newuser", { username: user.username, userId: user._id });
+		}
+		socket.on("recieve_notification", (notification) => {
+			console.log(notification);
+			setNotiSeen(prev => !prev);
+			dispatch(
+				setNotifications({
+					notifications: [notification.notification, ...notifications]
+				})
+			);
+		});
+	}, [socket, notifications, dispatch, user]);
+
 	React.useEffect(() => {
 		if (token === null) {
 			navigate("/");
@@ -83,15 +103,20 @@ function Navbar() {
 			navigate("/editprofile");
 		}
 	});
+
 	const mode = useSelector((state) => state.mode);
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
+	const [anchorElUserNotif, setAnchorElUserNotif] = React.useState(null);
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
 	};
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
+	};
+	const handleOpenUserNotif = (event) => {
+		setAnchorElUserNotif(event.currentTarget);
 	};
 
 	const handleCloseNavMenu = () => {
@@ -101,10 +126,17 @@ function Navbar() {
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
+	const handleCloseUserNotif = () => {
+		setAnchorElUserNotif(null);
+	};
 	return (
 		<AppBar
 			position="static"
-			sx={{ boxShadow: "none", margin: "auto", backgroundColor: theme.palette.neutral.light }}
+			sx={{
+				boxShadow: "none",
+				margin: "auto",
+				backgroundColor: theme.palette.neutral.light,
+			}}
 		>
 			<Container maxWidth="xl">
 				<Toolbar
@@ -173,7 +205,11 @@ function Navbar() {
 									<Typography textAlign="center">
 										<Link
 											underline="none"
-											sx={{ cursor: "pointer", color: theme.palette.neutral.dark }}
+											sx={{
+												cursor: "pointer",
+												color: theme.palette.neutral
+													.dark,
+											}}
 											onClick={() => {
 												navigate(
 													`/${page.toLowerCase()}`
@@ -224,6 +260,80 @@ function Navbar() {
 							</Typography>
 						))}
 					</Box>
+					<Box
+						sx={{
+							display: "flex",
+							flexDirection: "row",
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+					>
+						<Tooltip title="Open Notifications">
+							<IconButton
+								onClick={handleOpenUserNotif}
+								sx={{ p: 1, borderRadius: "0" }}
+							>
+								<Badge
+									color="error"
+									sx={{ cursor: "pointer", padding: "3px" }}
+									badgeContent={
+										notiSeen ? 0 : notifications.length
+									}
+									max={999}
+									onClick={() => {setNotiSeen(true)}}
+								>
+									<NotificationAddRounded
+										sx={{
+											color: theme.palette.neutral.dark,
+											fontSize: theme.typography.h2,
+										}}
+									/>
+								</Badge>
+							</IconButton>
+						</Tooltip>
+						<Menu
+							sx={{ mt: "45px" }}
+							id="menu-appbar-notif"
+							anchorEl={anchorElUserNotif}
+							anchorOrigin={{
+								vertical: "top",
+								horizontal: "right",
+							}}
+							keepMounted
+							transformOrigin={{
+								vertical: "top",
+								horizontal: "right",
+							}}
+							open={Boolean(anchorElUserNotif)}
+							onClose={handleCloseUserNotif}
+						>
+							{notifications === undefined ? (
+								"nothing to show here"
+							) : (
+								<>
+									{notifications.map((val) => {
+										return (
+											<Typography
+												margin={"auto"}
+												p="1rem"
+												fontSize={theme.typography.h5}
+												fontWeight={"bold"}
+												color={
+													theme.palette.neutral.dark
+												}
+												sx={{
+													cursor: "pointer",
+												}}
+												textAlign={"center"}
+											>
+												{val}
+											</Typography>
+										);
+									})}
+								</>
+							)}
+						</Menu>
+					</Box>
 					{user === null ? (
 						<></>
 					) : (
@@ -238,7 +348,7 @@ function Navbar() {
 							<Tooltip title="Open settings">
 								<IconButton
 									onClick={handleOpenUserMenu}
-									sx={{ p: 1, borderRadius: '0' }}
+									sx={{ p: 1, borderRadius: "0" }}
 								>
 									{user.picture !== undefined ? (
 										<img
@@ -248,10 +358,13 @@ function Navbar() {
 											}}
 											src={user.picture}
 											alt="USER"
-										>
-										</img>
+										></img>
 									) : (
-										<img src='/img/user-default-logo.png' alt='' width={'40px'}></img>
+										<img
+											src="/img/user-default-logo.png"
+											alt=""
+											width={"40px"}
+										></img>
 									)}
 								</IconButton>
 							</Tooltip>
@@ -272,7 +385,6 @@ function Navbar() {
 								onClose={handleCloseUserMenu}
 							>
 								<Typography
-									width={"90%"}
 									margin={"auto"}
 									p="1rem"
 									fontSize={theme.typography.h5}
@@ -287,15 +399,29 @@ function Navbar() {
 								>
 									{user.username}
 								</Typography>
-								<Divider
-									variant="middle"
-								></Divider>
+								<Divider variant="middle"></Divider>
+								<Typography
+									margin={"auto"}
+									p="1rem"
+									fontSize={theme.typography.h5}
+									color={theme.palette.neutral.dark}
+									sx={{
+										cursor: "pointer",
+									}}
+									textAlign={"center"}
+									onClick={() => {
+										navigate(`/inbox`);
+									}}
+								>
+									Inbox
+								</Typography>
+								<Divider variant="middle"></Divider>
 								<Box
 									sx={{
 										display: "flex",
 										alignItems: "center",
 										justifyContent: "center",
-										margin: "10px 0 10px 25px",
+										padding: "1rem 0 1rem 1.5rem",
 									}}
 								>
 									<FormGroup>
@@ -317,19 +443,18 @@ function Navbar() {
 										/>
 									</FormGroup>
 								</Box>
-								<Divider
-									variant="middle"
-								></Divider>
+								<Divider variant="middle"></Divider>
 								<Button
 									fullWidth
 									variant="danger"
 									onClick={() => {
+										socket.disconnect();
 										dispatch(setLogout());
 										navigate("/");
 									}}
 								>
 									<Typography
-										padding={'0.5rem'}
+										padding={"0.5rem"}
 										textTransform="none"
 										color="red"
 										fontSize={theme.typography.h5}
@@ -342,10 +467,7 @@ function Navbar() {
 					)}
 				</Toolbar>
 			</Container>
-			<Divider
-				variant="middle"
-			></Divider>
+			<Divider variant="middle"></Divider>
 		</AppBar>
 	);
 }
-export default Navbar;

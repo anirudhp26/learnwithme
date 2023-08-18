@@ -83,19 +83,27 @@ export default function Navbar() {
 	const [notiCount, setnotiCount] = React.useState(0);
 
 	React.useEffect(() => {
-		socket.on("recieve_notification", (notification) => {
-			dispatch(
-				setNotifications({
-					notifications: [notification.notification, ...notifications]
-				})
-			);
+		socket.on("recieve_notification", async (notification) => {
+			try {
+				dispatch(
+					setNotifications({
+						notifications: [notification.notification, ...notifications]
+					})
+				);
+			} catch (error) {
+				console.log(error);
+			}
 		});
 		socket.on("offlinenotifications", (notification) => {
-			dispatch(
-				setNotifications({
-					notifications: [...notification.notifications, ...notifications]
-				})
-			);
+			try {
+				dispatch(
+					setNotifications({
+						notifications: [...notification.notifications, ...notifications]
+					})
+				);
+			} catch (error) {
+				console.log(error);
+			}
 		});
 		setnotiCount(notifications?.length);
 		socket.emit("newuser", { username: user.username, userId: user._id });

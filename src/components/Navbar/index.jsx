@@ -87,7 +87,7 @@ export default function Navbar() {
 			try {
 				dispatch(
 					setNotifications({
-						notifications: [notification.notification, ...notifications]
+						notifications: [notification?.notification, ...notifications]
 					})
 				);
 			} catch (error) {
@@ -98,7 +98,7 @@ export default function Navbar() {
 			try {
 				dispatch(
 					setNotifications({
-						notifications: [...notification.notifications, ...notifications]
+						notifications: [...notification?.notifications, ...notifications]
 					})
 				);
 			} catch (error) {

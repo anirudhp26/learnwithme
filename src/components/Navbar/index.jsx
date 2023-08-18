@@ -358,7 +358,7 @@ export default function Navbar() {
 									);
 								})
 							) :
-								user.notifications.map((val) => {
+								user?.notifications.map((val) => {
 									return (
 										<Typography
 											margin={"auto"}
@@ -377,7 +377,7 @@ export default function Navbar() {
 										</Typography>
 									);
 								}) &&
-								notifications.map((val) => {
+								notifications?.map((val) => {
 									return (
 										<Typography
 											margin={"auto"}

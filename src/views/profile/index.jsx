@@ -43,7 +43,6 @@ export default function Profile() {
 
 	const followAction = async () => {
 		suser.impressed.push(logged_user._id);
-		setSuser(suser);
 		const followReq = await Axios.post(
 			`${process.env.REACT_APP_API_URL}/auth/updateUser`,
 			{ user: suser },
@@ -63,7 +62,6 @@ export default function Profile() {
 			return user !== logged_user._id;
 		});
 		suser.impressed = newImpressedArray;
-		setSuser(suser);
 		const followReq = await Axios.post(
 			`${process.env.REACT_APP_API_URL}/auth/updateUser`,
 			{ user: suser },

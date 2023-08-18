@@ -36,10 +36,14 @@ export const authSlice = createSlice({
 
         setNotifications: (state, action) => {
             state.notifications = action.payload.notifications;
+        },
+
+        setUser: (state, action) => {
+            state.user = action.payload.user;
         }
     }
 });
 
-export const { setMode, setLogin, setLogout, setBlogs, setNotifications } = authSlice.actions;
+export const { setMode, setLogin, setLogout, setBlogs, setNotifications, setUser } = authSlice.actions;
 
 export default authSlice.reducer;

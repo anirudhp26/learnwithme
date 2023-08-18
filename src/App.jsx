@@ -13,8 +13,8 @@ import { useSelector } from 'react-redux';
 import { createTheme } from '@mui/material/styles';
 import { themeSettings } from './theme';
 import Inbox from './views/inbox';
-import { SocketContext } from './context/SocketContext';
-function App({ socket }) {
+import { SocketContext, socket } from './context/SocketContext';
+function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 

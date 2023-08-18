@@ -17,9 +17,10 @@ import Switch from "@mui/material/Switch";
 import { Badge, Divider, Link } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLogout, setMode, setNotifications } from "../../redux";
+import { setLogout, setMode, setNotifications, setUser } from "../../redux";
 import { NotificationAddRounded } from "@mui/icons-material";
 import { SocketContext } from "../../context/SocketContext";
+import Axios from 'axios';
 
 const pages = ["Home", "Explore", "Pricing", "Blog"];
 
@@ -71,29 +72,56 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 	},
 }));
 
-export default function Navbar () {
+export default function Navbar() {
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const token = useSelector((state) => state.token);
 	const user = useSelector((state) => state.user);
-	const [notiSeen, setNotiSeen] = React.useState(false);
 	const notifications = useSelector((state) => state.notifications);
 	const socket = React.useContext(SocketContext);
+	const [notiCount, setnotiCount] = React.useState(0);
+
 	React.useEffect(() => {
-		if (socket.connected) {
-			socket.emit("newuser", { username: user.username, userId: user._id });
-		}
 		socket.on("recieve_notification", (notification) => {
-			console.log(notification);
-			setNotiSeen(prev => !prev);
 			dispatch(
 				setNotifications({
 					notifications: [notification.notification, ...notifications]
 				})
 			);
 		});
-	}, [socket, notifications, dispatch, user]);
+		socket.on("offlinenotifications", (notification) => {
+			dispatch(
+				setNotifications({
+					notifications: [...notification.notifications, ...notifications]
+				})
+			);
+		});
+		setnotiCount(notifications.length);
+		socket.emit("newuser", { username: user.username, userId: user._id });
+	}, [socket, notifications, user, dispatch]);
+
+	const notificationStorageHandle = async () => {
+		var tempUser = {};
+		await Object.assign(tempUser, user);
+		console.log(tempUser);
+		notifications.map(
+			(val) => tempUser.notifications = [val, ...tempUser.notifications]
+		)
+		console.log(tempUser.notifications);
+		if (user.notifications.length !== tempUser.notifications.length) {
+			const notiUpdateReq = await Axios.post(
+				`${process.env.REACT_APP_API_URL}/auth/updateUser`,
+				{ user: tempUser },
+				{ headers: { Authorization: `Bearer ${token}` } }
+			);
+			if (notiUpdateReq.status === 200) {
+				dispatch(setUser({
+					user: notiUpdateReq.data.updatedUser
+				}))
+			}
+		}
+	}
 
 	React.useEffect(() => {
 		if (token === null) {
@@ -117,7 +145,7 @@ export default function Navbar () {
 	};
 	const handleOpenUserNotif = (event) => {
 		setAnchorElUserNotif(event.currentTarget);
-		setNotiSeen(true);
+		notificationStorageHandle();
 	};
 
 	const handleCloseNavMenu = () => {
@@ -129,6 +157,10 @@ export default function Navbar () {
 	};
 	const handleCloseUserNotif = () => {
 		setAnchorElUserNotif(null);
+		dispatch(setNotifications({
+			notifications: []
+		}))
+		setnotiCount(0);
 	};
 	return (
 		<AppBar
@@ -277,9 +309,7 @@ export default function Navbar () {
 								<Badge
 									color="error"
 									sx={{ cursor: "pointer", padding: "3px" }}
-									badgeContent={
-										notiSeen ? 0 : notifications.length
-									}
+									badgeContent={notiCount}
 									max={999}
 								>
 									<NotificationAddRounded
@@ -307,31 +337,66 @@ export default function Navbar () {
 							open={Boolean(anchorElUserNotif)}
 							onClose={handleCloseUserNotif}
 						>
-							{notifications === undefined ? (
-								"nothing to show here"
-							) : (
-								<>
-									{notifications.map((val) => {
-										return (
-											<Typography
-												margin={"auto"}
-												p="1rem"
-												fontSize={theme.typography.h5}
-												fontWeight={"bold"}
-												color={
-													theme.palette.neutral.dark
-												}
-												sx={{
-													cursor: "pointer",
-												}}
-												textAlign={"center"}
-											>
-												{val}
-											</Typography>
-										);
-									})}
-								</>
-							)}
+							{notifications?.length === 0 ? (
+								user.notifications.map((val) => {
+									return (
+										<Typography
+											margin={"auto"}
+											p="1rem"
+											fontSize={theme.typography.h5}
+											fontWeight={"bold"}
+											color={
+												theme.palette.neutral.dark
+											}
+											sx={{
+												cursor: "pointer",
+											}}
+											textAlign={"center"}
+										>
+											{val}
+										</Typography>
+									);
+								})
+							) :
+								user.notifications.map((val) => {
+									return (
+										<Typography
+											margin={"auto"}
+											p="1rem"
+											fontSize={theme.typography.h5}
+											fontWeight={"bold"}
+											color={
+												theme.palette.neutral.dark
+											}
+											sx={{
+												cursor: "pointer",
+											}}
+											textAlign={"center"}
+										>
+											{val}
+										</Typography>
+									);
+								}) &&
+								notifications.map((val) => {
+									return (
+										<Typography
+											margin={"auto"}
+											p="1rem"
+											fontSize={theme.typography.h5}
+											fontWeight={"bold"}
+											color={
+												theme.palette.neutral.dark
+											}
+											sx={{
+												cursor: "pointer",
+											}}
+											textAlign={"center"}
+										>
+											{val}
+										</Typography>
+									);
+								}
+								)}
 						</Menu>
 					</Box>
 					{user === null ? (

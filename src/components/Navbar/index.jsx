@@ -97,7 +97,7 @@ export default function Navbar() {
 				})
 			);
 		});
-		setnotiCount(notifications.length);
+		setnotiCount(notifications?.length);
 		socket.emit("newuser", { username: user.username, userId: user._id });
 	}, [socket, notifications, user, dispatch]);
 

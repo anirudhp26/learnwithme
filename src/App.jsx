@@ -4,8 +4,7 @@ import Profile from './views/profile';
 import Explore from './views/explore';
 import Pricing from './views/pricing';
 import Layout from './views/Layout';
-import Blog from './views/blog';
-import BlogCreator from './views/blogCreator';
+// import Blog from './views/blog';
 import EditProfile from './views/editProfile';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useMemo } from 'react';
@@ -14,6 +13,7 @@ import { createTheme } from '@mui/material/styles';
 import { themeSettings } from './theme';
 import Inbox from './views/inbox';
 import { SocketContext, socket } from './context/SocketContext';
+import TextEditor from './views/blogCreator';
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -29,11 +29,11 @@ function App() {
             <Route element={<Layout />}>
               <Route element={<Explore />} path='/explore'></Route>
               <Route element={<Pricing />} path='/pricing'></Route>
-              <Route element={<Blog />} path='/blog'></Route>
+              <Route element={<TextEditor />} path='/blog'></Route>
               <Route element={<Profile />} path='/profile/:user'></Route>
               <Route element={<EditProfile />} path='/editprofile'></Route>
               <Route element={<Inbox />} path='/inbox'></Route>
-              <Route element={<BlogCreator />} path='/blogcreator'></Route>
+              {/* <Route element={<TextEditor />} path='/blog'></Route> */}
             </Route>
           </Routes>
         </SocketContext.Provider>

@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { setLogout, setMode, setNotifications, setUser } from "../../redux";
 import { NotificationAddRounded } from "@mui/icons-material";
 import { SocketContext } from "../../context/SocketContext";
-import Axios from 'axios';
+import Axios from "axios";
 
 const pages = ["Home", "Explore", "Pricing", "Blog"];
 
@@ -88,7 +88,10 @@ export default function Navbar() {
 				if (notification.notification) {
 					dispatch(
 						setNotifications({
-							notifications: [notification?.notification, ...notifications]
+							notifications: [
+								notification?.notification,
+								...notifications,
+							],
 						})
 					);
 				}
@@ -101,7 +104,10 @@ export default function Navbar() {
 				if (notification.notifications) {
 					dispatch(
 						setNotifications({
-							notifications: [...notification?.notifications, ...notifications]
+							notifications: [
+								...notification?.notifications,
+								...notifications,
+							],
 						})
 					);
 				}
@@ -118,22 +124,30 @@ export default function Navbar() {
 		await Object.assign(tempUser, user);
 		console.log(tempUser);
 		notifications.map(
-			(val) => tempUser.notifications = [val, ...tempUser.notifications]
-		)
+			(val) => (tempUser.notifications = [val, ...tempUser.notifications])
+		);
 		console.log(tempUser.notifications);
-		if (user.notifications.length !== tempUser.notifications.length) {
+		if (user.notifications.length !== tempUser.notifications.length && tempUser.notifications.length > 0) {
 			const notiUpdateReq = await Axios.post(
 				`${process.env.REACT_APP_API_URL}/auth/updateUser`,
 				{ user: tempUser },
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
 			if (notiUpdateReq.status === 200) {
-				dispatch(setUser({
-					user: notiUpdateReq.data.updatedUser
-				}))
+				dispatch(
+					setUser({
+						user: notiUpdateReq.data.updatedUser,
+					})
+				);
+				dispatch(
+					setNotifications({
+						notifications: [],
+					})
+				);
+				setnotiCount(0);
 			}
 		}
-	}
+	};
 
 	React.useEffect(() => {
 		if (token === null) {
@@ -157,7 +171,6 @@ export default function Navbar() {
 	};
 	const handleOpenUserNotif = (event) => {
 		setAnchorElUserNotif(event.currentTarget);
-		notificationStorageHandle();
 	};
 
 	const handleCloseNavMenu = () => {
@@ -169,10 +182,7 @@ export default function Navbar() {
 	};
 	const handleCloseUserNotif = () => {
 		setAnchorElUserNotif(null);
-		dispatch(setNotifications({
-			notifications: []
-		}))
-		setnotiCount(0);
+		notificationStorageHandle();
 	};
 	return (
 		<AppBar
@@ -349,66 +359,40 @@ export default function Navbar() {
 							open={Boolean(anchorElUserNotif)}
 							onClose={handleCloseUserNotif}
 						>
-							{notifications?.length === 0 ? (
-								user.notifications.map((val) => {
-									return (
-										<Typography
-											margin={"auto"}
-											p="1rem"
-											fontSize={theme.typography.h5}
-											fontWeight={"bold"}
-											color={
-												theme.palette.neutral.dark
-											}
-											sx={{
-												cursor: "pointer",
-											}}
-											textAlign={"center"}
-										>
-											{val}
-										</Typography>
-									);
-								})
-							) :
-								user?.notifications.map((val) => {
-									return (
-										<Typography
-											margin={"auto"}
-											p="1rem"
-											fontSize={theme.typography.h5}
-											fontWeight={"bold"}
-											color={
-												theme.palette.neutral.dark
-											}
-											sx={{
-												cursor: "pointer",
-											}}
-											textAlign={"center"}
-										>
-											{val}
-										</Typography>
-									);
-								}) &&
-								notifications?.map((val) => {
-									return (
-										<Typography
-											margin={"auto"}
-											p="1rem"
-											fontSize={theme.typography.h5}
-											fontWeight={"bold"}
-											color={
-												theme.palette.neutral.dark
-											}
-											sx={{
-												cursor: "pointer",
-											}}
-											textAlign={"center"}
-										>
-											{val}
-										</Typography>
-									);
-								}
-								)}
+							{notifications?.map((val) => {
+								return (
+									<Typography
+										key={val.id}
+										margin={"auto"}
+										p="1rem"
+										fontSize={theme.typography.h5}
+										fontWeight={"bold"}
+										color={theme.palette.neutral.dark}
+										sx={{
+											cursor: "pointer",
+										}}
+										textAlign={"center"}
+									>
+										{val}
+									</Typography>
+								);
+							})}
+							{user?.notifications.map((val) => {
+								return (
+									<Typography
+										margin={"auto"}
+										p="1rem"
+										fontSize={theme.typography.h5}
+										color={theme.palette.neutral.dark}
+										sx={{
+											cursor: "pointer",
+										}}
+										textAlign={"center"}
+									>
+										{val}
+									</Typography>
+								);
+							})}
 						</Menu>
 					</Box>
 					{user === null ? (

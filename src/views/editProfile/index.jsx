@@ -128,13 +128,14 @@ export default function EditProfile() {
 					justifyContent={"center"}
 				>
 					<img
-						src={
-							user.picture === undefined
-								? "/img/user-default-logo.png"
-								: user.picture
-						}
-						alt=""
+						id="edit-user-image"
+						src={process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
+						onError={() => {
+							document.getElementById("edit-user-image").src = user.picture;
+						}}
+						alt="USER"
 						width="100px"
+						height={'100px'}
 						style={{ borderRadius: "50%" }}
 					></img>
 				</Box>

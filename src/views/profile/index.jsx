@@ -51,12 +51,12 @@ export default function Profile() {
 		if (followReq) {
 			setSuser(followReq.data.updatedUser);
 			document
-			.getElementById("follow-loading")
-			.classList.toggle("disable");
+				.getElementById("follow-loading")
+				.classList.toggle("disable");
 			socket.emit("send_notification_follow", { to: suser.username, from: logged_user.username, sender_id: logged_user._id });
 		}
 	};
-  
+
 	const unfollowAction = async () => {
 		const newImpressedArray = await suser.impressed.filter(function (user) {
 			return user !== logged_user._id;
@@ -179,10 +179,10 @@ export default function Profile() {
 								margin="1rem auto"
 								sx={{
 									"@media only screen and (max-width: 530px)":
-										{
-											flexDirection: "column",
-											justifyContent: "center",
-										},
+									{
+										flexDirection: "column",
+										justifyContent: "center",
+									},
 								}}
 							>
 								{suser.picture !== undefined ? (
@@ -190,11 +190,14 @@ export default function Profile() {
 										style={{
 											borderRadius: "50%",
 											width: "150px",
+											height: '150px'
 										}}
-										src={suser.picture}
-										alt={
-											<i className="fa-solid fa-user"></i>
-										}
+										id="profile-user-image"
+										src={process.env.REACT_APP_API_URL + `/assets/${logged_user.picture}`}
+										onError={() => {
+											document.getElementById("profile-user-image").src = user.picture;
+										}}
+										alt="USER"
 									></img>
 								) : (
 									<img
@@ -207,10 +210,10 @@ export default function Profile() {
 									margin="2rem 0 2rem 4rem"
 									sx={{
 										"@media only screen and (max-width: 530px)":
-											{
-												width: "90%",
-												margin: "auto",
-											},
+										{
+											width: "90%",
+											margin: "auto",
+										},
 									}}
 								>
 									<Typography sx={{ fontSize: "35px" }}>
@@ -251,9 +254,9 @@ export default function Profile() {
 								textAlign="center"
 								sx={{
 									"@media only screen and (max-width: 530px)":
-										{
-											width: "90%",
-										},
+									{
+										width: "90%",
+									},
 								}}
 							>
 								<Box>

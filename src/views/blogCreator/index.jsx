@@ -1,9 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {
-  AppBar,
-  Toolbar,
   IconButton,
-  Typography,
   Paper,
   Button,
   TextareaAutosize,
@@ -16,23 +13,22 @@ import {
   Tab,
   Box,
   Container,
+  useTheme,
 } from '@mui/material';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CodeIcon from '@mui/icons-material/Code';
 import { marked } from 'marked';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
 const containerStyle = {
   padding: '16px',
+  margin: '2rem 0'
 };
 
-const editorStyle = {
-  padding: '16px',
-  border: '1px solid #ccc',
-  minHeight: '200px',
-  resize: 'vertical',
-};
+
 
 const dialogStyle = {
   width: '400px',
@@ -44,6 +40,17 @@ const GithubIssueEditor = () => {
   const [codeContent, setCodeContent] = useState('');
   const [activeTab, setActiveTab] = useState(0);
   const editorRef = useRef(null);
+  const theme = useTheme();
+
+  const editorStyle = {
+    padding: '16px',
+    minHeight: '200px',
+    resize: 'vertical',
+    width: '100%',
+    backgroundColor: theme.palette.background.default,
+    color: theme.palette.neutral.dark,
+    border: 'none'
+  };
 
   const applyStyle = (style) => {
     const selection = window.getSelection();
@@ -81,7 +88,13 @@ const GithubIssueEditor = () => {
 
   const handleCodeInsert = () => {
     const codeBlock = '```' + codeContent + '```';
-    setContent(content + codeBlock);
+    setContent(
+      content 
+        + 
+      <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
+        {codeBlock}
+      </SyntaxHighlighter>
+    )
     setCodeContent('');
     setIsCodeDialogOpen(false);
   };
@@ -92,11 +105,6 @@ const GithubIssueEditor = () => {
 
   return (
     <Container>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Issue Editor</Typography>
-        </Toolbar>
-      </AppBar>
       <Paper style={containerStyle}>
         <div>
           <IconButton onClick={handleBoldClick}>
@@ -132,12 +140,14 @@ const GithubIssueEditor = () => {
               minHeight: '200px',
               overflow: 'auto',
             }}
-            dangerouslySetInnerHTML={{ __html: marked(content) }}
-          ></div>
+            className="markdown-preview"
+          >
+            <div dangerouslySetInnerHTML={{ __html: marked(content) }} />
+          </div>
         </TabPanel>
+
       </Paper>
       <Dialog open={isCodeDialogOpen} onClose={handleCodeDialogClose}>
-        {/* ... (same as before) */}
         <DialogTitle>Insert Code Block</DialogTitle>
         <DialogContent style={dialogStyle}>
           <DialogContentText>

@@ -415,9 +415,15 @@ export default function Navbar() {
 										<img
 											style={{
 												borderRadius: "50%",
-												width: "50%",
+												width: "60px",
+												height: '60px',
+												objectFit: 'cover',
 											}}
-											src={user.picture}
+											id="user-image"
+											src={process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
+											onError={() => {
+												document.getElementById("user-image").src = user.picture;
+											}}
 											alt="USER"
 										></img>
 									) : (

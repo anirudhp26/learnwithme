@@ -408,7 +408,7 @@ export default function Login() {
                       <Typography color={theme.palette.neutral.dark}>Add Profile Picture Here</Typography> 
                       : 
                       <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
-                        <img src={`${image.path}`}></img>
+                        <img src={`${image.path}`} alt='USER'></img>
                         <Typography color={theme.palette.neutral.dark}>{image.name}</Typography>
                         <EditOutlined sx={{ color: theme.palette.neutral.dark }} />
                       </Box>
@@ -521,13 +521,12 @@ export default function Login() {
                 id="auth-btn-1"
                 sx={{
                   textTransform: "none",
-                  margin: "1rem 0",
+                  margin: "1rem auto",
                   backgroundColor: "white",
                   boxShadow: "none",
                   borderRadius: "0",
                   color: "black",
                   width: '40%',
-                  margin: 'auto',
                   "&:hover": {
                     backgroundColor: "black",
                     color: "white",

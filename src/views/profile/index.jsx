@@ -119,7 +119,8 @@ export default function Profile() {
 							backgroundColor: "black",
 							color: "white",
 						},
-						border: "1px solid grey",
+						border: mode === "light" ? "1px solid grey" : "none",
+						borderRadius: '0px'
 					}}
 					id="follow-btn"
 					onClick={() => {
@@ -195,7 +196,7 @@ export default function Profile() {
 										id="profile-user-image"
 										src={process.env.REACT_APP_API_URL + `/assets/${logged_user.picture}`}
 										onError={() => {
-											document.getElementById("profile-user-image").src = user.picture;
+											document.getElementById("profile-user-image").src = suser.picture;
 										}}
 										alt="USER"
 									></img>

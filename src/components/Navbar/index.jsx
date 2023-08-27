@@ -122,11 +122,9 @@ export default function Navbar() {
 	const notificationStorageHandle = async () => {
 		var tempUser = {};
 		await Object.assign(tempUser, user);
-		console.log(tempUser);
-		notifications.map(
+		notifications?.map(
 			(val) => (tempUser.notifications = [val, ...tempUser.notifications])
 		);
-		console.log(tempUser.notifications);
 		if (user.notifications.length !== tempUser.notifications.length && tempUser.notifications.length > 0) {
 			const notiUpdateReq = await Axios.post(
 				`${process.env.REACT_APP_API_URL}/auth/updateUser`,
@@ -358,7 +356,13 @@ export default function Navbar() {
 							}}
 							open={Boolean(anchorElUserNotif)}
 							onClose={handleCloseUserNotif}
-						>
+						>{user?.notifications.length === 0 
+						? 
+						<Box>
+							<Typography padding={'1rem'}>Nothing to show here..</Typography>
+						</Box> 
+						: 
+						<Box>
 							{notifications?.map((val) => {
 								return (
 									<Typography
@@ -393,6 +397,8 @@ export default function Navbar() {
 									</Typography>
 								);
 							})}
+						</Box>
+						}
 						</Menu>
 					</Box>
 					{user === null ? (

@@ -13,9 +13,10 @@ import { createTheme } from '@mui/material/styles';
 import { themeSettings } from './theme';
 import Inbox from './views/inbox';
 import { SocketContext, socket } from './context/SocketContext';
-import TextEditor from './views/blogCreator';
+import BlogCreator from './views/blogCreator';
 function App() {
   const mode = useSelector((state) => state.mode);
+  const token = useSelector((state) => state.token);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   return (
@@ -26,10 +27,10 @@ function App() {
           <Routes>
             <Route element={<Home />} path='/' index></Route>
             <Route element={<Home />} path='/home' index></Route>
+            <Route element={token ? <BlogCreator /> : <Home />} path='/blog'></Route>
             <Route element={<Layout />}>
               <Route element={<Explore />} path='/explore'></Route>
               <Route element={<Pricing />} path='/pricing'></Route>
-              <Route element={<TextEditor />} path='/blog'></Route>
               <Route element={<Profile />} path='/profile/:user'></Route>
               <Route element={<EditProfile />} path='/editprofile'></Route>
               <Route element={<Inbox />} path='/inbox'></Route>

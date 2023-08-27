@@ -1,191 +1,89 @@
-import React, { useState, useRef } from 'react';
-import {
-  IconButton,
-  Paper,
-  Button,
-  TextareaAutosize,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Tabs,
-  Tab,
-  Box,
-  Container,
-  useTheme,
-} from '@mui/material';
-import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import CodeIcon from '@mui/icons-material/Code';
-import { marked } from 'marked';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { EditOutlined } from '@mui/icons-material';
+import { Box, TextField, Typography, useTheme } from '@mui/material'
+import React, { useState } from 'react'
+import Dropzone from 'react-dropzone';
 
-const containerStyle = {
-  padding: '16px',
-  margin: '2rem 0'
-};
-
-
-
-const dialogStyle = {
-  width: '400px',
-};
-
-const GithubIssueEditor = () => {
-  const [content, setContent] = useState('');
-  const [isCodeDialogOpen, setIsCodeDialogOpen] = useState(false);
-  const [codeContent, setCodeContent] = useState('');
-  const [activeTab, setActiveTab] = useState(0);
-  const editorRef = useRef(null);
+export default function BlogCreator() {
+  const [coverImg, setCoverImg] = useState(null);
   const theme = useTheme();
-
-  const editorStyle = {
-    padding: '16px',
-    minHeight: '200px',
-    resize: 'vertical',
+  const transparentTextFieldStyle = {
     width: '100%',
-    backgroundColor: theme.palette.background.default,
-    color: theme.palette.neutral.dark,
-    border: 'none'
-  };
-
-  const applyStyle = (style) => {
-    const selection = window.getSelection();
-    const selectedText = selection.toString();
-    const range = selection.getRangeAt(0);
-    const newNode = document.createElement(style);
-    newNode.textContent = selectedText;
-    range.deleteContents();
-    range.insertNode(newNode);
-  };
-
-  const handleBoldClick = () => {
-    applyStyle('b');
-  };
-
-  const handleItalicClick = () => {
-    applyStyle('i');
-  };
-
-  const handleImageInsert = () => {
-    const imageUrl = prompt('Enter the image URL:');
-    if (imageUrl) {
-      const imageMarkdown = `![Image](${imageUrl})`;
-      setContent(content + imageMarkdown);
+    '& .MuiOutlinedInput-root': {
+      backgroundColor: 'transparent',
+      border: 'none',
+      width: '100%',
+    },
+    '& .MuiTextField-root': {
+      width: '100%',
+    },
+    '& .MuiOutlinedInput-notchedOutline': {
+      backgroundColor: 'transparent',
+      border: 'none',
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: theme.palette.neutral.medium,
+    },
+    '& .MuiInputLabel-root': {
+      fontSize: theme.typography.h2,
+      color: theme.palette.neutral.dark,
+    },
+    '& .MuiOutlinedInput-input': {
+      fontSize: theme.typography.h1,
+    },
+    '& .MuiFormHelperText-root.Mui-error': {
+      fontSize: '1rem',
+      textDecoration: 'underline'
     }
   };
+  const [title, setTitle] = useState("");
 
-  const handleCodeDialogOpen = () => {
-    setIsCodeDialogOpen(true);
-  };
-
-  const handleCodeDialogClose = () => {
-    setIsCodeDialogOpen(false);
-  };
-
-  const handleCodeInsert = () => {
-    const codeBlock = '```' + codeContent + '```';
-    setContent(
-      content 
-        + 
-      <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
-        {codeBlock}
-      </SyntaxHighlighter>
-    )
-    setCodeContent('');
-    setIsCodeDialogOpen(false);
-  };
-
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
-  };
+  const handleBlogSave = async () => {
+    console.log(title);
+  }
 
   return (
-    <Container>
-      <Paper style={containerStyle}>
-        <div>
-          <IconButton onClick={handleBoldClick}>
-            <FormatBoldIcon />
-          </IconButton>
-          <IconButton onClick={handleItalicClick}>
-            <FormatItalicIcon />
-          </IconButton>
-          <IconButton onClick={handleImageInsert}>
-            <InsertPhotoIcon />
-          </IconButton>
-          <IconButton onClick={handleCodeDialogOpen}>
-            <CodeIcon />
-          </IconButton>
-        </div>
-        <Tabs value={activeTab} onChange={handleTabChange}>
-          <Tab label="Edit" />
-          <Tab label="Preview" />
-        </Tabs>
-        <TabPanel value={activeTab} index={0}>
-          <TextareaAutosize
-            ref={editorRef}
-            style={editorStyle}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </TabPanel>
-        <TabPanel value={activeTab} index={1}>
-          <div
-            style={{
-              padding: '16px',
-              border: '1px solid #ccc',
-              minHeight: '200px',
-              overflow: 'auto',
+    <Box>
+      <Typography textAlign={'center'} margin={'2rem auto'} fontSize={theme.typography.h1} color={theme.palette.neutral.dark}>Design your own Blog.....</Typography>
+      <Box width={'90%'} margin={'auto'}>
+        <Box>
+          <TextField
+            variant="outlined"
+            label="Title"
+            multiline
+            error={title.length > 100 ? true : false}
+            sx={transparentTextFieldStyle}
+            onChange={(e) => {
+              setTitle(e.target.value);
             }}
-            className="markdown-preview"
-          >
-            <div dangerouslySetInnerHTML={{ __html: marked(content) }} />
-          </div>
-        </TabPanel>
-
-      </Paper>
-      <Dialog open={isCodeDialogOpen} onClose={handleCodeDialogClose}>
-        <DialogTitle>Insert Code Block</DialogTitle>
-        <DialogContent style={dialogStyle}>
-          <DialogContentText>
-            Enter your code snippet below:
-          </DialogContentText>
-          <textarea
-            rows={10}
-            style={{ width: '100%', fontFamily: 'monospace' }}
-            value={codeContent}
-            onChange={(e) => setCodeContent(e.target.value)}
+            helperText={title.length > 100 ? "word limit reached" : ""}
           />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCodeDialogClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleCodeInsert} color="primary">
-            Insert
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
-  );
-};
-
-const TabPanel = (props) => {
-  const { children, value, index } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      aria-labelledby={`tab-${index}`}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </div>
-  );
-};
-
-export default GithubIssueEditor;
+          <Typography color={theme.palette.neutral.dark} textAlign={'end'}>({title.length}/100)</Typography>
+        </Box>
+        <Box margin={'2rem auto'}>
+          <Dropzone maxFiles={1} acceptedFiles={'.jpg, .jpeg, .png'} multiple={false} onDrop={(acceptedFiles) => { setCoverImg(acceptedFiles[0]) }}>
+            {({ getRootProps, getInputProps }) => (
+              <Box {...getRootProps()} border={`1px dashed ${theme.palette.neutral.dark}`} padding={'1rem'} sx={{
+                "&:hover": {
+                  cursor: 'pointer'
+                },
+                height: '100px'
+              }}>
+                <input {...getInputProps()}></input>
+                {!coverImg
+                  ?
+                  <Typography color={theme.palette.neutral.dark}>Add Profile Picture Here</Typography>
+                  :
+                  <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
+                    <img src={`${coverImg.path}`} alt='USER'></img>
+                    <Typography color={theme.palette.neutral.dark}>{coverImg.name}</Typography>
+                    <EditOutlined sx={{ color: theme.palette.neutral.dark }} />
+                  </Box>
+                }
+              </Box>
+            )}
+          </Dropzone>
+        </Box>
+      </Box>
+    </Box>
+  )
+}

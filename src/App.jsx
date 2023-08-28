@@ -34,7 +34,6 @@ function App() {
               <Route element={<Profile />} path='/profile/:user'></Route>
               <Route element={<EditProfile />} path='/editprofile'></Route>
               <Route element={<Inbox />} path='/inbox'></Route>
-              {/* <Route element={<TextEditor />} path='/blog'></Route> */}
             </Route>
           </Routes>
         </SocketContext.Provider>

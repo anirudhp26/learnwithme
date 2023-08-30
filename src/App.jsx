@@ -14,6 +14,7 @@ import { themeSettings } from './theme';
 import Inbox from './views/inbox';
 import { SocketContext, socket } from './context/SocketContext';
 import BlogCreator from './views/blogCreator';
+import BlogView from './components/BlogView';
 function App() {
   const mode = useSelector((state) => state.mode);
   const token = useSelector((state) => state.token);
@@ -32,6 +33,7 @@ function App() {
               <Route element={<Explore />} path='/explore'></Route>
               <Route element={<Pricing />} path='/pricing'></Route>
               <Route element={<Profile />} path='/profile/:user'></Route>
+              <Route element={<BlogView />} path='/blogs/:blogId'></Route>
               <Route element={<EditProfile />} path='/editprofile'></Route>
               <Route element={<Inbox />} path='/inbox'></Route>
             </Route>

@@ -21,6 +21,7 @@
     "dotenv": "^16.1.4",
     "formik": "^2.2.9",
     "marked": "^7.0.3",
+    "quill-image-resize-module": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",

@@ -2,11 +2,15 @@ import { EditOutlined } from '@mui/icons-material';
 import { Autocomplete, Box, Button, Divider, TextField, Typography, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import Dropzone from 'react-dropzone';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'quill/dist/quill.snow.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { ImageResize } from 'quill-image-resize-module';
+
+Quill.register('modules/imageResize', ImageResize);
+
 var modules = {
   toolbar: [
     [{ size: ["small", false, "large", "huge"] }],
@@ -22,6 +26,9 @@ var modules = {
     ],
     [{ "color": ["#000000", "#e60000", "#ff9900", "#ffff00", "#008a00", "#0066cc", "#9933ff", "#ffffff", "#facccc", "#ffebcc", "#ffffcc", "#cce8cc", "#cce0f5", "#ebd6ff", "#bbbbbb", "#f06666", "#ffc266", "#ffff66", "#66b966", "#66a3e0", "#c285ff", "#888888", "#a10000", "#b26b00", "#b2b200", "#006100", "#0047b2", "#6b24b2", "#444444", "#5c0000", "#663d00", "#666600", "#003700", "#002966", "#3d1466", 'custom-color'] }],
   ],
+  ImageResize: {
+    modules: [ 'Resize', 'DisplaySize', 'Toolbar' ],
+  }
 
 };
 
@@ -190,8 +197,7 @@ export default function BlogCreator() {
       formdata.append("coverImgPath", coverImg.name);
       const responce = await axios.post(`${process.env.REACT_APP_API_URL}/blog/saveblog`, formdata, { headers: { Authorization: `Bearer ${token}` } });
       if (responce.status === 200) {
-        // navigate(`/blog/${responce.data.blog.id}`);
-        navigate(`/profile/${user.username}`);
+        navigate(`/blogs/${responce.data.blog.id}`);
       }
     } catch (error) {
       console.log("Error ---------> " + error);

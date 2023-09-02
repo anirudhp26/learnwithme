@@ -31,7 +31,7 @@ export default function BlogView() {
                         {blog.title}
                     </Typography>
                     <Box overflow={'hidden'} margin={'2rem auto'} width={'100%'}>
-                        <div dangerouslySetInnerHTML={{ __html: blog.content }}></div>
+                        <div className='blog-content' dangerouslySetInnerHTML={{ __html: blog.content }}></div>
                     </Box>
                 </>
                 :

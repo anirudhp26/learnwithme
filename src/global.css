@@ -20,3 +20,10 @@ body,
 .disable{
     display: none !important;
 }
+
+.blog-content > p > img {
+    display: flex;
+    width: 50%;
+    margin: auto;
+    height: auto;
+}

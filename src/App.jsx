@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Home from './views/home';
 import Profile from './views/profile';
 import Explore from './views/explore';
@@ -15,6 +15,7 @@ import Inbox from './views/inbox';
 import { SocketContext, socket } from './context/SocketContext';
 import BlogCreator from './views/blogCreator';
 import BlogView from './components/BlogView';
+import Login from './views/login';
 function App() {
   const mode = useSelector((state) => state.mode);
   const token = useSelector((state) => state.token);
@@ -26,10 +27,11 @@ function App() {
         <CssBaseline />
         <SocketContext.Provider value={socket}>
           <Routes>
-            <Route element={<Home />} path='/' index></Route>
-            <Route element={<Home />} path='/home' index></Route>
-            <Route element={token ? <BlogCreator /> : <Home />} path='/blog'></Route>
+            <Route element={<Login />} path='/login'></Route>
+            <Route element={token ? <BlogCreator /> : <Navigate to={'/login'} />} path='/blog'></Route>
             <Route element={<Layout />}>
+              <Route element={<Home />} path='/' index></Route>
+              <Route element={<Home />} path='/home' index></Route>
               <Route element={<Explore />} path='/explore'></Route>
               <Route element={<Pricing />} path='/pricing'></Route>
               <Route element={<Profile />} path='/profile/:user'></Route>

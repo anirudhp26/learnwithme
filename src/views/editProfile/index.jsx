@@ -127,17 +127,27 @@ export default function EditProfile() {
 					display={"flex"}
 					justifyContent={"center"}
 				>
-					<img
-						id="edit-user-image"
-						src={process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
-						onError={() => {
-							document.getElementById("edit-user-image").src = user.picture;
-						}}
-						alt="USER"
-						width="100px"
-						height={'100px'}
-						style={{ borderRadius: "50%" }}
-					></img>
+					{user?.picture ? (
+						<img
+							style={{
+								borderRadius: "50%",
+								width: "150px",
+								height: '150px'
+							}}
+							id="edit-user-image"
+							src={process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
+							onError={() => {
+								document.getElementById("profile-user-image").src = user.picture;
+							}}
+							alt="USER"
+						></img>
+					) : (
+						<img
+							src="/img/user-default-logo.png"
+							alt=""
+							width="150px"
+						></img>
+					)}
 				</Box>
 				<Box width={{ xs: "90%", md: "50%" }} margin={"0 auto"}>
 					<TextField

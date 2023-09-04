@@ -71,6 +71,7 @@ export default function Login() {
             token: isGoogleUserRegistered.data.token,
           }),
         );
+        navigate('/');
       } else {
         dispatch(
           setLogin({
@@ -102,6 +103,7 @@ export default function Login() {
               token: responce.data.token,
             }),
           );
+          navigate('/');
         } else {
           setisClicked(false);
           setError(responce.data.message);
@@ -140,6 +142,7 @@ export default function Login() {
               token: responce.data.token,
             }),
           );
+          navigate('/');
         } else {
           setisClicked(false);
           setError(responce.data.message);

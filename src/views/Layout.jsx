@@ -1,12 +1,20 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import React from "react";
 import Navbar from "../components/Navbar";
+import { useSelector } from "react-redux";
 
-export default function Layout({ socket }) {
+export default function Layout() {
+    const token = useSelector((state) => state.token);
     return (
-        <>
-            <Navbar socket={socket} />
+        <>  
+            {token 
+            ? 
+            <>
+            <Navbar />
             <Outlet />
+            </> 
+            : 
+            <Navigate to={'/login'} />}
         </>
     )
 }

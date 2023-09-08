@@ -392,6 +392,7 @@ export default function Navbar() {
 											cursor: "pointer",
 										}}
 										textAlign={"center"}
+										key={val}
 									>
 										{val}
 									</Typography>

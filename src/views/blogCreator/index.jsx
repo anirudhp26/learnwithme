@@ -190,7 +190,7 @@ export default function BlogCreator() {
       formdata.append("coverImgPath", coverImg.name);
       const responce = await axios.post(`${process.env.REACT_APP_API_URL}/blog/saveblog`, formdata, { headers: { Authorization: `Bearer ${token}` } });
       if (responce.status === 200) {
-        navigate(`/blogs/${responce.data.blog.id}`);
+        navigate(`/blogs/${responce.data.blog._id}`);
       }
     } catch (error) {
       console.log("Error ---------> " + error);

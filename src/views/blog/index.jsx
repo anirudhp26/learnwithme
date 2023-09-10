@@ -14,9 +14,14 @@ export default function Blog(props) {
           <Typography fontSize={theme.typography.h2} margin={'1rem 0'} gutterBottom>
             {props.title}
           </Typography>
-          <Typography fontSize={theme.typography.h4} textAlign={'center'} margin={'2rem 0'} color="textSecondary">
-            <div dangerouslySetInnerHTML={{ __html: props.content.slice(0, 100) }}></div>
-          </Typography>
+            <div style={{ 
+              fontSize: theme.typography.h4,
+              textAlign: 'center',
+              margin: '2rem 0',
+              color: theme.palette.neutral.dark
+            }} dangerouslySetInnerHTML={{ __html: props.content.slice(0, 100) }}></div>
+          {/* <Typography fontSize={theme.typography.h4} textAlign={'center'} margin={'2rem 0'} color="textSecondary">
+          </Typography> */}
           <Button onClick={() => navigate(`/blogs/${props.id}`)} color="primary">
             Read More
           </Button>

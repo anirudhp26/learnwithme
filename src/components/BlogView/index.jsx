@@ -1,4 +1,4 @@
-import { BookmarkOutlined, CommentOutlined, FavoriteOutlined } from '@mui/icons-material';
+import { BookmarkAdd, BookmarkAdded, CommentOutlined, FavoriteOutlined } from '@mui/icons-material';
 import { Box, IconButton, Tooltip, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
 import axios from 'axios';
@@ -90,20 +90,28 @@ export default function BlogView() {
                     <Box overflow={'hidden'} margin={'2rem auto'} width={'100%'}>
                         <div className='blog-content' dangerouslySetInnerHTML={{ __html: blog.content }}></div>
                     </Box>
-                    <Box>
+                    <Box display={'flex'} margin={'auto'} padding={'0 0 4rem 0'} justifyContent={'center'} alignItems={'center'}>
                         <Tooltip title={isLiked ? 'Unlike' : 'Like'}>
+                            <Typography textAlign={'center'}>{blog?.impressed.length}</Typography>
                             <IconButton color={isLiked ? 'error' : 'default'} onClick={handleLike}>
-                                <FavoriteOutlined />
+                                <FavoriteOutlined sx={{ fontSize: '2rem' }} />
                             </IconButton>
                         </Tooltip>  
                         <Tooltip title={isCommented ? 'Remove Comment' : 'Comment'}>
+                            <Typography textAlign={'center'}>{blog?.impressed.length}</Typography>
                             <IconButton color={isCommented ? 'primary' : 'default'} onClick={handleComment}>
-                                <CommentOutlined />
+                                <CommentOutlined sx={{ fontSize: '2rem' }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title={isBookmarked ? 'Remove Bookmark' : 'Bookmark'}>
+                            <Typography textAlign={'center'}>&nbsp;</Typography>
                             <IconButton color={isBookmarked ? 'info' : 'default'} onClick={handleBookmark}>
-                                <BookmarkOutlined />
+                                {isBookmarked 
+                                    ?
+                                        <BookmarkAdded sx={{ fontSize: '2rem' }} />
+                                    :
+                                        <BookmarkAdd sx={{ fontSize: '2rem' }} />
+                                }
                             </IconButton>
                         </Tooltip>
                     </Box>

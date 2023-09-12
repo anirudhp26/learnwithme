@@ -12,13 +12,26 @@ export default function BlogView() {
     const theme = useTheme();
     const [blog, setBlog] = useState(null);
     const [user, setUser] = useState(null);
+    const logged_user = useSelector((state) => state.user);
     const navigate = useNavigate();
-    const [isLiked, setIsLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(blog?.impressed.includes(logged_user._id) ? true : false);
     const [isCommented, setIsCommented] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(false);
 
-    const handleLike = () => {
-        setIsLiked(!isLiked);
+    const handleLike = async () => {
+        const newBlog = { ...blog };
+        if (newBlog.impressed.includes(logged_user._id)) {
+            const index = newBlog.impressed.indexOf(logged_user._id);
+            if (index > -1) {
+                newBlog.impressed.splice(logged_user._id);
+            }
+        } else {
+            newBlog.impressed.push(logged_user._id);
+        }
+        setBlog(newBlog);
+        setIsLiked(blog.impressed.includes(logged_user._id) ? true : false);
+        const updateBlog = await axios.post(`${process.env.REACT_APP_API_URL}/blog/updateBlog`, { blog: blog }, { headers: { Authorization: `Bearer ${token}`}});
+        console.log(updateBlog.data);
     };
 
     const handleComment = () => {
@@ -30,16 +43,17 @@ export default function BlogView() {
     };
     useEffect(() => {
         const getblog = async () => {
-            const blog = await axios.post(`${process.env.REACT_APP_API_URL}/blog/getBlogbyID`, { blogId: blogId }, { headers: { Authorization: `Bearer ${token}` } });
-            if (blog.status === 200) {
-                setBlog(blog.data.blog);
-                setUser(blog.data.user);
+            const rblog = await axios.post(`${process.env.REACT_APP_API_URL}/blog/getBlogbyID`, { blogId: blogId }, { headers: { Authorization: `Bearer ${token}` } });
+            if (rblog.status === 200) {
+                setBlog(rblog.data.blog);
+                setUser(rblog.data.user);
+                setIsLiked(rblog.data.blog.impressed.includes(logged_user._id) ? true : false);
             }
-            console.log(blog);
-            return blog;
+            console.log(rblog);
+            return rblog;
         }
         getblog();
-    }, [blogId, token]);
+    }, [blogId, token, logged_user]);
     return (
         <Box width={'70%'} margin={'auto'}>
             {blog

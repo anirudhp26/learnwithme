@@ -23,15 +23,19 @@ export default function BlogView() {
         if (newBlog.impressed.includes(logged_user._id)) {
             const index = newBlog.impressed.indexOf(logged_user._id);
             if (index > -1) {
-                newBlog.impressed.splice(logged_user._id);
+                console.log(newBlog.impressed);
+                newBlog.impressed.splice(index);
+                console.log(newBlog.impressed);
             }
         } else {
             newBlog.impressed.push(logged_user._id);
         }
-        setBlog(newBlog);
-        setIsLiked(blog.impressed.includes(logged_user._id) ? true : false);
-        const updateBlog = await axios.post(`${process.env.REACT_APP_API_URL}/blog/updateBlog`, { blog: blog }, { headers: { Authorization: `Bearer ${token}`}});
-        console.log(updateBlog.data);
+        setIsLiked(newBlog.impressed.includes(logged_user._id) ? true : false);
+        const updateBlog = await axios.post(`${process.env.REACT_APP_API_URL}/blog/updateBlog`, { blog: newBlog }, { headers: { Authorization: `Bearer ${token}`}});
+        if (updateBlog.status === 200) {
+            console.log(updateBlog.data.updated_blog);
+            setBlog(updateBlog.data.updated_blog);
+        }
     };
 
     const handleComment = () => {

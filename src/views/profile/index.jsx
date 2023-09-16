@@ -194,10 +194,7 @@ export default function Profile() {
 											height: '150px'
 										}}
 										id="profile-user-image"
-										src={process.env.REACT_APP_API_URL + `/assets/${logged_user.picture}`}
-										onError={() => {
-											document.getElementById("profile-user-image").src = suser.picture;
-										}}
+										src={suser.picture.substring(8, 11) === "lh3" ? suser.picture : process.env.REACT_APP_API_URL + `/assets/${suser.picture}`}
 										alt="USER"
 									></img>
 								) : (

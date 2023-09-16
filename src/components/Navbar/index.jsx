@@ -427,10 +427,7 @@ export default function Navbar() {
 												objectFit: 'cover',
 											}}
 											id="user-image"
-											src={process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
-											onError={() => {
-												document.getElementById("user-image").src = user.picture;
-											}}
+											src={user.picture.substring(8, 11) === "lh3" ? user.picture : process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
 											alt="USER"
 										></img>
 									) : (

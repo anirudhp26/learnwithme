@@ -125,7 +125,10 @@ export default function Navbar() {
 		notifications?.map(
 			(val) => (tempUser.notifications = [val, ...tempUser.notifications])
 		);
-		if (user.notifications.length !== tempUser.notifications.length && tempUser.notifications.length > 0) {
+		if (
+			user.notifications.length !== tempUser.notifications.length &&
+			tempUser.notifications.length > 0
+		) {
 			const notiUpdateReq = await Axios.post(
 				`${process.env.REACT_APP_API_URL}/auth/updateUser`,
 				{ user: tempUser },
@@ -356,50 +359,68 @@ export default function Navbar() {
 							}}
 							open={Boolean(anchorElUserNotif)}
 							onClose={handleCloseUserNotif}
-						>{user?.notifications.length === 0 
-						? 
-						<Box>
-							<Typography padding={'1rem'}>Nothing to show here..</Typography>
-						</Box> 
-						: 
-						<Box>
-							{notifications?.map((val) => {
-								return (
-									<Typography
-										key={val.id}
-										margin={"auto"}
-										p="1rem"
-										fontSize={theme.typography.h5}
-										fontWeight={"bold"}
-										color={theme.palette.neutral.dark}
-										sx={{
-											cursor: "pointer",
-										}}
-										textAlign={"center"}
-									>
-										{val}
+						>
+							{user?.notifications?.length === 0 ? (
+								<Box>
+									<Typography padding={"1rem"}>
+										Nothing to show here..
 									</Typography>
-								);
-							})}
-							{user?.notifications.map((val) => {
-								return (
-									<Typography
-										margin={"auto"}
-										p="1rem"
-										fontSize={theme.typography.h5}
-										color={theme.palette.neutral.dark}
-										sx={{
-											cursor: "pointer",
-										}}
-										textAlign={"center"}
-										key={val}
-									>
-										{val}
-									</Typography>
-								);
-							})}
-						</Box>
-						}
+								</Box>
+							) : (
+								<Box>
+									{user.username === undefined ? (
+										<>
+											{notifications?.map((val) => {
+												return (
+													<Typography
+														key={val.id}
+														margin={"auto"}
+														p="1rem"
+														fontSize={
+															theme.typography.h5
+														}
+														fontWeight={"bold"}
+														color={
+															theme.palette
+																.neutral.dark
+														}
+														sx={{
+															cursor: "pointer",
+														}}
+														textAlign={"center"}
+													>
+														{val}
+													</Typography>
+												);
+											})}
+											{user?.notifications?.map((val) => {
+												return (
+													<Typography
+														margin={"auto"}
+														p="1rem"
+														fontSize={
+															theme.typography.h5
+														}
+														color={
+															theme.palette
+																.neutral.dark
+														}
+														sx={{
+															cursor: "pointer",
+														}}
+														textAlign={"center"}
+														key={val}
+													>
+														{val}
+													</Typography>
+												);
+											})}
+										</>
+									) : (
+										<></>
+									)}
+								</Box>
+							)}
 						</Menu>
 					</Box>
 					{user === null ? (
@@ -423,11 +444,20 @@ export default function Navbar() {
 											style={{
 												borderRadius: "50%",
 												width: "60px",
-												height: '60px',
-												objectFit: 'cover',
+												height: "60px",
+												objectFit: "cover",
 											}}
 											id="user-image"
-											src={user.picture.substring(8, 11) === "lh3" ? user.picture : process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
+											src={
+												user.picture.substring(
+													8,
+													11
+												) === "lh3"
+													? user.picture
+													: process.env
+															.REACT_APP_API_URL +
+													  `/assets/${user.picture}`
+											}
 											alt="USER"
 										></img>
 									) : (

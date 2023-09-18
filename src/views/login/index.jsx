@@ -23,7 +23,6 @@ import { useNavigate } from "react-router-dom";
 import Dropzone from "react-dropzone";
 import { EditOutlined } from "@mui/icons-material";
 
-
 export default function Login() {
   const [isLogin, setisLogin] = useState(true);
   const [open, setOpen] = useState(false);
@@ -35,6 +34,7 @@ export default function Login() {
   const [bio, setBio] = useState("");
   const [isClicked, setisClicked] = useState(false);
   const [image, setImage] = useState("");
+  const [pfpPreview, setPfpPreview] = useState(null);
   const handleClose = () => {
     setOpen(false);
   };
@@ -59,19 +59,22 @@ export default function Login() {
         }
       );
 
-      const isGoogleUserRegistered = await Axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, {
-        googleId: userInfo.data.sub,
-        googlelogin: true,
-      })
+      const isGoogleUserRegistered = await Axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/login`,
+        {
+          googleId: userInfo.data.sub,
+          googlelogin: true,
+        }
+      );
       if (isGoogleUserRegistered.status === 200) {
         setisClicked(false);
         dispatch(
           setLogin({
             user: isGoogleUserRegistered.data.user,
             token: isGoogleUserRegistered.data.token,
-          }),
+          })
         );
-        navigate('/');
+        navigate("/");
       } else {
         dispatch(
           setLogin({
@@ -79,7 +82,7 @@ export default function Login() {
             token: isGoogleUserRegistered.data.token,
           })
         );
-        navigate('/editprofile')
+        navigate("/editprofile");
       }
     },
     onError: (errorResponse) => console.log(errorResponse),
@@ -101,9 +104,9 @@ export default function Login() {
             setLogin({
               user: responce.data.user,
               token: responce.data.token,
-            }),
+            })
           );
-          navigate('/');
+          navigate("/");
         } else {
           setisClicked(false);
           setError(responce.data.message);
@@ -140,9 +143,9 @@ export default function Login() {
             setLogin({
               user: responce.data.user,
               token: responce.data.token,
-            }),
+            })
           );
-          navigate('/');
+          navigate("/");
         } else {
           setisClicked(false);
           setError(responce.data.message);
@@ -164,9 +167,9 @@ export default function Login() {
         display: "flex",
         backgroundColor: theme.palette.neutral.dark,
         width: "100%",
-        height: '100vh',
+        height: "100vh",
         margin: 0,
-        alignItems: 'center',
+        alignItems: "center",
         justifyContent: "center",
       }}
     >
@@ -183,7 +186,7 @@ export default function Login() {
         <>
           <Box
             width="30%"
-            height={'max-content'}
+            height={"max-content"}
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -212,12 +215,15 @@ export default function Login() {
                 label="username"
                 color="secondary"
                 variant="standard"
-                sx={{ margin: '1rem 0' }}
+                sx={{ margin: "1rem 0" }}
                 onChange={(e) => {
                   setUsername(e.target.value);
                 }}
               />
-              <FormControl variant="standard" sx={{ margin: '1rem 0' }}>
+              <FormControl
+                variant="standard"
+                sx={{ margin: "1rem 0" }}
+              >
                 <InputLabel
                   color="secondary"
                   htmlFor="standard-adornment-password"
@@ -329,29 +335,19 @@ export default function Login() {
                 }}
                 onClick={() => {
                   setisClicked((prev) => !prev);
-                  document.getElementById('auth-btn-1').attributes.disabled = true;
+                  document.getElementById(
+                    "auth-btn-1"
+                  ).attributes.disabled = true;
                   googleLogin();
                 }}
               >
                 Login with&nbsp;
-                <span style={{ color: "#4286f5" }}>
-                  G
-                </span>
-                <span style={{ color: "#ea4235" }}>
-                  o
-                </span>
-                <span style={{ color: "#fabc05" }}>
-                  o
-                </span>
-                <span style={{ color: "#4286f5" }}>
-                  g
-                </span>
-                <span style={{ color: "#34a853" }}>
-                  l
-                </span>
-                <span style={{ color: "#ea4235" }}>
-                  e
-                </span>
+                <span style={{ color: "#4286f5" }}>G</span>
+                <span style={{ color: "#ea4235" }}>o</span>
+                <span style={{ color: "#fabc05" }}>o</span>
+                <span style={{ color: "#4286f5" }}>g</span>
+                <span style={{ color: "#34a853" }}>l</span>
+                <span style={{ color: "#ea4235" }}>e</span>
               </Button>
             </Box>
             <Button
@@ -359,7 +355,7 @@ export default function Login() {
               sx={{
                 textTransform: "none",
                 color: "grey",
-                margin: '1rem 0',
+                margin: "1rem 0",
                 transition: "all 0.5s",
                 "&:hover": {
                   backgroundColor: "black",
@@ -376,206 +372,275 @@ export default function Login() {
         </>
       ) : (
         <>
-            <Box width={'40%'} display={'flex'} bgcolor={theme.palette.neutral.light} justifyContent={'center'} flexDirection={'column'} sx={{
+          <Box
+            width={"40%"}
+            display={"flex"}
+            bgcolor={theme.palette.neutral.light}
+            justifyContent={"center"}
+            flexDirection={"column"}
+            sx={{
               "@media only screen and (max-width: 900px)": {
                 width: "80%",
-                margin: 'auto'
+                margin: "auto",
               },
-            }}>
-              <Typography
-                letterSpacing="2px"
-                sx={{
-                  margin: "1rem 0 1rem 0",
-                }}
-                paragraph
-                textAlign={'center'}
-                fontSize={theme.typography.h1}
-              >
-                Sign Up
-              </Typography>
-              <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="space-between"
-                width="80%"
-                margin={'auto'}
-              >
-                <Dropzone maxFiles={1} acceptedFiles={'.jpg, .jpeg, .png'} multiple={false} onDrop={(acceptedFiles) => {setImage(acceptedFiles[0])}}>
-                {({ getRootProps, getInputProps }) => (
-                  <Box {...getRootProps()} border={`1px dashed ${theme.palette.neutral.dark}`} padding={'1rem'} sx={{ "&:hover" : {
-                    cursor: 'pointer'
-                  }}}>
-                    <input {...getInputProps()}></input>
-                    {!image 
-                      ? 
-                      <Typography color={theme.palette.neutral.dark}>Add Profile Picture Here</Typography> 
-                      : 
-                      <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
-                        <img src={`${image.path}`} alt='USER'></img>
-                        <Typography color={theme.palette.neutral.dark}>{image.name}</Typography>
-                        <EditOutlined sx={{ color: theme.palette.neutral.dark }} />
-                      </Box>
-                    }
-                  </Box>
-                )}
-              </Dropzone>
-                <TextField
-                  id="standard-basic"
-                  label="username"
-                  color="secondary"
-                  variant="standard"
-                  sx={{ margin: '1rem 0' }}
-                  onChange={(e) => {
-                    setUsername(e.target.value);
+            }}
+          >
+            <Typography
+              letterSpacing="2px"
+              sx={{
+                margin: "1rem 0 1rem 0",
+              }}
+              paragraph
+              textAlign={"center"}
+              fontSize={theme.typography.h1}
+            >
+              Sign Up
+            </Typography>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+              width="80%"
+              margin={"auto"}
+            >
+              <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width={'100%'} margin={'auto'}>
+                <Dropzone
+                  maxFiles={1}
+                  acceptedFiles={".jpg, .jpeg, .png"}
+                  multiple={false}
+                  onDrop={(acceptedFiles) => {
+                    setImage(acceptedFiles[0]);
+                    setPfpPreview(
+                      URL.createObjectURL(acceptedFiles[0])
+                    );
                   }}
-                />
-                <TextField
-                  id="outlined-basic"
-                  label="describe yourself.."
-                  color="secondary"
-                  sx={{ margin: '1rem 0' }}
-                  variant="outlined"
-                  onChange={(e) => {
-                    setBio(e.target.value);
-                  }}
-                  multiline
-                  rows="3"
-                />
-                <TextField
-                  id="standard-basic"
-                  label="full Name"
-                  color="secondary"
-                  sx={{ margin: '1rem 0' }}
-                  variant="standard"
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                />
-                <FormControl variant="standard" sx={{ margin: '1rem 0' }}>
-                  <InputLabel
-                    color="secondary"
-                    htmlFor="standard-adornment-password-1"
-                  >
-                    Password
-                  </InputLabel>
-                  <Input
-                    id="standard-adornment-password-1"
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={
-                            handleClickShowPassword
-                          }
-                          onMouseDown={
-                            handleMouseDownPassword
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <Box
+                      {...getRootProps()}
+                      border={`1px dashed ${theme.palette.neutral.dark}`}
+                      padding={"1rem"}
+                      sx={{
+                        width: '70%',
+                        "&:hover": {
+                          cursor: "pointer",
+                        },
+                      }}
+                    >
+                      <input {...getInputProps()}></input>
+                      {!image ? (
+                        <Typography
+                          color={
+                            theme.palette.neutral.dark
                           }
                         >
-                          {showPassword ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
-                    color="secondary"
-                  />
-                </FormControl>
-                <FormControl variant="standard" sx={{ margin: '1rem 0' }}>
-                  <InputLabel color="secondary" htmlFor="standard-adornment-password">
-                    Confirm Password
-                  </InputLabel>
-                  <Input
-                    id="standard-adornment-password"
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={
-                            handleClickShowPassword
-                          }
-                          onMouseDown={
-                            handleMouseDownPassword
-                          }
+                          Add Profile Picture Here
+                        </Typography>
+                      ) : (
+                        <Box
+                          display={"flex"}
+                          flexDirection={"row"}
+                          alignItems={'center'}
+                          justifyContent={"space-between"}
                         >
-                          {showPassword ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    onChange={(e) => {
-                      setcPassword(e.target.value);
-                    }}
-                    color="secondary"
-                  />
-                </FormControl>
+                          <Typography
+                            color={
+                              theme.palette.neutral
+                                .dark
+                            }
+                          >
+                            {image.name}
+                          </Typography>
+                          <EditOutlined
+                            sx={{
+                              color: theme.palette
+                                .neutral.dark,
+                            }}
+                          />
+                        </Box>
+                      )}
+                    </Box>
+                  )}
+                </Dropzone>
+                {
+                  pfpPreview
+                    ?
+                    <img src={pfpPreview} width={'70px'} height={'70px'} style={{ borderRadius: '50%' }} alt="PFP"></img>
+                    :
+                    <img
+                      src="/img/user-default-logo.png"
+                      alt=""
+                      width={"70px"}
+                      height={'70px'}
+                    ></img>
+                }
               </Box>
-              <Button
+              <TextField
+                id="standard-basic"
+                label="username"
+                color="secondary"
+                variant="standard"
+                sx={{ margin: "1rem 0" }}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
+              />
+              <TextField
+                id="outlined-basic"
+                label="describe yourself.."
+                color="secondary"
+                sx={{ margin: "1rem 0" }}
                 variant="outlined"
-                id="auth-btn-1"
-                sx={{
-                  textTransform: "none",
-                  margin: "1rem auto",
-                  backgroundColor: "white",
-                  boxShadow: "none",
-                  borderRadius: "0",
-                  color: "black",
-                  width: '40%',
-                  "&:hover": {
-                    backgroundColor: "black",
-                    color: "white",
-                  },
-                  borderColor: "black",
+                onChange={(e) => {
+                  setBio(e.target.value);
                 }}
-                onClick={() => {
-                  if (password !== cpassword) {
-                    setError("Passwords dosen't match");
-                    setOpen(!open);
-                  } else {
-                    setisClicked((prev) => !prev);
-                    handlesignupSubmit();
-                    document
-                      .getElementById("signup-loading")
-                      .classList.toggle("disable");
+                multiline
+                rows="3"
+              />
+              <TextField
+                id="standard-basic"
+                label="full Name"
+                color="secondary"
+                sx={{ margin: "1rem 0" }}
+                variant="standard"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+              <FormControl
+                variant="standard"
+                sx={{ margin: "1rem 0" }}
+              >
+                <InputLabel
+                  color="secondary"
+                  htmlFor="standard-adornment-password-1"
+                >
+                  Password
+                </InputLabel>
+                <Input
+                  id="standard-adornment-password-1"
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={
+                          handleClickShowPassword
+                        }
+                        onMouseDown={
+                          handleMouseDownPassword
+                        }
+                      >
+                        {showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
                   }
-                }}
-                disabled={isClicked}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  color="secondary"
+                />
+              </FormControl>
+              <FormControl
+                variant="standard"
+                sx={{ margin: "1rem 0" }}
               >
-                <i
-                  style={{ margin: "0 10px" }}
-                  id="signup-loading"
-                  className="fa-solid fa-spinner fa-spin disable"
-                ></i>
-                <span>Sign Up</span>
-              </Button>
-              <Button
-                variant="primary"
-                sx={{
-                  textTransform: "none",
-                  color: "grey",
-                  margin: '1rem auto',
-                  width: '50%',
-                  "&:hover": {
-                    backgroundColor: "black",
-                    color: "white",
-                  },
-                }}
-                onClick={() => {
-                  setisLogin(!isLogin);
-                }}
-              >
-                Already have an Account ?
-              </Button>
+                <InputLabel
+                  color="secondary"
+                  htmlFor="standard-adornment-password"
+                >
+                  Confirm Password
+                </InputLabel>
+                <Input
+                  id="standard-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={
+                          handleClickShowPassword
+                        }
+                        onMouseDown={
+                          handleMouseDownPassword
+                        }
+                      >
+                        {showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  onChange={(e) => {
+                    setcPassword(e.target.value);
+                  }}
+                  color="secondary"
+                />
+              </FormControl>
             </Box>
+            <Button
+              variant="outlined"
+              id="auth-btn-1"
+              sx={{
+                textTransform: "none",
+                margin: "1rem auto",
+                backgroundColor: "white",
+                boxShadow: "none",
+                borderRadius: "0",
+                color: "black",
+                width: "40%",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+                borderColor: "black",
+              }}
+              onClick={() => {
+                if (password !== cpassword) {
+                  setError("Passwords dosen't match");
+                  setOpen(!open);
+                } else {
+                  setisClicked((prev) => !prev);
+                  handlesignupSubmit();
+                  document
+                    .getElementById("signup-loading")
+                    .classList.toggle("disable");
+                }
+              }}
+              disabled={isClicked}
+            >
+              <i
+                style={{ margin: "0 10px" }}
+                id="signup-loading"
+                className="fa-solid fa-spinner fa-spin disable"
+              ></i>
+              <span>Sign Up</span>
+            </Button>
+            <Button
+              variant="primary"
+              sx={{
+                textTransform: "none",
+                color: "grey",
+                margin: "1rem auto",
+                width: "50%",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+              onClick={() => {
+                setisLogin(!isLogin);
+              }}
+            >
+              Already have an Account ?
+            </Button>
+          </Box>
         </>
       )}
     </div>

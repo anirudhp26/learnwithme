@@ -22,7 +22,6 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import Dropzone from "react-dropzone";
 import { EditOutlined } from "@mui/icons-material";
-
 export default function Login() {
   const [isLogin, setisLogin] = useState(true);
   const [open, setOpen] = useState(false);

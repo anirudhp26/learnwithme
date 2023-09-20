@@ -455,8 +455,8 @@ export default function Navbar() {
 												) === "lh3"
 													? user.picture
 													: process.env
-															.REACT_APP_API_URL +
-													  `/assets/${user.picture}`
+														.REACT_APP_API_URL +
+													`/assets/${user.picture}`
 											}
 											alt="USER"
 										></img>

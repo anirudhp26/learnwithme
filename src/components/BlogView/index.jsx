@@ -93,6 +93,7 @@ export default function BlogView() {
         };
         getblog();
     }, [blogId, token, logged_user]);
+    
     return (
         <Box width={"70%"} margin={"auto"}>
             {blog ? (

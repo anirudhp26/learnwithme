@@ -187,7 +187,7 @@ export default function BlogCreator() {
       formdata.append("writer", user._id);
       formdata.append("keywords", selectedTags);
       formdata.append("coverImg", coverImg);
-      formdata.append("coverImgPath", user._id + coverImg.name);
+      formdata.append("coverImgPath", coverImg.name);
       const responce = await axios.post(`${process.env.REACT_APP_API_URL}/blog/saveblog`, formdata, { headers: { Authorization: `Bearer ${token}` } });
       if (responce.status === 200) {
         navigate(`/blogs/${responce.data.blog._id}`);

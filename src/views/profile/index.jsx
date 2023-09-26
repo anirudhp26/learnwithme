@@ -284,12 +284,7 @@ export default function Profile() {
 						</Box>
 					</Box>
 					<Divider variant="middle" />
-					<Box width={"90%"} height={"50vh"} margin={"2rem auto"}>
-						<Typography margin={"2rem 0"} sx={{ fontSize: "2rem" }}>
-							{logged_user === user
-								? "YOUR BLOGS"
-								: `${user}'s BLOGS`}
-						</Typography>
+					<Box width={"50%"} margin={"2rem auto"}>
 						{blogs === undefined || blogs.length === 0 ? (
 							<Typography margin={"7rem 0"} textAlign={"center"}>
 								Couldn't Find any Blogs on this user's account
@@ -300,8 +295,11 @@ export default function Profile() {
 									return (
 										<Blog
 											title={blog.title}
-											content={blog.content}
 											user={logged_user}
+											content={blog.content}
+											coverPath={blog.coverPath}
+											impressed={blog.impressed.length}
+											createdAt={blog.createdAt}
 											key={blog._id}
 											id={blog._id}
 										/>

@@ -22,7 +22,7 @@ import { NotificationAddRounded } from "@mui/icons-material";
 import { SocketContext } from "../../context/SocketContext";
 import Axios from "axios";
 
-const pages = ["Home", "Explore", "Pricing", "Blog"];
+const pages = ["Home", "Explore", "Blog"];
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 	width: 62,
@@ -360,7 +360,7 @@ export default function Navbar() {
 							open={Boolean(anchorElUserNotif)}
 							onClose={handleCloseUserNotif}
 						>
-							{user?.notifications?.length === 0 ? (
+							{user?.notifications?.length === 0 || user.notifications === undefined ? (
 								<Box>
 									<Typography padding={"1rem"}>
 										Nothing to show here..
@@ -417,7 +417,9 @@ export default function Navbar() {
 											})}
 										</>
 									) : (
-										<></>
+										<Typography padding={"1rem"}>
+											Nothing to show here..
+										</Typography>
 									)}
 								</Box>
 							)}

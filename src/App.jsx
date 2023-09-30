@@ -16,6 +16,7 @@ import { SocketContext, socket } from './context/SocketContext';
 import BlogCreator from './views/blogCreator';
 import BlogView from './components/BlogView';
 import Login from './views/login';
+import VerifyPhoneorEmail from './views/VerifyPnE';
 function App() {
   const mode = useSelector((state) => state.mode);
   const token = useSelector((state) => state.token);
@@ -28,6 +29,7 @@ function App() {
         <SocketContext.Provider value={socket}>
           <Routes>
             <Route element={<Login />} path='/login'></Route>
+            <Route element={<VerifyPhoneorEmail />} path='/verifyPnE'></Route>
             <Route element={token ? <BlogCreator /> : <Navigate to={'/login'} />} path='/blog'></Route>
             <Route element={<Layout />}>
               <Route element={<Home />} path='/' index></Route>

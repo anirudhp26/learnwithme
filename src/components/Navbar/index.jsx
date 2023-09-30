@@ -368,7 +368,7 @@ export default function Navbar() {
 								</Box>
 							) : (
 								<Box>
-									{user.username === undefined ? (
+									{user.username !== undefined ? (
 										<>
 											{notifications?.map((val) => {
 												return (

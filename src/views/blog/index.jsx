@@ -16,7 +16,7 @@ export default function Blog(props) {
   };
 
   return (
-    <Card sx={{ margin: '1rem', border: `1px solid ${theme.palette.neutral.medium}`, boxShadow: 'none', backgroundColor: 'transparent', borderRadius: '15px' }}>
+    <Card sx={{ margin: '1rem', border: `1px solid ${theme.palette.neutral.medium}`, boxShadow: 'none', backgroundColor: 'transparent' }}>
       <CardContent style={{ position: 'relative' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} width={'100%'} sx={{
@@ -27,13 +27,12 @@ export default function Blog(props) {
           }}> 
             <Box display={'flex'} width={'max-content'} alignItems={'center'} sx={{
               transition: 'all 0.5s',
-              border: '1px solid transparent',
-              backgroundColor: 'white',
+              border: `1px solid ${theme.palette.neutral.medium}`,
+              backgroundColor: theme.palette.background.default,
               margin: '1rem',
               padding: '1rem',
               '&:hover': {
-                border: '1px solid black',
-                borderRadius: '15px'
+                border: `1px solid ${theme.palette.neutral.mediumMain}`,
               },
             }}>
               <Avatar alt={user.username} src={user.picture} style={{ marginRight: '1rem' }} />

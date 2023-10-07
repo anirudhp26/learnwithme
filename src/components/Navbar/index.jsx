@@ -191,7 +191,7 @@ export default function Navbar() {
 			sx={{
 				boxShadow: "none",
 				margin: "auto",
-				backgroundColor: theme.palette.neutral.light,
+				backgroundColor: theme.palette.neutral.white,
 			}}
 		>
 			<Container maxWidth="xl">

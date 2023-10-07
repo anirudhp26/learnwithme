@@ -4,7 +4,7 @@ import React from 'react'
 export default function FriendList(props) {
     const theme = useTheme();
     return (
-        <Box width={'90%'} margin={'1rem auto'} border={`1px solid ${theme.palette.neutral.medium}`} p={'1rem'} borderRadius={'15px'}>
+        <Box width={'90%'} height={'fit-content'} margin={'1rem auto'} border={`1px solid ${theme.palette.neutral.medium}`} p={'1rem'} borderRadius={'15px'}>
             <Typography fontSize={theme.typography.h5}>Friend List</Typography>
             {props.friends.map((friend) => {
                 return (

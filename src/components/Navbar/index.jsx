@@ -503,7 +503,7 @@ export default function Navbar() {
 									{user.username}
 								</Typography>
 								<Divider variant="middle"></Divider>
-								<Typography
+								{/* <Typography
 									margin={"auto"}
 									p="1rem"
 									fontSize={theme.typography.h5}
@@ -517,7 +517,7 @@ export default function Navbar() {
 									}}
 								>
 									Inbox
-								</Typography>
+								</Typography> */}
 								<Divider variant="middle"></Divider>
 								<Box
 									sx={{

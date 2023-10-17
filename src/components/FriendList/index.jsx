@@ -1,18 +1,25 @@
-import { Box, Typography, useTheme } from '@mui/material'
+import { Box, Divider, Typography, useTheme } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function FriendList(props) {
     const theme = useTheme();
+    const navigate = useNavigate();
     return (
-        <Box width={'90%'} height={'fit-content'} margin={'1rem auto'} border={`1px solid ${theme.palette.neutral.medium}`} p={'1rem'} borderRadius={'15px'}>
+        <Box width={'90%'} height={'fit-content'} margin={'1rem auto'} border={`1px solid ${theme.palette.neutral.medium}`} p={'1rem'}>
             <Typography fontSize={theme.typography.h5}>Friend List</Typography>
+            <Divider variant='middle' sx={{ margin: '1rem 0'}} />
             {props.friends.map((friend) => {
                 return (
-                    <Box width={'90%'} alignItems={'center'} padding={'0.3rem'} margin={'1rem auto'} display={'flex'}>
+                    <Box width={'90%'} alignItems={'center'} padding={'1rem'} border={`1px solid transparent`} margin={'0 auto'} display={'flex'} sx={{ 
+                        '&:hover': {
+                            border: `1px solid ${theme.palette.neutral.dark}`
+                        }
+                    }} onClick={() => { navigate(`/profile/${friend.username}`);}}>
                         {friend?.picture !== undefined ? (
                             <img
                                 style={{
-                                    borderRadius: "50%",
+                                    borderRadius: "50%",    
                                     width: "40px",
                                     height: "40px",
                                 }}

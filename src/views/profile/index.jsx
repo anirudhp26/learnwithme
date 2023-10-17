@@ -295,7 +295,7 @@ export default function Profile() {
 									return (
 										<Blog
 											title={blog.title}
-											user={logged_user}
+											user={suser}
 											content={blog.content}
 											coverPath={blog.coverPath}
 											impressed={blog.impressed.length}

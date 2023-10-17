@@ -11,7 +11,7 @@ export default function VerifyPhoneorEmail() {
         setOTP(newOTP);
     };
     const theme = useTheme();
-    const otpRefs = Array.from({ length: 4 }, () => React.createRef());
+    // const otpRefs = Array.from({ length: 4 }, () => React.createRef());
     return (
         <>
             <Box bgcolor={theme.palette.primary.dark} display={otpsent ? "none" : "flex"} height={'100vh'} width={'100vw'} margin={'0 auto'} >

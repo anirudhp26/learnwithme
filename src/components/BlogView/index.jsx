@@ -128,12 +128,12 @@ export default function BlogView() {
                                         width: "100%",
                                         height: "auto",
                                         aspectRatio: "4/1",
-                                        margin: "2rem 0",
+                                        margin: "1rem 0",
                                     }}
                                 ></img>
                                 <Box
                                     width={"100%"}
-                                    margin={"2rem auto"}
+                                    margin={"1rem auto"}
                                     display={"flex"}
                                     alignItems={"center"}
                                 >
@@ -141,8 +141,8 @@ export default function BlogView() {
                                         <img
                                             style={{
                                                 borderRadius: "50%",
-                                                width: "70px",
-                                                height: "70px",
+                                                width: "4rem",
+                                                height: "4rem",
                                             }}
                                             id="profile-user-image"
                                             src={user.picture.substring(8, 11) === "lh3" ? user.picture : process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
@@ -152,12 +152,12 @@ export default function BlogView() {
                                         <img
                                             src="/img/user-default-logo.png"
                                             alt=""
-                                            width="70px"
+                                            width="4rem"
                                         ></img>
                                     )}
                                     <Typography
-                                        fontSize={theme.typography.h3}
-                                        margin={"0 2rem"}
+                                        fontSize={theme.typography.h5}
+                                        margin={"0 1rem"}
                                         onClick={() => {
                                             navigate(`/profile/${user.username}`);
                                         }}
@@ -167,7 +167,7 @@ export default function BlogView() {
                                 </Box>
                                 <Box display={"flex"} flexDirection={"column"}>
                                     <Typography
-                                        fontSize={theme.typography.h1}
+                                        fontSize={theme.typography.h2}
                                         textAlign={"center"}
                                         margin={"1rem 0"}
                                     >
@@ -175,7 +175,7 @@ export default function BlogView() {
                                     </Typography>
                                     <Box
                                         display={"flex"}
-                                        margin={"auto"}
+                                        margin={"0 auto"}
                                         padding={"0 0 2rem 0"}
                                         justifyContent={"center"}
                                         alignItems={"center"}
@@ -189,7 +189,7 @@ export default function BlogView() {
                                                 onClick={handleLike}
                                             >
                                                 <FavoriteOutlined
-                                                    sx={{ fontSize: "2rem" }}
+                                                    sx={{ fontSize: "1.5rem" }}
                                                 />
                                             </IconButton>
                                         </Tooltip>
@@ -206,11 +206,11 @@ export default function BlogView() {
                                             >
                                                 {isBookmarked ? (
                                                     <BookmarkAdded
-                                                        sx={{ fontSize: "2rem" }}
+                                                        sx={{ fontSize: "1.5rem" }}
                                                     />
                                                 ) : (
                                                     <BookmarkAdd
-                                                        sx={{ fontSize: "2rem" }}
+                                                        sx={{ fontSize: "1.5rem" }}
                                                     />
                                                 )}
                                             </IconButton>
@@ -250,7 +250,7 @@ export default function BlogView() {
                                             endAdornment: (
                                                 <IconButton
                                                     onClick={() => {
-                                                        handleAddComment()
+                                                        handleAddComment();
                                                     }}
                                                 >
                                                     <SendOutlined />
@@ -264,6 +264,7 @@ export default function BlogView() {
                                             display: "flex",
                                             margin: "2rem 0",
                                         }}
+                                        value={addcomment}
                                         variant="outlined"
                                         onChange={(e) => {
                                             setAddComment(e.target.value);
@@ -301,32 +302,39 @@ export default function BlogView() {
                                                 <Box width={'100%'}>
                                                     <Divider variant="middle" />
                                                     <Box key={comment._id} margin={'10px 0'} width={'100%'} padding={'10px'} display={'flex'} alignItems={'center'} position={'relative'}>
-                                                        {comment?.author_id.picture !== undefined ? (
-                                                            <img
-                                                                style={{
-                                                                    borderRadius: "50%",
-                                                                    width: "50px",
-                                                                    height: "50px",
-                                                                }}
-                                                                id="comment-user-image"
-                                                                src={comment.author_id.picture.substring(8, 11) === "lh3" ? comment.author_id.picture : process.env.REACT_APP_API_URL + `/assets/${comment.author_id.picture}`}
-                                                                alt="USER"
-                                                            ></img>
-                                                        ) : (
-                                                            <img
-                                                                src="/img/user-default-logo.png"
-                                                                alt=""
-                                                                width="50px"
-                                                            ></img>
-                                                        )}
-                                                        <Typography marginLeft={'1rem'} color={'grey'}><i onClick={() => navigate(`/profile/${comment.author_id.username}`)}>{comment.author_id.username}</i></Typography>
-                                                        <Typography
-                                                            fontSize={theme.typography.h6}
-                                                            display={'flex'}
-                                                            margin={'0 2rem'}
-                                                        >
-                                                            {comment.content}
-                                                        </Typography>
+                                                        <Box display={'flex'} flexDirection={'column'} width={'100%'}>
+                                                            <Box display={'flex'} alignItems={'center'}>
+                                                                {comment?.author_id.picture !== undefined ? (
+                                                                    <img
+                                                                        style={{
+                                                                            borderRadius: "50%",
+                                                                            width: "3rem",
+                                                                            height: "3rem",
+                                                                        }}
+                                                                        id="comment-user-image"
+                                                                        src={comment.author_id.picture.substring(8, 11) === "lh3" ? comment.author_id.picture : process.env.REACT_APP_API_URL + `/assets/${comment.author_id.picture}`}
+                                                                        alt="USER"
+                                                                    ></img>
+                                                                ) : (
+                                                                    <img
+                                                                        src="/img/user-default-logo.png"
+                                                                        alt=""
+                                                                        width="40px"
+                                                                    ></img>
+                                                                )}
+                                                                <Typography marginLeft={'1rem'} color={'grey'}><p onClick={() => navigate(`/profile/${comment.author_id.username}`)}>{comment.author_id.username}</p></Typography>
+                                                            </Box>
+                                                            <Typography
+                                                                fontSize={theme.typography.h6}
+                                                                display={'flex'}
+                                                                width={'90%'}
+                                                                margin={'1rem 0'}
+                                                            >
+                                                                <i>
+                                                                {comment.content}
+                                                                </i>
+                                                            </Typography>
+                                                        </Box>
                                                         <Tooltip sx={{ position: 'absolute', right: '0' }} title={iscommentLiked ? "Unlike" : "Like"}>
                                                             <IconButton
                                                                 color={iscommentLiked ? "error" : "default"}

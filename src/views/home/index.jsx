@@ -9,10 +9,20 @@ const Home = () => {
     const [feed, setFeed] = useState([]);
     const [friends, setFriends] = useState([]);
     const [isloading, setIsloading] = useState(true);
+    const [personalizedfeed, setPersonalizedfeed] = useState(true);
+    const [quote, setQuote] = useState({});
     const mode = useSelector((state) => state.mode);
     const isLoggedin = useSelector((state) => state.token);
     const user = useSelector((state) => state.user);
     const theme = useTheme();
+    useEffect(() => {
+        const getQuote = async () => {
+            const quote = await axios.get("https://api.quotable.io/random");
+            console.log(quote);
+            setQuote(quote.data);
+        }
+        getQuote();
+    }, []);
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_API_URL}/blog/getRecommendations`, { id: user._id }, { headers: { Authorization: `Bearer ${isLoggedin}` } }).then((recommendations) => {
             setFeed(recommendations.data.blogs);
@@ -36,7 +46,8 @@ const Home = () => {
                 </>
                 :
                 <>
-                    <Typography textAlign={'center'} margin={'2rem 0'} fontSize={theme.typography.h2}>Where words come to <span style={{ color: 'goldenrod' }}>life</span> and <span style={{ color: 'goldenrod' }}>stories</span> find their home.</Typography>
+
+                    <Typography textAlign={'center'} margin={'2rem 0'} fontSize={theme.typography.h3}>{quote.content} <br></br><i>~ <span style={{ color: 'goldenrod' }}>{quote.author}</span></i></Typography>
                     <Box display={'flex'} width={'100%'} justifyContent={'center'}>
                         <Box width={'50%'} margin={'0 1rem 1rem 1rem'} sx={{
                             "@media only screen and (max-width: 1250px)":
@@ -44,6 +55,14 @@ const Home = () => {
                                 width: '95%'
                             },
                         }}>
+                            <Box display={'flex'} width={'100%'} margin={'2rem auto'} borderTop={`1px solid ${theme.palette.neutral.dark}`} padding={'1rem'} borderRadius={'15px'}>
+                                <Box display={'flex'} justifyContent={'center'} borderRight={`1px solid ${theme.palette.neutral.dark}`} alignItems={'center'} width={'50%'} sx={{ cursor: 'pointer' }} borderBottom={personalizedfeed ? `4px solid ${theme.palette.primary.main}` : "none"}onClick={() => {setPersonalizedfeed(true)}} padding={'1rem 0'}>
+                                    <Typography fontSize={theme.typography.h4} textAlign={'center'} fontWeight={'600'} color={theme.palette.primary.dark}>Personalized</Typography>
+                                </Box>
+                                <Box display={'flex'} justifyContent={'center'} alignItems={'center'} width={'50%'} sx={{ cursor: 'pointer' }} borderBottom={personalizedfeed ? "none" : `4px solid ${theme.palette.primary.main}`} onClick={() => {setPersonalizedfeed(false)}} padding={'1rem 0'}>
+                                    <Typography fontSize={theme.typography.h4} textAlign={'center'} fontWeight={'600'} color={theme.palette.primary.dark}>Trending</Typography>
+                                </Box>
+                            </Box>
                             {feed.map((blog) => {
                                 return (
                                     <Blog
@@ -59,7 +78,7 @@ const Home = () => {
                                 );
                             })}
                         </Box>
-                        <Box display={friends.length === 0 ? "none" : "flex"} width={'20%'} margin={'1rem 0'} sx={{
+                        <Box display={"flex"} width={'20%'} margin={'1rem 0'} sx={{
                             "@media only screen and (max-width: 1250px)":
                             {
                                 display: 'none'

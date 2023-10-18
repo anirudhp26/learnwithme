@@ -38,7 +38,12 @@ const Home = () => {
                 <>
                     <Typography textAlign={'center'} margin={'2rem 0'} fontSize={theme.typography.h2}>Where words come to <span style={{ color: 'goldenrod' }}>life</span> and <span style={{ color: 'goldenrod' }}>stories</span> find their home.</Typography>
                     <Box display={'flex'} width={'100%'} justifyContent={'center'}>
-                        <Box width={'50%'} margin={'0 1rem 1rem 1rem'}>
+                        <Box width={'50%'} margin={'0 1rem 1rem 1rem'} sx={{
+                            "@media only screen and (max-width: 1250px)":
+                            {
+                                width: '95%'
+                            },
+                        }}>
                             {feed.map((blog) => {
                                 return (
                                     <Blog

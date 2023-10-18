@@ -110,7 +110,12 @@ export default function BlogView() {
                 </>
                 :
                 <>
-                    <Box width={"70%"} margin={"auto"}>
+                    <Box width={"70%"} margin={"auto"} sx={{
+                        "@media only screen and (max-width: 1250px)":
+                        {
+                            width: '90%',
+                        },
+                    }}>
                         {blog ? (
                             <>
                                 <img

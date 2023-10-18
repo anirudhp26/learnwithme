@@ -284,7 +284,12 @@ export default function Profile() {
 						</Box>
 					</Box>
 					<Divider variant="middle" />
-					<Box width={"50%"} margin={"2rem auto"}>
+					<Box width={"50%"} margin={"2rem auto"} sx={{ 
+						"@media only screen and (max-width: 1250px)":
+						{
+							width: '95%'
+						},
+					}}>
 						{blogs === undefined || blogs.length === 0 ? (
 							<Typography margin={"7rem 0"} textAlign={"center"}>
 								Couldn't Find any Blogs on this user's account

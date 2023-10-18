@@ -445,8 +445,8 @@ export default function Navbar() {
 										<img
 											style={{
 												borderRadius: "50%",
-												width: "60px",
-												height: "60px",
+												width: "3rem",
+												height: "3rem",
 												objectFit: "cover",
 											}}
 											id="user-image"
@@ -503,7 +503,7 @@ export default function Navbar() {
 									{user.username}
 								</Typography>
 								<Divider variant="middle"></Divider>
-								{/* <Typography
+								<Typography
 									margin={"auto"}
 									p="1rem"
 									fontSize={theme.typography.h5}
@@ -517,7 +517,7 @@ export default function Navbar() {
 									}}
 								>
 									Inbox
-								</Typography> */}
+								</Typography>
 								<Divider variant="middle"></Divider>
 								<Box
 									sx={{

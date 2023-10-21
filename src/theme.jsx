@@ -26,6 +26,15 @@ export const colorTokens = {
 		800: "#4c68fc",
 		900: "#032afc",
 	},
+	premium: {
+		0: "#0D1821",
+		100: "#172533",
+		200: "#213144",
+		300: "#2B3D55",
+		400: "#30435E",
+		500: "#324662",
+		600: "#344966"
+	}
 };
 
 // mui theme settings
@@ -53,6 +62,10 @@ export const themeSettings = (mode) => {
 							default: colorTokens.grey[900],
 							alt: colorTokens.grey[800],
 						},
+						contrast: {
+							default: colorTokens.premium[600],
+							alt: colorTokens.premium[0],
+						}
 				  }
 				: {
 						// palette values for light mode
@@ -73,6 +86,10 @@ export const themeSettings = (mode) => {
 							default: colorTokens.grey[0],
 							alt: colorTokens.grey[10],
 						},
+						contrast: {
+							default: colorTokens.premium[0],
+							alt: colorTokens.premium[600],
+						}
 				  }),
 		},
 		typography: {

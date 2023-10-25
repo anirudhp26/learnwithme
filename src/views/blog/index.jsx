@@ -1,12 +1,24 @@
-import { Box, Button, Card, CardContent, Typography, useTheme } from '@mui/material';
+import { MoreVertOutlined } from '@mui/icons-material';
+import { Box, Button, Card, CardContent, IconButton, Menu, MenuItem, Typography, useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
+import axios from 'axios';
 import React from 'react'
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export default function Blog(props) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const navigate = useNavigate();
   const theme = useTheme();
   const user = props.user;
+  const isOwner = props.user._id === useSelector((state) => state.user._id) ? true : false;
   const calculateAgeOfBlog = (createdAt) => {
     const currentDate = new Date();
     const blogDate = new Date(createdAt);
@@ -14,7 +26,12 @@ export default function Blog(props) {
     const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     return `${daysAgo} days ago`;
   };
-
+  const handleBlogDelete = async () => {
+    const deleteBlog = await axios.post(`${process.env.REACT_APP_API_URL}/blog/deleteblog`, { id: props._id });
+    if (deleteBlog.status === 200) {
+      navigate(`/profile/${user.username}`);
+    }
+  }
   return (
     <Card sx={{ margin: '1rem', border: `1px solid ${theme.palette.neutral.medium}`, boxShadow: 'none', backgroundColor: 'transparent' }}>
       <CardContent style={{ position: 'relative' }}>
@@ -24,7 +41,7 @@ export default function Blog(props) {
             backgroundImage: `url("` + `${process.env.REACT_APP_API_URL}/assets/` + props.coverPath + `")`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
-          }}> 
+          }}>
             <Box display={'flex'} width={'max-content'} alignItems={'center'} sx={{
               transition: 'all 0.5s',
               border: `1px solid ${theme.palette.neutral.medium}`,
@@ -42,9 +59,9 @@ export default function Blog(props) {
             </Box>
           </Box>
         </div>
-            <Typography fontSize={theme.typography.h2} margin={'1rem 0'} textAlign={'center'}>
-              {props.title}
-            </Typography>
+        <Typography fontSize={theme.typography.h2} margin={'1rem 0'} textAlign={'center'}>
+          {props.title}
+        </Typography>
         <div style={{
           fontSize: theme.typography.h4,
           textAlign: 'center',
@@ -55,7 +72,38 @@ export default function Blog(props) {
           Read More
         </Button>
         <Typography textAlign={'end'} fontSize={theme.typography.caption} color="textSecondary">
-          {calculateAgeOfBlog(props.createdAt)} &bull; {props.impressed} Likes
+          {props.views} views &bull; {calculateAgeOfBlog(props.createdAt)} &bull; {props.impressed} Likes &nbsp;
+          {isOwner ? 
+          <>
+            <IconButton
+            aria-label="more"
+            id="long-button"
+            aria-controls={open ? 'long-menu' : undefined}
+            aria-expanded={open ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            <MoreVertOutlined />
+          </IconButton>
+          <Menu
+            id="long-menu"
+            MenuListProps={{
+              'aria-labelledby': 'long-button',
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+          >
+            {/* <MenuItem onClick={handleClose}>
+              Edit
+            </MenuItem> */}
+            <MenuItem onClick={handleBlogDelete}>
+              Delete
+            </MenuItem>
+          </Menu>
+          </>
+          :
+          <></>}
         </Typography>
       </CardContent>
     </Card>

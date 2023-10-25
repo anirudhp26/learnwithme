@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
 	Box,
 	Button,
-	CircularProgress,
 	Divider,
 	Typography,
 } from "@mui/material";
@@ -156,10 +155,12 @@ export default function Profile() {
 		<>
 			{isLoading ? (
 				<>
-					<CircularProgress
-						sx={{ margin: "20vh auto", display: "flex" }}
-						color={mode === "light" ? "secondary" : "primary"}
-					/>
+					<div class="loader-container">
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
 				</>
 			) : (
 				<>
@@ -302,6 +303,7 @@ export default function Profile() {
 											title={blog.title}
 											user={suser}
 											content={blog.content}
+											views={blog.views}
 											coverPath={blog.coverPath}
 											impressed={blog.impressed.length}
 											createdAt={blog.createdAt}

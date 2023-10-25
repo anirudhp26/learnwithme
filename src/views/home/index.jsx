@@ -84,9 +84,7 @@ const Home = () => {
 								display={"flex"}
 								width={"100%"}
 								margin={"2rem auto"}
-								borderTop={`1px solid ${theme.palette.neutral.dark}`}
 								padding={"1rem"}
-								borderRadius={"15px"}
 							>
 								<Box
 									display={"flex"}
@@ -95,11 +93,6 @@ const Home = () => {
 									alignItems={"center"}
 									width={"50%"}
 									sx={{ cursor: "pointer" }}
-									borderBottom={
-										personalizedfeed
-											? `4px solid ${theme.palette.primary.main}`
-											: "none"
-									}
 									onClick={() => {
 										setPersonalizedfeed(true);
 									}}
@@ -109,7 +102,7 @@ const Home = () => {
 										fontSize={theme.typography.h4}
 										textAlign={"center"}
 										fontWeight={"600"}
-										color={theme.palette.primary.dark}
+										color={theme.palette.neutral.medium}
 									>
 										Personalized
 									</Typography>
@@ -120,11 +113,6 @@ const Home = () => {
 									alignItems={"center"}
 									width={"50%"}
 									sx={{ cursor: "pointer" }}
-									borderBottom={
-										personalizedfeed
-											? "none"
-											: `4px solid ${theme.palette.primary.main}`
-									}
 									onClick={() => {
 										setPersonalizedfeed(false);
 									}}
@@ -134,7 +122,7 @@ const Home = () => {
 										fontSize={theme.typography.h4}
 										textAlign={"center"}
 										fontWeight={"600"}
-										color={theme.palette.primary.dark}
+										color={theme.palette.neutral.medium}
 									>
 										Trending
 									</Typography>
@@ -146,6 +134,7 @@ const Home = () => {
 										title={blog.title}
 										user={blog.user}
 										content={blog.content}
+										views={blog.views}
 										coverPath={blog.coverPath}
 										impressed={blog.impressed.length}
 										createdAt={blog.createdAt}

@@ -436,7 +436,7 @@ export default function Navbar() {
 								justifyContent: "center",
 							}}
 						>
-							<Tooltip title="Open settings">
+							<Tooltip title="More Profile Options">
 								<IconButton
 									onClick={handleOpenUserMenu}
 									sx={{ p: 1, borderRadius: "0" }}

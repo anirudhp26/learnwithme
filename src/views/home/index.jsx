@@ -6,10 +6,11 @@ import FriendList from "../../components/FriendList";
 import { Box, Typography, useTheme } from "@mui/material";
 
 const Home = () => {
-	const [feed, setFeed] = useState([]);
 	const [friends, setFriends] = useState([]);
 	const [isloading, setIsloading] = useState(true);
 	const [personalizedfeed, setPersonalizedfeed] = useState(true);
+	const [pFeed, setPFeed] = useState([]);
+	const [trendingFeed, settrendingFeed] = useState([]);
 	const [quote, setQuote] = useState({});
 	const isLoggedin = useSelector((state) => state.token);
 	const user = useSelector((state) => state.user);
@@ -22,17 +23,17 @@ const Home = () => {
 		};
 		getQuote();
 	}, []);
+
 	useEffect(() => {
 		axios
 			.post(
-				`${process.env.REACT_APP_API_URL}/blog/getRecommendations`,
+				`${process.env.REACT_APP_API_URL}/blog/getTrending`,
 				{ id: user._id },
 				{ headers: { Authorization: `Bearer ${isLoggedin}` } }
 			)
 			.then((recommendations) => {
-				setFeed(recommendations.data.blogs);
+				settrendingFeed(recommendations.data.blogs);
 				setFriends(recommendations.data.friends);
-				console.log(recommendations.data.blogs);
 				setIsloading(false);
 			})
 			.catch((error) => {
@@ -40,6 +41,23 @@ const Home = () => {
 				setIsloading(false);
 			});
 	}, [user, isLoggedin]);
+	useEffect(() => {
+		axios
+			.post(
+				`${process.env.REACT_APP_API_URL}/blog/getPersonalized`,
+				{ id: user._id },
+				{ headers: { Authorization: `Bearer ${isLoggedin}` } }
+			)
+			.then((recommendations) => {
+				setPFeed(recommendations.data.blogs);
+				setIsloading(false);
+			})
+			.catch((error) => {
+				console.log(error);
+				setIsloading(false);
+			});
+	}, [user, isLoggedin]);
+
 	return (
 		<>
 			{isloading ? (
@@ -128,21 +146,47 @@ const Home = () => {
 									</Typography>
 								</Box>
 							</Box>
-							{feed.map((blog) => {
-								return (
-									<Blog
-										title={blog.title}
-										user={blog.user}
-										content={blog.content}
-										views={blog.views}
-										coverPath={blog.coverPath}
-										impressed={blog.impressed.length}
-										createdAt={blog.createdAt}
-										key={blog._id}
-										id={blog._id}
-									/>
-								);
-							})}
+							{personalizedfeed ? (
+								<>
+									{pFeed.map((blog) => {
+										return (
+											<Blog
+												title={blog.title}
+												user={blog.user}
+												content={blog.content}
+												views={blog.views}
+												coverPath={blog.coverPath}
+												impressed={
+													blog.impressed.length
+												}
+												createdAt={blog.createdAt}
+												key={blog._id}
+												id={blog._id}
+											/>
+										);
+									})}
+								</>
+							) : (
+								<>
+									{trendingFeed.map((blog) => {
+										return (
+											<Blog
+												title={blog.title}
+												user={blog.user}
+												content={blog.content}
+												views={blog.views}
+												coverPath={blog.coverPath}
+												impressed={
+													blog.impressed.length
+												}
+												createdAt={blog.createdAt}
+												key={blog._id}
+												id={blog._id}
+											/>
+										);
+									})}
+								</>
+							)}
 						</Box>
 						<Box
 							display={"flex"}

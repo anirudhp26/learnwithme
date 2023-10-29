@@ -18,6 +18,7 @@ export default function Blog(props) {
   const navigate = useNavigate();
   const theme = useTheme();
   const user = props.user;
+  const token = useSelector((state) => state.token);
   const isOwner = props.user._id === useSelector((state) => state.user._id) ? true : false;
   const calculateAgeOfBlog = (createdAt) => {
     const currentDate = new Date();
@@ -27,7 +28,7 @@ export default function Blog(props) {
     return `${daysAgo} days ago`;
   };
   const handleBlogDelete = async () => {
-    const deleteBlog = await axios.post(`${process.env.REACT_APP_API_URL}/blog/deleteblog`, { id: props._id });
+    const deleteBlog = await axios.post(`${process.env.REACT_APP_API_URL}/blog/deleteblog`, { id: props.id }, { headers: { Authorization: `Bearer ${token}` } });
     if (deleteBlog.status === 200) {
       navigate(`/profile/${user.username}`);
     }
@@ -97,7 +98,7 @@ export default function Blog(props) {
             {/* <MenuItem onClick={handleClose}>
               Edit
             </MenuItem> */}
-            <MenuItem onClick={handleBlogDelete}>
+            <MenuItem onClick={() => {handleBlogDelete()}}>
               Delete
             </MenuItem>
           </Menu>

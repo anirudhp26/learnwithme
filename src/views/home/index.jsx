@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Blog from "../blog";
+import Blog from "../../components/BlogCards";
 import FriendList from "../../components/FriendList";
 import { Box, Typography, useTheme } from "@mui/material";
 
@@ -62,7 +62,7 @@ const Home = () => {
 		<>
 			{isloading ? (
 				<>
-					<div class="loader-container">
+					<div className="loader-container">
 						<span></span>
 						<span></span>
 						<span></span>

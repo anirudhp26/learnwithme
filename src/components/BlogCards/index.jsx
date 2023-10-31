@@ -5,9 +5,12 @@ import axios from 'axios';
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import { ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../../Firebase";
+import { useEffect } from 'react';
 export default function Blog(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [coverImgLink, setCoverImgLink] = React.useState("");
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,6 +30,14 @@ export default function Blog(props) {
     const daysAgo = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     return `${daysAgo} days ago`;
   };
+  useEffect(() => {
+    const imgRef = ref(storage, `${props.coverPath}`);
+    getDownloadURL(imgRef).then((url) => {
+      setCoverImgLink(url);
+    }).catch((err) => {
+      console.log(err);
+    });
+  })
   const handleBlogDelete = async () => {
     const deleteBlog = await axios.post(`${process.env.REACT_APP_API_URL}/blog/deleteblog`, { id: props.id }, { headers: { Authorization: `Bearer ${token}` } });
     if (deleteBlog.status === 200) {
@@ -39,7 +50,7 @@ export default function Blog(props) {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Box display={'flex'} flexDirection={'column'} justifyContent={'space-between'} width={'100%'} sx={{
             // eslint-disable-next-line no-useless-concat
-            backgroundImage: `url("` + `${process.env.REACT_APP_API_URL}/assets/` + props.coverPath + `")`,
+            backgroundImage: `url("` + `${coverImgLink}")`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}>
@@ -74,37 +85,37 @@ export default function Blog(props) {
         </Button>
         <Typography textAlign={'end'} fontSize={theme.typography.caption} color="textSecondary">
           {props.views} views &bull; {calculateAgeOfBlog(props.createdAt)} &bull; {props.impressed} Likes &nbsp;
-          {isOwner ? 
-          <>
-            <IconButton
-            aria-label="more"
-            id="long-button"
-            aria-controls={open ? 'long-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <MoreVertOutlined />
-          </IconButton>
-          <Menu
-            id="long-menu"
-            MenuListProps={{
-              'aria-labelledby': 'long-button',
-            }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-          >
-            {/* <MenuItem onClick={handleClose}>
+          {isOwner ?
+            <>
+              <IconButton
+                aria-label="more"
+                id="long-button"
+                aria-controls={open ? 'long-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                <MoreVertOutlined />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                MenuListProps={{
+                  'aria-labelledby': 'long-button',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              >
+                {/* <MenuItem onClick={handleClose}>
               Edit
             </MenuItem> */}
-            <MenuItem onClick={() => {handleBlogDelete()}}>
-              Delete
-            </MenuItem>
-          </Menu>
-          </>
-          :
-          <></>}
+                <MenuItem onClick={() => { handleBlogDelete() }}>
+                  Delete
+                </MenuItem>
+              </Menu>
+            </>
+            :
+            <></>}
         </Typography>
       </CardContent>
     </Card>

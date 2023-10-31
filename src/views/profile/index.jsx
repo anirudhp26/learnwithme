@@ -9,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
 import { setBlogs } from "../../redux";
-import Blog from "../blog";
+import Blog from "../../components/BlogCards";
 import { SocketContext } from "../../context/SocketContext";
 export default function Profile() {
 	const { user } = useParams();

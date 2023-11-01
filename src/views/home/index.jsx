@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Blog from "../../components/BlogCards";
 import FriendList from "../../components/FriendList";
-import { Box, Divider, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 
 const Home = () => {
 	const [friends, setFriends] = useState([]);

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Blog from "../../components/BlogCards";
 import FriendList from "../../components/FriendList";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Divider, Typography, useTheme } from "@mui/material";
 
 const Home = () => {
 	const [friends, setFriends] = useState([]);
@@ -92,6 +92,8 @@ const Home = () => {
 						<Box
 							width={"50%"}
 							margin={"0 1rem 1rem 1rem"}
+							padding={'1rem'}
+							borderRight={`1px solid ${theme.palette.neutral.light}`}
 							sx={{
 								"@media only screen and (max-width: 1250px)": {
 									width: "95%",
@@ -101,13 +103,16 @@ const Home = () => {
 							<Box
 								display={"flex"}
 								width={"100%"}
+								borderTop={`1px solid ${theme.palette.neutral.light}`}
+								borderRight={`1px solid ${theme.palette.neutral.light}`}
+								borderLeft={`1px solid ${theme.palette.neutral.light}`}
 								margin={"2rem auto"}
 								padding={"1rem"}
 							>
 								<Box
 									display={"flex"}
 									justifyContent={"center"}
-									borderRight={`1px solid ${theme.palette.neutral.dark}`}
+									borderRight={`1px solid ${theme.palette.neutral.light}`}
 									alignItems={"center"}
 									width={"50%"}
 									sx={{ cursor: "pointer" }}

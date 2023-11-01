@@ -6,7 +6,7 @@ export default function FriendList(props) {
     const theme = useTheme();
     const navigate = useNavigate();
     return (
-        <Box width={'90%'} height={'fit-content'} margin={'0 auto'} border={`1px solid ${theme.palette.neutral.medium}`} p={'1rem'}>
+        <Box width={'90%'} height={'fit-content'} margin={'0 auto'} border={`1px solid ${theme.palette.neutral.light}`} p={'1rem'}>
             <Typography fontSize={theme.typography.h5}>People you admire ...</Typography>
             <Divider variant='middle' sx={{ margin: '1rem 0' }} />
             {props.friends.length === 0

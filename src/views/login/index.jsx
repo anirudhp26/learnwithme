@@ -22,6 +22,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import Dropzone from "react-dropzone";
 import { EditOutlined } from "@mui/icons-material";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { storage } from "../../Firebase";
 export default function Login() {
 	const [isLogin, setisLogin] = useState(true);
 	const [open, setOpen] = useState(false);
@@ -123,36 +125,64 @@ export default function Login() {
 	};
 
 	const handlesignupSubmit = () => {
-		const formdata = new FormData();
-		formdata.append("username", username);
-		formdata.append("password", password);
-		formdata.append("name", name);
-		formdata.append("bio", bio);
-		formdata.append("picture", image);
-		formdata.append("picturePath", image.name);
-
-		Axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, formdata)
-			.then(async (responce) => {
-				document
-					.getElementById("signup-loading")
-					.classList.toggle("disable");
-				if (responce.data.loginStatus) {
-					setisClicked(false);
-					dispatch(
-						setLogin({
-							user: responce.data.user,
-							token: responce.data.token,
+		const profileRef = ref(
+			storage,
+			`profile/${"p" + username + Date.now()}`
+		);
+		uploadBytes(profileRef, image)
+			.then(async (snapshot) => {
+				const imgLinkRef = ref(
+					storage,
+					`${snapshot.metadata.fullPath}`
+				);
+				getDownloadURL(imgLinkRef).then(async (downloadURL) => {
+					await Axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, {
+						username: username,
+						password: password,
+						name: name,
+						bio: bio,
+						picturePath: downloadURL,
+					})
+						.then(async (responce) => {
+							document
+								.getElementById("signup-loading")
+								.classList.toggle("disable");
+							if (responce.data.loginStatus) {
+								setisClicked(false);
+								dispatch(
+									setLogin({
+										user: responce.data.user,
+										token: responce.data.token,
+									})
+								);
+								navigate("/verifyPnE");
+							} else {
+								setisClicked(false);
+								setError(responce.data.message);
+								setOpen(!open);
+							}
 						})
-					);
-					navigate("/verifyPnE");
-				} else {
+						.catch((error) => {
+							setisClicked(false);
+							setError(error.message);
+							setOpen(!open);
+							document
+								.getElementById("signup-loading")
+								.classList.toggle("disable");
+						});
+				}).catch((error) => {
 					setisClicked(false);
-					setError(responce.data.message);
+					console.log(error);
+					setError(error.message);
 					setOpen(!open);
-				}
+					document
+						.getElementById("signup-loading")
+						.classList.toggle("disable");
+				});
 			})
 			.catch((error) => {
 				setisClicked(false);
+				console.log(error);
 				setError(error.message);
 				setOpen(!open);
 				document

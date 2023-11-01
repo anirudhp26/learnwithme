@@ -15,7 +15,7 @@ import "quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { uploadBytes, ref } from "firebase/storage";
+import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../Firebase.js";
 var modules = {
 	toolbar: [
@@ -244,20 +244,30 @@ export default function BlogCreator() {
 				`blogCover/${"b" + user._id + Date.now()}`
 			);
 			uploadBytes(coverRef, coverImg).then(async (snapshot) => {
-				const responce = await axios.post(
-					`${process.env.REACT_APP_API_URL}/blog/saveblog`,
-					{
-            title: title,
-            content: content,
-            writer: user._id,
-            keywords: selectedTags,
-            coverImgPath: snapshot.metadata.fullPath
-          },
-					{ headers: { Authorization: `Bearer ${token}` } }
+				const coverLinkRef = ref(
+					storage,
+					`${snapshot.metadata.fullPath}`
 				);
-				if (responce.status === 200) {
-					navigate(`/blogs/${responce.data.blog._id}`);
-				}
+				getDownloadURL(coverLinkRef)
+					.then(async (url) => {
+						const responce = await axios.post(
+							`${process.env.REACT_APP_API_URL}/blog/saveblog`,
+							{
+								title: title,
+								content: content,
+								writer: user._id,
+								keywords: selectedTags,
+								coverImgPath: url,
+							},
+							{ headers: { Authorization: `Bearer ${token}` } }
+						);
+						if (responce.status === 200) {
+							navigate(`/blogs/${responce.data.blog._id}`);
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+					});
 			});
 		} catch (error) {
 			console.log("Error ---------> " + error);

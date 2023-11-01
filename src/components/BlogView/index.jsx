@@ -20,8 +20,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { ref, getDownloadURL } from "firebase/storage";
-import { storage } from "../../Firebase";
+
 export default function BlogView() {
     const { blogId } = useParams();
     const token = useSelector((state) => state.token);
@@ -29,7 +28,6 @@ export default function BlogView() {
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
-    const [coverImgLink, setCoverImgLink] = useState("");
     const [user, setUser] = useState(null);
     const logged_user = useSelector((state) => state.user);
     const navigate = useNavigate();
@@ -84,12 +82,6 @@ export default function BlogView() {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             if (rblog.status === 200) {
-                const imgRef = ref(storage, `${rblog.data.blog.coverPath}`);
-                getDownloadURL(imgRef).then((url) => {
-                    setCoverImgLink(url);
-                }).catch((err) => {
-                    console.log(err);
-                });
                 setBlog(rblog.data.blog);
                 setUser(rblog.data.user);
                 setComments(rblog.data.comments);
@@ -104,7 +96,7 @@ export default function BlogView() {
             return rblog;
         };
         getblog();
-    }, [blogId, token, logged_user, coverImgLink]);
+    }, [blogId, token, logged_user ]);
 
     return (
         <>
@@ -127,7 +119,7 @@ export default function BlogView() {
                         {blog ? (
                             <>
                                 <img
-                                    src={coverImgLink}
+                                    src={blog.coverPath}
                                     alt="Cover"
                                     style={{
                                         width: "100%",
@@ -150,7 +142,7 @@ export default function BlogView() {
                                                 height: "4rem",
                                             }}
                                             id="profile-user-image"
-                                            src={user.picture.substring(8, 11) === "lh3" ? user.picture : process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
+                                            src={user.picture}
                                             alt="USER"
                                         ></img>
                                     ) : (

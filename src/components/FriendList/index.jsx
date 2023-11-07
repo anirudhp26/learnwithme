@@ -7,7 +7,12 @@ export default function FriendList(props) {
     const navigate = useNavigate();
     return (
         <Box width={'90%'} height={'fit-content'} margin={'0 auto'} border={`1px solid ${theme.palette.neutral.light}`} p={'1rem'}>
-            <Typography fontSize={theme.typography.h5}>People you admire ...</Typography>
+            <Typography 
+                fontSize={theme.typography.h5}
+                p={'.5rem'}
+                color={theme.palette.neutral.light}
+                backgroundColor={theme.palette.contrast.default}
+            >People you admire ...</Typography>
             <Divider variant='middle' sx={{ margin: '1rem 0' }} />
             {props.friends.length === 0
                 ?
@@ -31,7 +36,7 @@ export default function FriendList(props) {
                                             height: "40px",
                                         }}
                                         id="profile-user-image"
-                                        src={friend.picture.substring(8, 11) === "lh3" ? friend.picture : process.env.REACT_APP_API_URL + `/assets/${friend.picture}`}
+                                        src={friend.picture}
                                         alt="USER"
                                     ></img>
                                 ) : (

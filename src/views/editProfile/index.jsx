@@ -135,7 +135,7 @@ export default function EditProfile() {
 								height: '150px'
 							}}
 							id="edit-user-image"
-							src={user.picture.substring(8, 11) === "lh3" ? user.picture : process.env.REACT_APP_API_URL + `/assets/${user.picture}`}
+							src={user.picture}
 							alt="USER"
 						></img>
 					) : (

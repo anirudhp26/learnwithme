@@ -155,7 +155,7 @@ export default function Login() {
 										token: responce.data.token,
 									})
 								);
-								navigate("/verifyPnE");
+								navigate("/");
 							} else {
 								setisClicked(false);
 								setError(responce.data.message);

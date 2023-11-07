@@ -309,7 +309,7 @@ export default function BlogView() {
                                                                             height: "3rem",
                                                                         }}
                                                                         id="comment-user-image"
-                                                                        src={comment.author_id.picture.substring(8, 11) === "lh3" ? comment.author_id.picture : process.env.REACT_APP_API_URL + `/assets/${comment.author_id.picture}`}
+                                                                        src={comment.author_id.picture}
                                                                         alt="USER"
                                                                     ></img>
                                                                 ) : (

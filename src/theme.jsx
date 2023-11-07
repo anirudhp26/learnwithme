@@ -63,7 +63,7 @@ export const themeSettings = (mode) => {
 							alt: colorTokens.grey[800],
 						},
 						contrast: {
-							default: colorTokens.premium[600],
+							default: colorTokens.grey[0],
 							alt: colorTokens.premium[0],
 						}
 				  }

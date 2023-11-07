@@ -71,10 +71,12 @@ const Home = () => {
 				</>
 			) : (
 				<>
-					<Typography
+					<Box
 						textAlign={"center"}
-						margin={"2rem 0"}
-						fontSize={theme.typography.h4}
+						padding={"1rem"}
+						backgroundColor={theme.palette.contrast.default}
+						color={theme.palette.neutral.light}
+						fontSize={theme.typography.h5}
 					>
 						{quote.content} <br></br>
 						<i>
@@ -83,7 +85,7 @@ const Home = () => {
 								{quote.author}
 							</span>
 						</i>
-					</Typography>
+					</Box>
 					<Box
 						display={"flex"}
 						width={"100%"}
@@ -120,6 +122,7 @@ const Home = () => {
 										setPersonalizedfeed(true);
 									}}
 									padding={"1rem 0"}
+									bgcolor={personalizedfeed ? theme.palette.contrast.default : "transparent"}
 								>
 									<Typography
 										fontSize={theme.typography.h4}
@@ -140,6 +143,8 @@ const Home = () => {
 										setPersonalizedfeed(false);
 									}}
 									padding={"1rem 0"}
+									bgcolor={!personalizedfeed ? theme.palette.contrast.default : "transparent"}
+
 								>
 									<Typography
 										fontSize={theme.typography.h4}
@@ -161,9 +166,7 @@ const Home = () => {
 												content={blog.content}
 												views={blog.views}
 												coverPath={blog.coverPath}
-												impressed={
-													blog.impressed.length
-												}
+												impressed={blog.impressed.length}
 												createdAt={blog.createdAt}
 												key={blog._id}
 												id={blog._id}
@@ -181,9 +184,7 @@ const Home = () => {
 												content={blog.content}
 												views={blog.views}
 												coverPath={blog.coverPath}
-												impressed={
-													blog.impressed.length
-												}
+												impressed={blog.impressed.length}
 												createdAt={blog.createdAt}
 												key={blog._id}
 												id={blog._id}

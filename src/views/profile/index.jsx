@@ -5,6 +5,7 @@ import {
 	Button,
 	Divider,
 	Typography,
+	useTheme,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import Axios from "axios";
@@ -21,6 +22,7 @@ export default function Profile() {
 	const mode = useSelector((state) => state.mode);
 	const blogs = useSelector((state) => state.blogs);
 	const navigate = useNavigate();
+	const theme = useTheme();
 	const socket = useContext(SocketContext);
 	useEffect(() => {
 		Axios.post(
@@ -79,9 +81,10 @@ export default function Profile() {
 				<Button
 					variant="outlined"
 					sx={{
-						width: "50%",
+						width: "40%",
 						backgroundColor: "white",
 						margin: "0 auto",
+						borderRadius: '0px',
 						color: "black",
 						"&:hover": {
 							backgroundColor: "black",
@@ -110,7 +113,7 @@ export default function Profile() {
 				<Button
 					variant="outlined"
 					sx={{
-						width: "50%",
+						width: "40%",
 						backgroundColor: "white",
 						margin: "0 auto",
 						color: "black",
@@ -191,18 +194,18 @@ export default function Profile() {
 									<img
 										style={{
 											borderRadius: "50%",
-											width: "150px",
-											height: '150px'
+											width: "100px",
+											height: '100px'
 										}}
 										id="profile-user-image"
-										src={suser.picture.substring(8, 11) === "lh3" ? suser.picture : process.env.REACT_APP_API_URL + `/assets/${suser.picture}`}
+										src={suser.picture}
 										alt="USER"
 									></img>
 								) : (
 									<img
 										src="/img/user-default-logo.png"
 										alt=""
-										width="150px"
+										width="100px"
 									></img>
 								)}
 								<Box
@@ -215,12 +218,12 @@ export default function Profile() {
 										},
 									}}
 								>
-									<Typography sx={{ fontSize: "35px" }}>
+									<Typography sx={{ fontSize: theme.typography.h2 }}>
 										{user}
 									</Typography>
 									<Typography
 										sx={{
-											fontSize: "20px",
+											fontSize: theme.typography.h4,
 											marginTop: "1rem",
 										}}
 										color="#757575"
@@ -231,7 +234,7 @@ export default function Profile() {
 									</Typography>
 									<Typography
 										sx={{
-											fontSize: "15px",
+											fontSize: theme.typography.h6,
 											marginTop: "1rem",
 										}}
 										color="#757575"
@@ -263,7 +266,7 @@ export default function Profile() {
 										color={
 											mode === "light" ? "black" : "white"
 										}
-										fontSize="25px"
+										fontSize={theme.typography.h4}
 									>
 										impressed{" "}
 										<span style={{ fontWeight: "700" }}>

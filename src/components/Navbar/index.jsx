@@ -216,7 +216,7 @@ export default function Navbar() {
 						<img
 							src="../img/logo_transparent.png"
 							alt="LOGO"
-							width={"80px"}
+							width={"70px"}
 						></img>
 					</Box>
 					<Box
@@ -265,6 +265,7 @@ export default function Navbar() {
 												cursor: "pointer",
 												color: theme.palette.neutral
 													.dark,
+												fontFamily: 'Lobster Two',
 											}}
 											onClick={() => {
 												navigate(
@@ -288,7 +289,7 @@ export default function Navbar() {
 						<img
 							src="../img/logo_transparent.png"
 							alt="LOGO"
-							width={"50px "}
+							width={"40px "}
 						></img>
 					</Box>
 					<Box
@@ -338,7 +339,7 @@ export default function Navbar() {
 									<NotificationAddRounded
 										sx={{
 											color: theme.palette.neutral.dark,
-											fontSize: theme.typography.h2,
+											fontSize: theme.typography.h3,
 										}}
 									/>
 								</Badge>
@@ -445,21 +446,12 @@ export default function Navbar() {
 										<img
 											style={{
 												borderRadius: "50%",
-												width: "3rem",
-												height: "3rem",
+												width: "2.5rem",
+												height: "2.5rem",
 												objectFit: "cover",
 											}}
 											id="user-image"
-											src={
-												user.picture.substring(
-													8,
-													11
-												) === "lh3"
-													? user.picture
-													: process.env
-														.REACT_APP_API_URL +
-													`/assets/${user.picture}`
-											}
+											src={user.picture}
 											alt="USER"
 										></img>
 									) : (

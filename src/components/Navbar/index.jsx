@@ -85,12 +85,12 @@ export default function Navbar() {
 	React.useEffect(() => {
 		socket.on("recieve_notification", async (notification) => {
 			try {
-				if (notification.notification) {
+				console.log(notification);
+				if (notification) {
 					dispatch(
 						setNotifications({
 							notifications: [
-								notification?.notification,
-								...notifications,
+								notification, ...notifications
 							],
 						})
 					);
@@ -101,11 +101,11 @@ export default function Navbar() {
 		});
 		socket.on("offlinenotifications", (notification) => {
 			try {
-				if (notification.notifications) {
+				if (notification) {
 					dispatch(
 						setNotifications({
 							notifications: [
-								...notification?.notifications,
+								notification,
 								...notifications,
 							],
 						})
@@ -265,7 +265,6 @@ export default function Navbar() {
 												cursor: "pointer",
 												color: theme.palette.neutral
 													.dark,
-												fontFamily: 'Lobster Two',
 											}}
 											onClick={() => {
 												navigate(
@@ -371,10 +370,11 @@ export default function Navbar() {
 								<Box>
 									{user.username !== undefined ? (
 										<>
-											{notifications?.map((val) => {
+											{notifications?.map((notification) => {
 												return (
 													<Typography
-														key={val.id}
+														key={notification.id}
+														onClick={() => {navigate(notification.type === "impressedNotification" ? `/profile/${notification.redirect_link}` : notification.redirect_link); handleCloseUserNotif();}}
 														margin={"auto"}
 														p="1rem"
 														fontSize={
@@ -390,13 +390,14 @@ export default function Navbar() {
 														}}
 														textAlign={"center"}
 													>
-														{val}
+														{notification.message}
 													</Typography>
 												);
 											})}
-											{user?.notifications?.map((val) => {
+											{user?.notifications?.map((notification) => {
 												return (
 													<Typography
+														onClick={() => {navigate(notification.type === "blogNotification" ? `/profile/${notification.redirect_link}` : notification.redirect_link); handleCloseUserNotif();}}
 														margin={"auto"}
 														p="1rem"
 														fontSize={
@@ -410,9 +411,9 @@ export default function Navbar() {
 															cursor: "pointer",
 														}}
 														textAlign={"center"}
-														key={val}
+														key={notification.id}
 													>
-														{val}
+														{notification.message}
 													</Typography>
 												);
 											})}

@@ -54,7 +54,7 @@ export default function Profile() {
 			document
 				.getElementById("follow-loading")
 				.classList.toggle("disable");
-			socket.emit("send_notification_follow", { to: suser.username, from: logged_user.username, sender_id: logged_user._id });
+			socket.emit("send_notification_follow", { to: suser.username, from: logged_user.username, fromInfo: logged_user });
 		}
 	};
 

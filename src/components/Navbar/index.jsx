@@ -21,7 +21,7 @@ import { setLogout, setMode, setNotifications, setUser } from "../../redux";
 import { NotificationAddRounded } from "@mui/icons-material";
 import { SocketContext } from "../../context/SocketContext";
 import Axios from "axios";
-
+import Avatar from "@mui/material/Avatar";
 const pages = ["Home", "Explore", "Blog"];
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -81,6 +81,10 @@ export default function Navbar() {
 	const notifications = useSelector((state) => state.notifications);
 	const socket = React.useContext(SocketContext);
 	const [notiCount, setnotiCount] = React.useState(0);
+	const hasNotifications =
+		user?.notifications?.length === 0 || user.notifications === undefined;
+	const isNewNotification = (notification) =>
+		user?.notifications.indexOf(notification) === -1;
 
 	React.useEffect(() => {
 		socket.on("recieve_notification", async (notification) => {
@@ -89,9 +93,7 @@ export default function Navbar() {
 				if (notification) {
 					dispatch(
 						setNotifications({
-							notifications: [
-								notification, ...notifications
-							],
+							notifications: [notification, ...notifications],
 						})
 					);
 				}
@@ -104,10 +106,7 @@ export default function Navbar() {
 				if (notification) {
 					dispatch(
 						setNotifications({
-							notifications: [
-								notification,
-								...notifications,
-							],
+							notifications: [notification, ...notifications],
 						})
 					);
 				}
@@ -185,6 +184,45 @@ export default function Navbar() {
 		setAnchorElUserNotif(null);
 		notificationStorageHandle();
 	};
+	const renderNotification = (notification, isNewNotification) => (
+		<>
+			<Typography
+				key={notification.id}
+				onClick={() => {
+					const redirectPath =
+						notification.type === "impressedNotification"
+							? `/profile/${notification.redirect_link}`
+							: `/blogs/${notification.redirect_link}`;
+					navigate(redirectPath);
+					handleCloseUserNotif();
+				}}
+				margin="auto"
+				p="1rem"
+				fontSize={theme.typography.h5}
+				fontWeight={isNewNotification ? "bold" : "normal"}
+				color={theme.palette.neutral.dark}
+				sx={{ cursor: "pointer" }}
+				textAlign="center"
+				display={'flex'}
+				alignItems={'center'}
+			>
+				<Box width={'20%'}>
+					<Avatar />
+				</Box>
+				<Box display={'flex'} flexDirection={'column'} width={'80%'}>
+					<Typography textAlign={'start'}>
+						{notification.message}
+						<br />
+						{notification.blogTitleTrimmed !== undefined
+							? `"${notification.blogTitleTrimmed}"`
+							: ""}
+					</Typography>
+					<Typography textAlign={'end'} color={theme.palette.neutral.medium} fontSize={'13px'} margin={'0.5rem 0 0 0'}>1min ago</Typography>
+				</Box>
+			</Typography>
+			<Divider key={notification.id} varient="middle" />
+		</>
+	);
 	return (
 		<AppBar
 			position="static"
@@ -360,71 +398,42 @@ export default function Navbar() {
 							open={Boolean(anchorElUserNotif)}
 							onClose={handleCloseUserNotif}
 						>
-							{user?.notifications?.length === 0 || user.notifications === undefined ? (
-								<Box>
-									<Typography padding={"1rem"}>
+							<Box>
+								{hasNotifications ? (
+									<Typography padding="1rem">
 										Nothing to show here..
 									</Typography>
-								</Box>
-							) : (
-								<Box>
-									{user.username !== undefined ? (
-										<>
-											{notifications?.map((notification) => {
-												return (
-													<Typography
-														key={notification.id}
-														onClick={() => {navigate(notification.type === "impressedNotification" ? `/profile/${notification.redirect_link}` : notification.redirect_link); handleCloseUserNotif();}}
-														margin={"auto"}
-														p="1rem"
-														fontSize={
-															theme.typography.h5
-														}
-														fontWeight={"bold"}
-														color={
-															theme.palette
-																.neutral.dark
-														}
-														sx={{
-															cursor: "pointer",
-														}}
-														textAlign={"center"}
-													>
-														{notification.message}
-													</Typography>
-												);
-											})}
-											{user?.notifications?.map((notification) => {
-												return (
-													<Typography
-														onClick={() => {navigate(notification.type === "blogNotification" ? `/profile/${notification.redirect_link}` : notification.redirect_link); handleCloseUserNotif();}}
-														margin={"auto"}
-														p="1rem"
-														fontSize={
-															theme.typography.h5
-														}
-														color={
-															theme.palette
-																.neutral.dark
-														}
-														sx={{
-															cursor: "pointer",
-														}}
-														textAlign={"center"}
-														key={notification.id}
-													>
-														{notification.message}
-													</Typography>
-												);
-											})}
-										</>
-									) : (
-										<Typography padding={"1rem"}>
-											Nothing to show here..
-										</Typography>
-									)}
-								</Box>
-							)}
+								) : (
+									<Box>
+										{user.username !== undefined ? (
+											<>
+												{notifications?.map(
+													(notification) =>
+														renderNotification(
+															notification,
+															isNewNotification(
+																notification
+															)
+														)
+												)}
+												{user?.notifications.map(
+													(notification) =>
+														renderNotification(
+															notification,
+															isNewNotification(
+																notification
+															)
+														)
+												)}
+											</>
+										) : (
+											<Typography padding="1rem">
+												Nothing to show here..
+											</Typography>
+										)}
+									</Box>
+								)}
+							</Box>
 						</Menu>
 					</Box>
 					{user === null ? (

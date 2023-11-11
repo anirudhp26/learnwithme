@@ -20,6 +20,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { SocketContext } from "../../context/SocketContext";
+import { useContext } from "react";
 
 export default function BlogView() {
     const { blogId } = useParams();
@@ -38,6 +40,7 @@ export default function BlogView() {
     const [iscommentLiked, setCommentLiked] = useState(false);
     const [addcomment, setAddComment] = useState("");
     const [isBookmarked, setIsBookmarked] = useState(false);
+    const socket = useContext(SocketContext);
     const handlecommentLike = async () => {
         setCommentLiked((prev) => !prev);
     }
@@ -52,6 +55,7 @@ export default function BlogView() {
             }
         } else {
             newBlog.impressed.push(logged_user._id);
+            socket.emit("blog_like", { to: user.username, from: logged_user.username, blogTitle: blog.title, blogId: blog._id, fromInfo: logged_user });
         }
         setIsLiked(newBlog.impressed.includes(logged_user._id) ? true : false);
         const updateBlog = await axios.post(

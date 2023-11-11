@@ -21,7 +21,7 @@ import { setLogout, setMode, setNotifications, setUser } from "../../redux";
 import { NotificationAddRounded } from "@mui/icons-material";
 import { SocketContext } from "../../context/SocketContext";
 import Axios from "axios";
-
+import Avatar from "@mui/material/Avatar";
 const pages = ["Home", "Explore", "Blog"];
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -203,12 +203,22 @@ export default function Navbar() {
 				color={theme.palette.neutral.dark}
 				sx={{ cursor: "pointer" }}
 				textAlign="center"
+				display={'flex'}
+				alignItems={'center'}
 			>
-				{notification.message}
-				<br />
-				{notification.blogTitleTrimmed !== undefined
-					? `"${notification.blogTitleTrimmed}"`
-					: ""}
+				<Box width={'20%'}>
+					<Avatar />
+				</Box>
+				<Box display={'flex'} flexDirection={'column'} width={'80%'}>
+					<Typography textAlign={'start'}>
+						{notification.message}
+						<br />
+						{notification.blogTitleTrimmed !== undefined
+							? `"${notification.blogTitleTrimmed}"`
+							: ""}
+					</Typography>
+					<Typography textAlign={'end'} color={theme.palette.neutral.medium} fontSize={'13px'} margin={'0.5rem 0 0 0'}>1min ago</Typography>
+				</Box>
 			</Typography>
 			<Divider key={notification.id} varient="middle" />
 		</>

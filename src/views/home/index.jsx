@@ -3,12 +3,11 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Blog from "../../components/BlogCards";
 import FriendList from "../../components/FriendList";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 
 const Home = () => {
 	const [friends, setFriends] = useState([]);
 	const [isloading, setIsloading] = useState(true);
-	const [personalizedfeed, setPersonalizedfeed] = useState(true);
 	const [pFeed, setPFeed] = useState([]);
 	const [trendingFeed, settrendingFeed] = useState([]);
 	const [quote, setQuote] = useState({});
@@ -158,26 +157,26 @@ const Home = () => {
 							</Box> */}
 							{/* {personalizedfeed ? (
 								<>
-									{pFeed.map((blog) => {
-										return (
-											<Blog
-												title={blog.title}
-												user={blog.user}
-												content={blog.content}
-												views={blog.views}
-												coverPath={blog.coverPath}
-												impressed={blog.impressed.length}
-												createdAt={blog.createdAt}
-												key={blog._id}
-												id={blog._id}
-											/>
-										);
-									})}
 								</>
 							) : (
 								<>
 								</>
 							)} */}
+							{pFeed.map((blog) => {
+								return (
+									<Blog
+										title={blog.title}
+										user={blog.user}
+										content={blog.content}
+										views={blog.views}
+										coverPath={blog.coverPath}
+										impressed={blog.impressed.length}
+										createdAt={blog.createdAt}
+										key={blog._id}
+										id={blog._id}
+									/>
+								);
+							})}
 							{trendingFeed.map((blog) => {
 								return (
 									<Blog

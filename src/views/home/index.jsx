@@ -102,7 +102,7 @@ const Home = () => {
 								},
 							}}
 						>
-							<Box
+							{/* <Box
 								display={"flex"}
 								width={"100%"}
 								borderTop={`1px solid ${theme.palette.neutral.light}`}
@@ -155,8 +155,8 @@ const Home = () => {
 										Trending
 									</Typography>
 								</Box>
-							</Box>
-							{personalizedfeed ? (
+							</Box> */}
+							{/* {personalizedfeed ? (
 								<>
 									{pFeed.map((blog) => {
 										return (
@@ -176,23 +176,23 @@ const Home = () => {
 								</>
 							) : (
 								<>
-									{trendingFeed.map((blog) => {
-										return (
-											<Blog
-												title={blog.title}
-												user={blog.user}
-												content={blog.content}
-												views={blog.views}
-												coverPath={blog.coverPath}
-												impressed={blog.impressed.length}
-												createdAt={blog.createdAt}
-												key={blog._id}
-												id={blog._id}
-											/>
-										);
-									})}
 								</>
-							)}
+							)} */}
+							{trendingFeed.map((blog) => {
+								return (
+									<Blog
+										title={blog.title}
+										user={blog.user}
+										content={blog.content}
+										views={blog.views}
+										coverPath={blog.coverPath}
+										impressed={blog.impressed.length}
+										createdAt={blog.createdAt}
+										key={blog._id}
+										id={blog._id}
+									/>
+								);
+							})}
 						</Box>
 						<Box
 							display={"flex"}

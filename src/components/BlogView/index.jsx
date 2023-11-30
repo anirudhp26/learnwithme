@@ -107,10 +107,12 @@ export default function BlogView() {
             {loading
                 ?
                 <>
-                    <CircularProgress
-                        sx={{ margin: "20vh auto", display: "flex" }}
-                        color={mode === "light" ? "secondary" : "primary"}
-                    />
+                    <div className="loader-container">
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
                 </>
                 :
                 <>

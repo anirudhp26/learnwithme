@@ -7,7 +7,6 @@ import {
 } from "@mui/icons-material";
 import {
     Box,
-    CircularProgress,
     Divider,
     IconButton,
     InputAdornment,
@@ -36,7 +35,6 @@ export default function BlogView() {
     const [isLiked, setIsLiked] = useState(
         blog?.impressed.includes(logged_user._id) ? true : false
     );
-    const mode = useSelector((state) => state.mode);
     const [iscommentLiked, setCommentLiked] = useState(false);
     const [addcomment, setAddComment] = useState("");
     const [isBookmarked, setIsBookmarked] = useState(false);

@@ -515,10 +515,10 @@ export default function Navbar() {
 									}}
 									textAlign={"center"}
 									onClick={() => {
-										navigate(`/inbox`);
+										navigate(`/bookmarks`);
 									}}
 								>
-									Inbox
+									Bookmarks
 								</Typography>
 								<Divider variant="middle"></Divider>
 								<Box

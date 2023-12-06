@@ -31,17 +31,18 @@ export default function BlogView() {
     const [comments, setComments] = useState([]);
     const [user, setUser] = useState(null);
     const logged_user = useSelector((state) => state.user);
+    const [editableuser, setEditableuser] = useState(logged_user);
     const navigate = useNavigate();
     const [isLiked, setIsLiked] = useState(
         blog?.impressed.includes(logged_user._id) ? true : false
     );
-    const [iscommentLiked, setCommentLiked] = useState(false);
+    // const [iscommentLiked, setCommentLiked] = useState(false);
     const [addcomment, setAddComment] = useState("");
-    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [isBookmarked, setIsBookmarked] = useState(logged_user.bookmarks?.includes(blogId) ? true : false);
     const socket = useContext(SocketContext);
-    const handlecommentLike = async () => {
-        setCommentLiked((prev) => !prev);
-    }
+    // const handlecommentLike = async () => {
+    //     setCommentLiked((prev) => !prev);
+    // }
     const handleLike = async () => {
         const newBlog = { ...blog };
         if (newBlog.impressed.includes(logged_user._id)) {
@@ -73,8 +74,17 @@ export default function BlogView() {
             setAddComment("");
         }
     }
-    const handleBookmark = () => {
+    const handleBookmark = async () => {
         setIsBookmarked(!isBookmarked);
+        console.log(editableuser.bookmarks);
+        if (isBookmarked) {
+            const index = editableuser.bookmarks.indexOf(blogId);
+            if (index > -1) {
+                editableuser.bookmarks.splice(index);
+            }
+        } else {
+            editableuser.bookmarks.push(blogId);
+        }
     };
     useEffect(() => {
         const getblog = async () => {
@@ -286,7 +296,7 @@ export default function BlogView() {
                                             >
                                                 Be the first one to comment
                                             </Typography>
-                                            <Tooltip title={iscommentLiked ? "Unlike" : "Like"}>
+                                            {/* <Tooltip title={iscommentLiked ? "Unlike" : "Like"}>
                                                 <IconButton
                                                     color={iscommentLiked ? "error" : "default"}
                                                     onClick={handlecommentLike}
@@ -295,7 +305,7 @@ export default function BlogView() {
                                                         sx={{ fontSize: "1rem" }}
                                                     />
                                                 </IconButton>
-                                            </Tooltip>
+                                            </Tooltip> */}
                                         </Box>
                                     ) : (
                                         comments.map((comment) => {
@@ -305,7 +315,7 @@ export default function BlogView() {
                                                     <Box key={comment._id} margin={'10px 0'} width={'100%'} padding={'10px'} display={'flex'} alignItems={'center'} position={'relative'}>
                                                         <Box display={'flex'} flexDirection={'column'} width={'100%'}>
                                                             <Box display={'flex'} alignItems={'center'}>
-                                                                {comment?.author_id.picture !== undefined ? (
+                                                                {comment?.author_id?.picture !== undefined ? (
                                                                     <img
                                                                         style={{
                                                                             borderRadius: "50%",
@@ -313,7 +323,7 @@ export default function BlogView() {
                                                                             height: "3rem",
                                                                         }}
                                                                         id="comment-user-image"
-                                                                        src={comment.author_id.picture}
+                                                                        src={comment.author_id?.picture}
                                                                         alt="USER"
                                                                     ></img>
                                                                 ) : (
@@ -323,7 +333,7 @@ export default function BlogView() {
                                                                         width="40px"
                                                                     ></img>
                                                                 )}
-                                                                <Typography marginLeft={'1rem'} color={'grey'}><p onClick={() => navigate(`/profile/${comment.author_id.username}`)}>{comment.author_id.username}</p></Typography>
+                                                                <Typography marginLeft={'1rem'} color={'grey'}><p onClick={() => navigate(`/profile/${comment.author_id?.username}`)}>{comment.author_id?.username}</p></Typography>
                                                             </Box>
                                                             <Typography
                                                                 fontSize={theme.typography.h6}
@@ -336,7 +346,7 @@ export default function BlogView() {
                                                                 </i>
                                                             </Typography>
                                                         </Box>
-                                                        <Tooltip sx={{ position: 'absolute', right: '0' }} title={iscommentLiked ? "Unlike" : "Like"}>
+                                                        {/* <Tooltip sx={{ position: 'absolute', right: '0' }} title={iscommentLiked ? "Unlike" : "Like"}>
                                                             <IconButton
                                                                 color={iscommentLiked ? "error" : "default"}
                                                                 onClick={handlecommentLike}
@@ -348,11 +358,11 @@ export default function BlogView() {
                                                                     sx={{ fontSize: "1rem" }}
                                                                 />
                                                             </IconButton>
-                                                        </Tooltip>
+                                                        </Tooltip> */}
                                                     </Box>
                                                 </Box>
                                             )
-                                        })
+                                        }).reverse()
                                     )}
                                 </Box>
                             </>

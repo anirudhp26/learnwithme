@@ -85,6 +85,7 @@ export default function BlogView() {
         } else {
             editableuser.bookmarks.push(blogId);
         }
+        setEditableuser(editableuser);
     };
     useEffect(() => {
         const getblog = async () => {
